@@ -7,13 +7,13 @@ namespace Eventos.ViewModels
     /// <summary>
     /// Sample viewmodel to show a collection of items
     /// </summary>
-    public class ItemCollectionViewModel : BaseViewModel
+    public class HistoryViewModel : BaseViewModel
     {
       
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public ItemCollectionViewModel(IServiceProvider provider) : base(provider)
+        public HistoryViewModel(IServiceProvider provider) : base(provider)
         {
         }
     }

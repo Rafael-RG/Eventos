@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <pages:BaseContentPage
-    x:Class="Eventos.Pages.ItemDetailPage"
+    x:Class="Eventos.Pages.EventDetailPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:extensions="clr-namespace:Eventos.Extensions"
     xmlns:pages="clr-namespace:Eventos.Common.Pages;assembly=Eventos.Common"
     xmlns:viewModels="clr-namespace:Eventos.ViewModels"
-    x:DataType="viewModels:ItemDetailViewModel"
-    x:TypeArguments="viewModels:ItemDetailViewModel">
+    x:DataType="viewModels:EventDetailViewModel"
+    x:TypeArguments="viewModels:EventDetailViewModel"
+    Shell.NavBarIsVisible="false">
 
     <StackLayout />
 

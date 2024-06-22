@@ -5,15 +5,15 @@ using Eventos.Common.ViewModels;
 namespace Eventos.ViewModels
 {
     /// <summary>
-    /// Sample entry form
+    /// Logic to show info from an item selected
     /// </summary>
-    public class EntryFormViewModel : BaseViewModel
+    public class EventDetailViewModel : BaseViewModel
     {
       
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public EntryFormViewModel(IServiceProvider provider) : base(provider)
+        public EventDetailViewModel(IServiceProvider provider) : base(provider)
         {
         }
     }

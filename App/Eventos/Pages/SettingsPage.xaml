@@ -7,8 +7,29 @@
     xmlns:pages="clr-namespace:Eventos.Common.Pages;assembly=Eventos.Common"
     xmlns:viewModels="clr-namespace:Eventos.ViewModels"
     x:DataType="viewModels:SettingsViewModel"
-    x:TypeArguments="viewModels:SettingsViewModel">
+    x:TypeArguments="viewModels:SettingsViewModel"
+    Shell.NavBarIsVisible="False">
 
-    <StackLayout />
+    <ScrollView>
+        <VerticalStackLayout
+        Padding="30,0"
+        Spacing="25"
+        VerticalOptions="Center">
+
+            <StackLayout Margin="0,12,0,0" HeightRequest="32">
+                <ActivityIndicator
+                    HeightRequest="32"
+                    IsRunning="True"
+                    IsVisible="{Binding IsBusy}"
+                    WidthRequest="32" />
+            </StackLayout>
+
+            <Button
+                TextColor="Black"
+                Command="{Binding LogoutWithGoogleCommand}"
+                Text="Cerrar sesion" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 
 </pages:BaseContentPage>

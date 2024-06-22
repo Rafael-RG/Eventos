@@ -22,13 +22,13 @@ namespace Eventos.ViewModels
         }
 
 
-        public override async void OnAppearing()
-        {
-            if (!this.AuthenticationService.IsAuthenticated())
-            {
-                await this.NavigationService.Navigate<LoginViewModel>();
-            }
-        }
+        //public override async void OnAppearing()
+        //{
+        //    if (!this.AuthenticationService.IsAuthenticated())
+        //    {
+        //        await this.NavigationService.Navigate<LoginViewModel>();
+        //    }
+        //}
 
         ///// <summary>
         ///// Prepares the local variables

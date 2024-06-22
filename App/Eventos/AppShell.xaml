@@ -6,7 +6,8 @@
     xmlns:local="clr-namespace:Eventos"
     xmlns:pages="clr-namespace:Eventos.Pages"
     FlyoutHeaderBehavior="CollapseOnScroll"
-    Shell.FlyoutBehavior="Flyout">
+    Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarIsVisible="True">
 
     <!--<FlyoutItem Title="Cats"
                 Icon="cat.png">
@@ -15,17 +16,26 @@
         </Tab>
     </FlyoutItem-->
 
+    <TabBar>
+        <Tab Title="Inicio" Icon="home.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
+        </Tab>
+        <Tab Title="Nuevo" Icon="add.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" />
+        </Tab>
+        <Tab Title="Historial" Icon="history.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:HistoryPage}" />
+        </Tab>
+        <Tab Title="Configuracion" Icon="setting.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
+        </Tab>
+    </TabBar>
+
 
     <ShellContent
         Title="Inicio"
         ContentTemplate="{DataTemplate pages:HomePage}"
         Route="Home" />
-
-    <ShellContent
-        Title="Sincronizar"
-        ContentTemplate="{DataTemplate pages:SynchronizationPage}"
-        Route="Synchonize" />
-
 
     <!--<FlyoutItem Title="Home">
         <Tab>

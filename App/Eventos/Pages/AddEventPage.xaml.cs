@@ -5,13 +5,13 @@ namespace Eventos.Pages;
 /// <summary>
 /// Entry form UI
 /// </summary>
-public partial class ItemCollectionPage
+public partial class AddEventPage
 {
 
 	/// <summary>
 	/// Receives the depedencies by DI
 	/// </summary>
-	public ItemCollectionPage(ItemCollectionViewModel viewModel) : base(viewModel, "Collection")
+	public AddEventPage(AddEventViewModel viewModel) : base(viewModel, "AddEvent")
 	{
 		InitializeComponent();
 	}

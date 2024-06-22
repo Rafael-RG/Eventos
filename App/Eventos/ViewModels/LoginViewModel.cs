@@ -28,47 +28,11 @@ namespace Eventos.ViewModels
             _googleAuthService = googleAuthService;
         }
 
-
-        /// <summary>
-        /// DB login
-        /// </summary>
-        [RelayCommand]
-        private async void Login()
-        {
-            if (this.IsBusy) return;
-            if (!AreCredentialComplete()) return;
-            try
-            {
-                this.IsBusy = true;
-                var result = await this.AuthenticationService.AuthenticateAsync(this.Username, this.Password);
-                if (!result)
-                {
-                    //await NotificationService.NotifyAsync("LoginErrorTitle", "LoginError", "Close");
-                    return;
-                }
-
-                if (await this.DataService.MustSynchronizeAsync())
-                {
-                    await this.NavigationService.Navigate<SynchronizationViewModel>();
-                }
-                else
-                {
-                    await this.NavigationService.Close(this);       
-                }
-            }
-            catch (Exception ex)
-            {
-                //await NotificationService.NotifyAsync(GetText("Error"), (ex.Message), GetText("Close"));
-                await LogExceptionAsync(ex);
-            }
-        }
-
-
         /// <summary>
         /// Login with active directory
         /// </summary>
         [RelayCommand]
-        private async void LoginWithActiveDirectory()
+        private async void LoginWithGoogle()
         {
             var loggedUser = await _googleAuthService.GetCurrrentUserAsync();
 
@@ -77,7 +41,11 @@ namespace Eventos.ViewModels
                 loggedUser = await _googleAuthService.AuthenticateAsync();
             }
 
-            await Application.Current.MainPage.DisplayAlert("Login Message", "Welcome " + loggedUser.FullName, "Ok");
+            if (loggedUser != null)
+            {
+                await this.NavigationService.Close(this);
+            }
+            
         }
 
 

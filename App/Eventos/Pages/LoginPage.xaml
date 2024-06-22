@@ -8,12 +8,10 @@
     xmlns:viewModels="clr-namespace:Eventos.ViewModels"
     x:DataType="viewModels:LoginViewModel"
     x:TypeArguments="viewModels:LoginViewModel"
+    Shell.TabBarIsVisible="False"
     Shell.NavBarIsVisible="false">
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-        <StackLayout HeightRequest="200" HorizontalOptions="CenterAndExpand">
-            <Image Source="dotnet_bot" />
-        </StackLayout>
 
         <StackLayout Margin="0,12,0,0" HeightRequest="32">
             <ActivityIndicator
@@ -23,32 +21,10 @@
                 WidthRequest="32" />
         </StackLayout>
 
-        <StackLayout Spacing="0">
-            <Label Text="{extensions:Localize Username}" />
-            <Entry
-                AutomationId="userNameEntry"
-                HorizontalOptions="FillAndExpand"
-                IsEnabled="{Binding IsEnabled}"
-                MaxLength="25"
-                Placeholder="{extensions:Localize Username}"
-                Text="{Binding Username}" />
-        </StackLayout>
-
-        <StackLayout Margin="0,12,0,0" Spacing="0">
-            <Label Text="{extensions:Localize Password}" />
-            <Entry
-                HorizontalOptions="FillAndExpand"
-                IsEnabled="{Binding IsEnabled}"
-                IsPassword="true"
-                MaxLength="50"
-                Placeholder="{extensions:Localize Password}"
-                Text="{Binding Password}" />
-        </StackLayout>
-
         <Button
-            Margin="0,12,0,0"
-            Command="{Binding LoginWithActiveDirectoryCommand}"
-            Text="{extensions:Localize LoginWithActiveDirectory}" />
+            TextColor="Black"
+            Command="{Binding LoginWithGoogleCommand}"
+            Text="Iniciar con Google" />
 
     </StackLayout>
 
