@@ -34,37 +34,13 @@ namespace Backend.Service.Functions
 
 
         /// <summary>
-        /// Creates a new document
+        /// Validate a subscription
         /// </summary>       
-        [OpenApiOperation("Create", ["Documents"], Description = "Creates a new document")]
-        [OpenApiParameter("Authetication", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "User bearer token")]
-        [OpenApiSecurity("X-Functions-Key", SecuritySchemeType.ApiKey, Name = "x-functions-key", In = OpenApiSecurityLocationType.Header, Description = "The function key to access the API")]
-        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Events), Required = true, Description = "Document to create")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Response<Document>), Description = "The created / updated document")]
-        [Function(nameof(CreateDocumentAsync))]
-        public async Task<HttpResponseData> GetAccessTokenAsync(
-         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "documents")] HttpRequestData request)
+        [Function(nameof(ValidateSubscriptionAsync))]
+        public async Task<HttpResponseData> ValidateSubscriptionAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "validatesubscription")] HttpRequestData request)
         {
-            return await request.CreateResponse(this.businessLogic.CreateUpdateDocumentAsyc, request.DeserializeBody<Document>(), responseLinks =>
-            {
-                responseLinks.Links = new Dictionary<string, string> { };
-            }, logger);
-        }
-
-
-        /// <summary>
-        /// Creates a new document
-        /// </summary>       
-        [OpenApiOperation("Create", ["Documents"], Description = "Creates a new document")]
-        [OpenApiParameter("Authetication", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "User bearer token")]
-        [OpenApiSecurity("X-Functions-Key", SecuritySchemeType.ApiKey, Name = "x-functions-key", In = OpenApiSecurityLocationType.Header, Description = "The function key to access the API")]
-        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Events), Required = true, Description = "Document to create")]
-        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Response<Document>), Description = "The created / updated document")]
-        [Function(nameof(CreateDocumentAsync))]
-        public async Task<HttpResponseData> CreateDocumentAsync(
-         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "documents")] HttpRequestData request)
-        {
-            return await request.CreateResponse(this.businessLogic.CreateUpdateDocumentAsyc, request.DeserializeBody<Document>(), responseLinks =>
+            return await request.CreateResponse(this.businessLogic.ValidateSubscriptionAsync, request.DeserializeBody<ValidateSubscriptionRequest>(), responseLinks =>
             {
                 responseLinks.Links = new Dictionary<string, string> { };
             }, logger);

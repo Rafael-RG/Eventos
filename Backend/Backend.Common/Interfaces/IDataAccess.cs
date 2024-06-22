@@ -13,13 +13,13 @@ namespace Backend.Common.Interfaces
         /// <summary>
         /// Documents collection
         /// </summary>
-        IRepository<Document> Documents { get; }
+        //IRepository<Document> Documents { get; }
 
      
         /// <summary>
         /// Saves all the changess
         /// </summary>
-        Task<int> SaveChangesAsync();
+        //Task<int> SaveChangesAsync();
 
         /// <summary>
         /// Get sas token

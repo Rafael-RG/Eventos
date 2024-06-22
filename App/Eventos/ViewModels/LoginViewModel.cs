@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Eventos.Common.ViewModels;
+using Eventos.GoogleAuth;
 
 namespace Eventos.ViewModels
 {
@@ -9,6 +10,9 @@ namespace Eventos.ViewModels
     /// </summary>
     public partial class LoginViewModel : BaseViewModel
     {
+        private readonly IGoogleAuthService _googleAuthService;
+
+
         [ObservableProperty]
         private string username;
 
@@ -19,8 +23,9 @@ namespace Eventos.ViewModels
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public LoginViewModel(IServiceProvider provider) : base(provider)
+        public LoginViewModel(IServiceProvider provider, IGoogleAuthService googleAuthService) : base(provider)
         {
+            _googleAuthService = googleAuthService;
         }
 
 
@@ -65,7 +70,14 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void LoginWithActiveDirectory()
         {
-            await this.NavigationService.Close(this);
+            var loggedUser = await _googleAuthService.GetCurrrentUserAsync();
+
+            if (loggedUser == null)
+            {
+                loggedUser = await _googleAuthService.AuthenticateAsync();
+            }
+
+            await Application.Current.MainPage.DisplayAlert("Login Message", "Welcome " + loggedUser.FullName, "Ok");
         }
 
 

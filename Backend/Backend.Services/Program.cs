@@ -9,7 +9,9 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Backend.Common.Interfaces;
 using Backend.Common.Providers;
 using Backend.Common.Middleware;
+using Backend.DataAccess;
 using Backend.Service.BusinessLogic;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Service
 {
@@ -28,7 +30,7 @@ namespace Backend.Service
             var host = new HostBuilder()
               .ConfigureFunctionsWorkerDefaults(builder =>
               {
-                  builder.UseMiddleware<SessionMiddleware>();
+                  //builder.UseMiddleware<SessionMiddleware>();
                   builder.UseNewtonsoftJson();
               })
               .ConfigureOpenApi()
@@ -68,7 +70,8 @@ namespace Backend.Service
                       return options;
                   });
                   services.AddScoped<ISessionProvider, SessionProvider>();
-                  services.AddScoped<IEventsLogic, EventsLogic>();             
+                  services.AddScoped<IEventsLogic, EventsLogic>();   
+                  services.AddScoped<IDataAccess, DataAccess.DataAccess>();
               })
               .Build();
 

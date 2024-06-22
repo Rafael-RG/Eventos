@@ -10,20 +10,11 @@ namespace Backend.Common.Interfaces
     /// </summary>
     public interface IEventsLogic
     {
-
-        /// <summary>
+         /// <summary>
         /// Gets all the documents
         /// </summary>
         /// <returns></returns>
-        Task<Result<List<Document>>> GetDocumentsAsync();
-
-
-
-        /// <summary>
-        /// Gets all the documents
-        /// </summary>
-        /// <returns></returns>
-        Task<Result<Document>> CreateUpdateDocumentAsyc(Document document);
+        Task<Result<bool>> ValidateSubscriptionAsync(ValidateSubscriptionRequest validateSubscriptionRequest);
     }
 
 

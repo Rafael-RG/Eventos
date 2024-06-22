@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 namespace Backend.DataAccess
 {
     /// <inheritdoc/>
-    public class DataAccess : IDisposable, IDataAccess
+    public class DataAccess : IDataAccess //, IDisposable
     {
-        private readonly DatabaseContext context;
+        //private readonly DatabaseContext context;
         private bool disposed = false;
         private readonly string storageConnectionString;
         private readonly BlobServiceClient blobServiceClient;
@@ -30,9 +30,9 @@ namespace Backend.DataAccess
         /// </summary>
         public DataAccess(IConfiguration configuration)
         {
-            this.context = new DatabaseContext(configuration);
-            this.Documents = new Repository<Document>(context);
-            this.context.Database.EnsureCreated();
+            //this.context = new DatabaseContext(configuration);
+            //this.Documents = new Repository<Document>(context);
+            //this.context.Database.EnsureCreated();
             this.storageConnectionString = configuration["StorageConnectionString"];
             this.blobServiceClient = new BlobServiceClient(this.storageConnectionString);      
         }
@@ -40,30 +40,30 @@ namespace Backend.DataAccess
 
 
         /// <inheritdoc/>
-        public Task<int> SaveChangesAsync()
-        {
-            return context.SaveChangesAsync();
-        }
+        //public Task<int> SaveChangesAsync()
+        //{
+        //    return context.SaveChangesAsync();
+        //}
 
 
 
         /// <inheritdoc/>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
 
 
         /// <inheritdoc/>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed && !disposing)
-            {
-                context.Dispose();
-            }
-            this.disposed = true;
-        }
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (!this.disposed && !disposing)
+        //    {
+        //        context.Dispose();
+        //    }
+        //    this.disposed = true;
+        //}
 
 
         /// <inheritdoc/>
