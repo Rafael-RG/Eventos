@@ -95,17 +95,15 @@ namespace Eventos.ViewModels
 
                 string icsContent = GenerateICSContent(this.Title, this.Description, eventStart, eventEnd);
 
-                string fileName = $"{Title.Replace(" ", "_").ToLower()}.ics";
-                //string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), fileName);
-                //File.WriteAllText(filePath, icsContent);
-
                 var newEvent = new Event
                 {
+                    Email = string.Empty,
                     Title = this.Title,
                     Description = this.Description,
                     StartTime = eventStart.TimeOfDay,
                     EndTime = eventEnd.TimeOfDay,
-                    Zone = this.SelectedZone.DaylightName
+                    Zone = this.SelectedZone.DaylightName,
+                    ICSContent = icsContent
                 };
 
                 await App.Current.MainPage.DisplayAlert("Archivo .ics generado", $"Se ha generado el archivo {fileName}.", "OK");

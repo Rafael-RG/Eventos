@@ -30,7 +30,6 @@ namespace Backend.Service
             var host = new HostBuilder()
               .ConfigureFunctionsWorkerDefaults(builder =>
               {
-                  //builder.UseMiddleware<SessionMiddleware>();
                   builder.UseNewtonsoftJson();
               })
               .ConfigureOpenApi()

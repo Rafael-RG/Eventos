@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Azure.Data.Tables;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
@@ -6,6 +7,9 @@ using Backend.Common.Interfaces;
 using Backend.Models;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +23,7 @@ namespace Backend.DataAccess
         private bool disposed = false;
         private readonly string storageConnectionString;
         private readonly BlobServiceClient blobServiceClient;
+        private readonly TableServiceClient tableServiceClient;
        
         
         /// <inheritdoc/>
@@ -30,40 +35,11 @@ namespace Backend.DataAccess
         /// </summary>
         public DataAccess(IConfiguration configuration)
         {
-            //this.context = new DatabaseContext(configuration);
-            //this.Documents = new Repository<Document>(context);
-            //this.context.Database.EnsureCreated();
             this.storageConnectionString = configuration["StorageConnectionString"];
-            this.blobServiceClient = new BlobServiceClient(this.storageConnectionString);      
+            this.blobServiceClient = new BlobServiceClient(this.storageConnectionString);  
+            this.tableServiceClient = new TableServiceClient(this.storageConnectionString);
         }
 
-
-
-        /// <inheritdoc/>
-        //public Task<int> SaveChangesAsync()
-        //{
-        //    return context.SaveChangesAsync();
-        //}
-
-
-
-        /// <inheritdoc/>
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    GC.SuppressFinalize(this);
-        //}
-
-
-        /// <inheritdoc/>
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!this.disposed && !disposing)
-        //    {
-        //        context.Dispose();
-        //    }
-        //    this.disposed = true;
-        //}
 
 
         /// <inheritdoc/>
@@ -115,6 +91,48 @@ namespace Backend.DataAccess
 
                 // Devuelve el URI del blob
                 return blobClient.Uri;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// create a new table in the storage account
+        /// </summary>
+        public async Task<bool> SaveEntryAsync(EventEntry newEvent)
+        {
+            try 
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("events");
+                await tableClient.CreateIfNotExistsAsync();
+                
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+
+        /// <summary>
+        /// Get all the events from the table by email
+        /// </summary>
+        public async Task<List<EventEntry>> GetEventsAsync(string email)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("events");
+                await tableClient.CreateIfNotExistsAsync();
+                var query = tableClient.QueryAsync<EventEntry>(filter: $"PartitionKey eq '{email}'");
+                var events = new List<EventEntry>();
+                await foreach (var item in query)
+                {
+                    events.Add(item);
+                }
+                return events;
             }
             catch
             {

@@ -14,6 +14,7 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using System.IO;
 
 namespace Backend.Service.BusinessLogic
 {
@@ -130,7 +131,71 @@ namespace Backend.Service.BusinessLogic
         }
 
 
-    }
+        /// </inheritdoc/>
+        public async Task<Result<bool>> SaveEventAsync(EventRequest newEvent)
+        {
+            try
+            {
+                string fileName = $"{newEvent.Title.Replace(" ", "_").ToLower()}.ics";
+                byte[] byteArray = Encoding.UTF8.GetBytes(newEvent.ICSContent);
+                MemoryStream stream = new MemoryStream(byteArray);
 
+                var uri = await this.dataAccess.CreateBlobAsync(stream, fileName, "events");
+
+                var eventEntry = new EventEntry
+                {
+                    Title = newEvent.Title,
+                    Description = newEvent.Description,
+                    Date = newEvent.Date,
+                    Email = newEvent.Email,
+                    EndTime = newEvent.EndTime,
+                    URLFile = uri.AbsoluteUri,
+                    PartitionKey = newEvent.Email,
+                    RowKey = Guid.NewGuid().ToString(),
+                    StartTime = newEvent.StartTime,
+                    Zone = newEvent.Zone
+                };
+
+                var result = await this.dataAccess.SaveEntryAsync(eventEntry);
+
+                return new Result<bool>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<bool>(false);
+            }
+        }
+
+
+        /// </inheritdoc/>
+        public async Task<Result<EventResponse>> GetEventsAsync(string email)
+        {
+            try
+            {
+                var eventEntryList = await this.dataAccess.GetEventsAsync(email);
+
+                var result = new Result<EventResponse>(new EventResponse
+                {
+                    Events = eventEntryList.Select(x => new Event
+                    {
+                        Title = x.Title,
+                        Description = x.Description,
+                        Date = x.Date,
+                        Email = x.Email,
+                        EndTime = x.EndTime,
+                        StartTime = x.StartTime,
+                        Zone = x.Zone
+                    }).ToList()
+                });
+
+                return result;
+            }
+            catch
+            {
+                return new Result<EventResponse>();
+            }
+
+        }
+    }
 
 }

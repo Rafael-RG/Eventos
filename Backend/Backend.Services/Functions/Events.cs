@@ -47,6 +47,33 @@ namespace Backend.Service.Functions
         }
 
 
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(SaveEventAsync))]
+        public async Task<HttpResponseData> SaveEventAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "saveevent")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.SaveEventAsync, request.DeserializeBody<EventRequest>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
+        /// <summary>
+        /// Validate a subscription
+        /// </summary>       
+        [Function(nameof(GetEventsAsync))]
+        public async Task<HttpResponseData> GetEventsAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "events")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.GetEventsAsync, request.DeserializeBody<string>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
+
 
     }
 }

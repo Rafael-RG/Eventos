@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventos.Models
+namespace Backend.Models
 {
-    public class Event
+    public class EventRequest
     {
         public string Email { get; set; }
         public string Title { get; set; }

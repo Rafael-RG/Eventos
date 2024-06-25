@@ -15,6 +15,18 @@ namespace Backend.Common.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<Result<bool>> ValidateSubscriptionAsync(ValidateSubscriptionRequest validateSubscriptionRequest);
+
+        /// <summary>
+        /// Gets all the documents
+        /// </summary>
+        /// <returns></returns>
+        Task<Result<bool>> SaveEventAsync(EventRequest newEvent);
+
+        /// <summary>
+        /// Gets all the documents
+        /// </summary>
+        /// <returns></returns>
+        Task<Result<EventResponse>> GetEventsAsync(string email);
     }
 
 

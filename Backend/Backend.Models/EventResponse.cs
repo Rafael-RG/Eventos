@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventos.Models
+namespace Backend.Models
 {
+    public class EventResponse
+    {
+        public List<Event> Events { get; set; }
+    }
+
     public class Event
     {
         public string Email { get; set; }
@@ -15,6 +20,6 @@ namespace Eventos.Models
         public string Zone { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public string ICSContent { get; set; }
+        public string URLFile { get; set; }
     }
 }
