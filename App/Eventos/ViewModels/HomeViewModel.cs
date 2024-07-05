@@ -1,17 +1,20 @@
-﻿using Eventos.Common.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Eventos.Models;
 using Eventos.Common.ViewModels;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Eventos.ViewModels
 {
     /// <summary>
     /// Home logic
     /// </summary>
-    public class HomeViewModel : BaseViewModel
+    public partial class HomeViewModel : BaseViewModel
     {
         ///// <summary>
-        ///// Menu
+        ///// User
         ///// </summary>
-        //public List<MenuOption> Menu { get; private set; }
+        [ObservableProperty]
+        private User user;
 
 
         /// <summary>
@@ -19,59 +22,23 @@ namespace Eventos.ViewModels
         /// </summary>
         public HomeViewModel(IServiceProvider provider) :  base(provider)
         {
+            this.User = AppShell.User;
         }
 
 
-        //public override async void OnAppearing()
-        //{
-        //    if (!this.AuthenticationService.IsAuthenticated())
-        //    {
-        //        await this.NavigationService.Navigate<LoginViewModel>();
-        //    }
-        //}
+        public override async void OnAppearing()
+        {
+            if (this.User == null)
+            {
+                await Shell.Current.GoToAsync("///LoginPage", false);
+            }
+            else 
+            {
+                this.User = AppShell.User;
+            }
+        }
 
-        ///// <summary>
-        ///// Prepares the local variables
-        ///// </summary>
-        //public override void Prepare()
-        //{
-        //    this.Menu = new List<MenuOption>(new List<MenuOption> {
-        //        new MenuOption
-        //        {
-        //            Text = GetText("Option"),
-        //            Icon = IconConstants.Alert,
-        //            Command = new MvxCommand(() =>
-        //            {                        
-        //            }),
-        //        },
-        //        new MenuOption
-        //        {
-        //            Text = GetText("EntryForm"),
-        //            Icon = IconConstants.FileDocumentEdit,
-        //            Command = new MvxCommand(async () =>
-        //            {
-        //                 await this.NavigationService.Navigate<EntryFormViewModel>();
-        //            }),
-        //        },
-        //        new MenuOption
-        //        {
-        //            Text = GetText("Camera"),
-        //            Icon = IconConstants.Camera,
-        //            Command = new MvxCommand(() =>
-        //            {                       
-        //            }),
-        //        },
-        //        new MenuOption
-        //        {
-        //            Text = GetText("Synchronize"),
-        //            Icon = IconConstants.Refresh,
-        //            Command = new MvxCommand(async () =>
-        //            {
-        //                await this.NavigationService.Navigate<SynchronizationViewModel>();
-        //            }),
-        //        },
-        //    });
-        //}
+
 
     }
 }

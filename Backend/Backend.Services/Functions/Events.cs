@@ -67,7 +67,11 @@ namespace Backend.Service.Functions
         public async Task<HttpResponseData> GetEventsAsync(
          [HttpTrigger(AuthorizationLevel.Function, "get", Route = "events")] HttpRequestData request)
         {
-            return await request.CreateResponse(this.businessLogic.GetEventsAsync, request.DeserializeBody<string>(), responseLinks =>
+            var queryParameters = System.Web.HttpUtility.ParseQueryString(request.Url.Query);
+            var userEmail = queryParameters["user"];
+
+
+            return await request.CreateResponse(this.businessLogic.GetEventsAsync, userEmail , responseLinks =>
             {
                 responseLinks.Links = new Dictionary<string, string> { };
             }, logger);

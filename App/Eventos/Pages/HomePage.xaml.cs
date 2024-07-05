@@ -12,10 +12,16 @@ public partial class HomePage
 	/// <summary>
 	/// Receives the depedencies by DI
 	/// </summary>
-	public HomePage(HomeViewModel viewModel) : base(viewModel, "Home")
+	public HomePage(HomeViewModel viewModel) : base(viewModel, "HomePage")
 	{
 		InitializeComponent();
+		this.BindingContext = viewModel;
 	}
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+    }
 
 }
 

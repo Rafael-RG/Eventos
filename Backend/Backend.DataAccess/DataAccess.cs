@@ -107,6 +107,8 @@ namespace Backend.DataAccess
             {
                 var tableClient = this.tableServiceClient.GetTableClient("events");
                 await tableClient.CreateIfNotExistsAsync();
+
+                await tableClient.AddEntityAsync(newEvent);
                 
                 return true;
             }

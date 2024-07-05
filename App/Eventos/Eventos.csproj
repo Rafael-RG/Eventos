@@ -132,4 +132,6 @@
 	  </PackageReference>
 	</ItemGroup>
 
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionEventosHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+
 </Project>

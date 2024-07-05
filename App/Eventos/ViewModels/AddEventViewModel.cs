@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Eventos.Common.Interfaces;
 using Eventos.Common.ViewModels;
 using System.Collections.ObjectModel;
-using System;
 using Eventos.Models;
 using System.Text;
 
@@ -15,6 +14,14 @@ namespace Eventos.ViewModels
     /// </summary>
     public partial class AddEventViewModel : BaseViewModel
     {
+        private IHttpService httpService;
+
+        ///// <summary>
+        ///// User
+        ///// </summary>
+        [ObservableProperty]
+        private User user;
+
         [ObservableProperty]
         private string title;
 
@@ -44,9 +51,10 @@ namespace Eventos.ViewModels
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public AddEventViewModel(IServiceProvider provider) : base(provider)
+        public AddEventViewModel(IServiceProvider provider, IHttpService httpService) : base(provider)
         {
-            
+            this.httpService = httpService;
+            this.User = AppShell.User;
         }
 
 
@@ -97,17 +105,22 @@ namespace Eventos.ViewModels
 
                 var newEvent = new Event
                 {
-                    Email = string.Empty,
+                    Email = this.User.Email,
                     Title = this.Title,
                     Description = this.Description,
                     StartTime = eventStart.TimeOfDay,
                     EndTime = eventEnd.TimeOfDay,
                     Zone = this.SelectedZone.DaylightName,
-                    ICSContent = icsContent
+                    ICSContent = icsContent,
+                    Date =  DateTime.SpecifyKind(this.Date, DateTimeKind.Utc)
                 };
 
-                await App.Current.MainPage.DisplayAlert("Archivo .ics generado", $"Se ha generado el archivo {fileName}.", "OK");
-    
+                var result = await this.httpService.PostAsync<ResponseData>(newEvent, Common.Constants.SaveEvent);
+
+                if (result.Success) 
+                {
+                    await App.Current.MainPage.DisplayAlert("Creado", "Se creo correctamente el evento.", "OK");
+                }
 
             }
             catch(Exception ex)

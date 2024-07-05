@@ -11,9 +11,15 @@ public partial class AddEventPage
 	/// <summary>
 	/// Receives the depedencies by DI
 	/// </summary>
-	public AddEventPage(AddEventViewModel viewModel) : base(viewModel, "AddEvent")
+	public AddEventPage(AddEventViewModel viewModel) : base(viewModel, "AddEventPage")
 	{
 		InitializeComponent();
-	}
+        this.BindingContext = viewModel;
+    }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+    }
 }
 

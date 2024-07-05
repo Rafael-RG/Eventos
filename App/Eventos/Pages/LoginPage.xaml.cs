@@ -11,9 +11,15 @@ public partial class LoginPage
 	/// <summary>
 	/// Receives the depedencies by DI
 	/// </summary>
-	public LoginPage(LoginViewModel viewModel) : base(viewModel, "Login")
+	public LoginPage(LoginViewModel viewModel) : base(viewModel, "LoginPage")
 	{
-		InitializeComponent();
-	}
+        this.BindingContext = viewModel;
+        InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+    }
 }
 

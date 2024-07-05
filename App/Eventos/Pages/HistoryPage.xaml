@@ -7,9 +7,129 @@
     xmlns:pages="clr-namespace:Eventos.Common.Pages;assembly=Eventos.Common"
     xmlns:viewModels="clr-namespace:Eventos.ViewModels"
     x:DataType="viewModels:HistoryViewModel"
+    xmlns:models="clr-namespace:Eventos.Models;assembly=Eventos.Models"
     x:TypeArguments="viewModels:HistoryViewModel"
     Shell.NavBarIsVisible="false">
 
-    <StackLayout />
+    <ScrollView>
+        <StackLayout>
+            <CollectionView
+                Margin="10"
+                BackgroundColor="Transparent"
+                ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HistoryViewModel}}, Path=EventItems}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:EventItem">
+                    <StackLayout>
+                        <Grid
+                                Margin="10,0,10,0"
+                                ColumnDefinitions="*,*,auto,auto"
+                                HorizontalOptions="FillAndExpand"
+                                RowDefinitions="auto,auto,auto"
+                                RowSpacing="10"
+                                VerticalOptions="Start">
 
+                            <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,6,0"
+                                    FontAttributes="Bold"
+                                    TextColor="#61a60e">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Titulo: " />
+                                        <Span Text="{Binding Title}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,6,0"
+                                    FontAttributes="Bold"
+                                    TextColor="#61a60e">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Descripcion: " />
+                                        <Span Text="{Binding Description}" />
+                                        <Span Text="s" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <VerticalStackLayout Spacing="10" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
+                                <Label
+                                        Margin="0,0,6,0"
+                                        FontSize="18"
+                                        FontAttributes="Bold"
+                                        TextColor="#61a60e">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Fecha: " />
+                                            <Span Text="{Binding Date}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label
+                                        Margin="0,0,6,0"
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        TextColor="#61a60e">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Inicio: " />
+                                            <Span Text="{Binding StartTime}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label
+                                        Margin="0,0,6,0"
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        TextColor="#61a60e">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Fin: " />
+                                            <Span Text="{Binding EndTime}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label
+                                    Margin="0,0,6,0"
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    TextColor="#61a60e">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="URL: " />
+                                            <Span Text="{Binding URLFile}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+                        <BoxView
+                                Grid.Row="3"
+                                Margin="10"
+                                HeightRequest="0.5"
+                                HorizontalOptions="Fill"
+                                Color="#61a60e" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Label
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="No hay eventos"
+                        TextColor="#61a60e"
+                        VerticalOptions="CenterAndExpand" />
+            </CollectionView.EmptyView>
+        </CollectionView>
+        </StackLayout>
+        
+    </ScrollView>
+        
 </pages:BaseContentPage>

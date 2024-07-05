@@ -11,7 +11,6 @@
     Shell.NavBarIsVisible="false">
 
     <ScrollView>
-        <ScrollView>
             <StackLayout Padding="20" Spacing="15">
 
                 <!-- Título del evento -->
@@ -47,6 +46,5 @@
 
             </StackLayout>
         </ScrollView>
-    </ScrollView>
 
 </pages:BaseContentPage>

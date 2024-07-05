@@ -11,7 +11,7 @@
 
         public static string WebApiKey => (IsReleaseEnvironment) ? "WEB_API_KEY_PROPERTY" : "";
 
-        public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "http://https://rememberpro.azurewebsites.net/api/v1";
+        public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "http://10.0.2.2:7071/api/"; //"https://rememberpro.azurewebsites.net/api/";
 
         public static string EnviromentName => (IsReleaseEnvironment) ? "ENVIRONMENT_NAME_PROPERTY" : "";
        
@@ -31,8 +31,8 @@
             }
         }
 
-        public static string GetEventsByUserUri => WebApiHost + "/events";
+        public static string GetEventsByUserUri => WebApiHost + "events?user={0}";
 
-        public static string SaveEventUri => WebApiHost + "/saveevent";
+        public static string SaveEvent => WebApiHost + "saveevent";
     }
 }

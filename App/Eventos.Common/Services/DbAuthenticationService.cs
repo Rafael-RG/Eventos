@@ -16,11 +16,7 @@ namespace Eventos.Common.Services
         public async Task<bool> AuthenticateAsync(string username = "", string password = "")
         {
             await Task.Delay(250);
-            this.User = new User
-            {
-                UserId = "0",
-                Name = username
-            };
+            
             return true;
         }
 

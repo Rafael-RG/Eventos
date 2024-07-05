@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Eventos.Common.ViewModels;
 using Eventos.GoogleAuth;
+using Eventos.Models;
 
 namespace Eventos.ViewModels
 {
@@ -43,7 +44,14 @@ namespace Eventos.ViewModels
 
             if (loggedUser != null)
             {
-                await this.NavigationService.Close(this);
+                AppShell.User = new User
+                {
+                    Email = loggedUser.Email,
+                    FullName = loggedUser.FullName,
+                    UserName = loggedUser.UserName
+                };
+
+                await Shell.Current.GoToAsync("///HomePage",false);
             }
             
         }
@@ -67,22 +75,29 @@ namespace Eventos.ViewModels
         {
             try
             {
-                await this.AuthenticationService.LoadCredentialsAsync();
-                if (this.AuthenticationService.IsAuthenticated())
+                var loggedUser = await _googleAuthService.GetCurrrentUserAsync();
+
+                if (loggedUser == null)
                 {
-                    // shows the last username and 
-                    // add a small delay to allow the UI to update itself before continuing
-                    this.IsBusy = true;
-                    this.Username = this.AuthenticationService.User.Name;
-                    this.Password = "*******";
-                    await Task.Delay(250);
-                    await this.NavigationService.Close(this);
+                    loggedUser = await _googleAuthService.AuthenticateAsync();
+                }
+
+                if (loggedUser != null)
+                {
+                    AppShell.User = new User
+                    {
+                        Email = loggedUser.Email,
+                        FullName = loggedUser.FullName,
+                        UserName = loggedUser.UserName
+                    };
+
+                    await Shell.Current.GoToAsync("///HomePage",false);
                 }
             }
             catch (Exception ex)
             {
                 this.IsBusy = false;
-                //await NotificationService.NotifyAsync(GetText("Error"), (ex.Message), GetText("Close"));
+                await NotificationService.NotifyAsync(GetText("Error"), (ex.Message), GetText("Close"));
                 await LogExceptionAsync(ex);
             }
             

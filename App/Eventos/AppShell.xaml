@@ -9,43 +9,25 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.TabBarIsVisible="True">
 
-    <!--<FlyoutItem Title="Cats"
-                Icon="cat.png">
-        <Tab>
-            <ShellContent ContentTemplate="{DataTemplate views:CatsPage}" />
-        </Tab>
-    </FlyoutItem-->
-
     <TabBar>
         <Tab Title="Inicio" Icon="home.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" Route="HomePage"/>
         </Tab>
         <Tab Title="Nuevo" Icon="add.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" Route="AddEventPage"/>
         </Tab>
         <Tab Title="Historial" Icon="history.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:HistoryPage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:HistoryPage}" Route="HistoryPage"/>
         </Tab>
         <Tab Title="Configuracion" Icon="setting.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" Route="SettingsPage"/>
         </Tab>
     </TabBar>
 
 
     <ShellContent
-        Title="Inicio"
-        ContentTemplate="{DataTemplate pages:HomePage}"
-        Route="Home" />
-
-    <!--<FlyoutItem Title="Home">
-        <Tab>
-
-        </Tab>
-    </FlyoutItem>-->
-
-    <!--<ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate pages:HomePage}"
-        Route="Home" />-->
+        Title="Login"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="LoginPage" />
 
 </Shell>

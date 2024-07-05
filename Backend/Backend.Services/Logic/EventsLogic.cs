@@ -184,7 +184,8 @@ namespace Backend.Service.BusinessLogic
                         Email = x.Email,
                         EndTime = x.EndTime,
                         StartTime = x.StartTime,
-                        Zone = x.Zone
+                        Zone = x.Zone,
+                        URLFile = x.URLFile
                     }).ToList()
                 });
 
