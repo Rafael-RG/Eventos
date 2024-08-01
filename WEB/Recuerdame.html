@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuerdame</title>
+</head>
+<body>
+    <script>
+        // Función para descargar el archivo automáticamente
+        function downloadFile() {
+            // Obtener el valor del parámetro 'event' de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventParam = urlParams.get('event');
+
+            if (!eventParam) {
+                console.error('El parámetro "event" no está presente en la URL.');
+                return;
+            }
+
+            // Construir la URL con el parámetro 'event'
+            const fetchUrl = `https://rememberpro.azurewebsites.net/api/event?event=${eventParam}&code=X6EjI-KK5EDT9cd1enwLvWGUSdrnSHDynGm1tZ7ct9e9AzFu_zDkkA%3D%3D`;
+
+            fetch(fetchUrl, {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                const fileContents = atob(data.fileContents);
+                const contentType = data.contentType;
+                const fileDownloadName = data.fileDownloadName;
+
+                // Crear un Uint8Array a partir del contenido del archivo
+                const byteArray = new Uint8Array(fileContents.length);
+                for (let i = 0; i < fileContents.length; i++) {
+                    byteArray[i] = fileContents.charCodeAt(i);
+                }
+
+                // Crear un blob con el contenido del archivo
+                const blob = new Blob([byteArray], { type: contentType });
+
+                // Crear un enlace temporal para descargar el archivo
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileDownloadName;
+
+                // Añadir el enlace al cuerpo del documento y hacer clic en él para descargar el archivo
+                document.body.appendChild(link);
+                link.click();
+
+                // Eliminar el enlace del documento
+                document.body.removeChild(link);
+            })
+            .catch(error => {
+                console.error('Error al descargar el archivo:', error);
+            });
+        }
+
+        // Ejecutar la función cuando la página se cargue
+        window.onload = downloadFile;
+    </script>
+</body>
+</html>
