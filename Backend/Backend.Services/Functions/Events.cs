@@ -11,6 +11,20 @@ using Backend.Common.Extensions;
 using Backend.Common.Models;
 using Backend.Common.Interfaces;
 using Backend.Models;
+using System.IO;
+using Microsoft.AspNetCore.Mvc;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization;
+using Microsoft.Azure.WebJobs.Host;
+using System.Net.Http;
+using System.Text;
+using System;
+using System.Net.Http.Headers;
+
+
+using Ical.Net;
+using Ical.Net.CalendarComponents;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Service.Functions
 {
@@ -71,14 +85,25 @@ namespace Backend.Service.Functions
             var userEmail = queryParameters["user"];
 
 
-            return await request.CreateResponse(this.businessLogic.GetEventsAsync, userEmail , responseLinks =>
+            return await request.CreateResponse(this.businessLogic.GetEventsAsync, userEmail, responseLinks =>
             {
                 responseLinks.Links = new Dictionary<string, string> { };
             }, logger);
         }
 
 
+        /// <summary>
+        /// Validate a subscription
+        /// </summary>       
+        [Function(nameof(GetEventAsync))]
+        public async Task<IActionResult> GetEventAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "event")] HttpRequestData request)
+        {
+            var queryParameters = System.Web.HttpUtility.ParseQueryString(request.Url.Query);
+            var eventItem = queryParameters["event"];
 
+            return await this.businessLogic.GetEventAsync(eventItem);
+        }
     }
 }
 

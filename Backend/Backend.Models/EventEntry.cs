@@ -15,9 +15,10 @@ namespace Backend.Models
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public string Zone { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
-        public string URLFile { get; set; }
+        public string ZoneId { get; set; }
+        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset EndTime { get; set; }
+        public int Count { get; set; }
         public string PartitionKey { get; set; }
         public string RowKey { get; set; }
         public DateTimeOffset? Timestamp { get; set; }

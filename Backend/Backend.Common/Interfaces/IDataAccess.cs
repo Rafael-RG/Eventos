@@ -42,5 +42,10 @@ namespace Backend.Common.Interfaces
         /// </summary>
         Task<List<EventEntry>> GetEventsAsync(string email);
 
+        /// <summary>
+        /// Get event by rowKey
+        /// </summary>
+        Task<EventEntry> GetEventAsync(string rowKey);
+
     }
 }

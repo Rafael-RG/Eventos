@@ -1,13 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using Backend.Common.Models;
 using Backend.Common.Interfaces;
 using Backend.Models;
 using Backend.Common.Logic;
 using System.Linq;
-using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -15,6 +13,7 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.IO;
+
 
 namespace Backend.Service.BusinessLogic
 {
@@ -132,16 +131,12 @@ namespace Backend.Service.BusinessLogic
 
 
         /// </inheritdoc/>
-        public async Task<Result<bool>> SaveEventAsync(EventRequest newEvent)
+        public async Task<Result<(bool,string)>> SaveEventAsync(EventRequest newEvent)
         {
+            var response = new Result<(bool, string)>();
+
             try
             {
-                string fileName = $"{newEvent.Title.Replace(" ", "_").ToLower()}.ics";
-                byte[] byteArray = Encoding.UTF8.GetBytes(newEvent.ICSContent);
-                MemoryStream stream = new MemoryStream(byteArray);
-
-                var uri = await this.dataAccess.CreateBlobAsync(stream, fileName, "events");
-
                 var eventEntry = new EventEntry
                 {
                     Title = newEvent.Title,
@@ -149,21 +144,36 @@ namespace Backend.Service.BusinessLogic
                     Date = newEvent.Date,
                     Email = newEvent.Email,
                     EndTime = newEvent.EndTime,
-                    URLFile = uri.AbsoluteUri,
+                    Count = newEvent.Count,
                     PartitionKey = newEvent.Email,
                     RowKey = Guid.NewGuid().ToString(),
                     StartTime = newEvent.StartTime,
-                    Zone = newEvent.Zone
+                    Zone = newEvent.Zone,
+                    ZoneId = newEvent.ZoneId
                 };
 
                 var result = await this.dataAccess.SaveEntryAsync(eventEntry);
 
-                return new Result<bool>(result);
+
+                if (result)
+                {
+                    response.Data = (true, eventEntry.RowKey);
+                    response.Success = true;
+                }
+                else 
+                {
+                    response.Data = (false, "Ocurrió un error al crear el recordatorio");
+                    response.Success = false;
+                }
+
             }
-            catch (Exception ex)
+            catch
             {
-                return new Result<bool>(false);
+                response.Data = (false, "Ocurrió un error al crear el recordatorio");
+                response.Success = false;
             }
+
+            return response;
         }
 
 
@@ -182,10 +192,12 @@ namespace Backend.Service.BusinessLogic
                         Description = x.Description,
                         Date = x.Date,
                         Email = x.Email,
+                        RowKey = x.RowKey,
                         EndTime = x.EndTime,
                         StartTime = x.StartTime,
                         Zone = x.Zone,
-                        URLFile = x.URLFile
+                        ZoneId = x.ZoneId,
+                        Count= x.Count
                     }).ToList()
                 });
 
@@ -196,6 +208,67 @@ namespace Backend.Service.BusinessLogic
                 return new Result<EventResponse>();
             }
 
+        }
+
+        /// </inheritdoc/>
+        public async Task<FileContentResult> GetEventAsync(string rowKey)
+        {
+            try
+            {
+                var eventEntry = await this.dataAccess.GetEventAsync(rowKey);
+
+                eventEntry.Count= eventEntry.Count + 1;
+
+                var result = await this.dataAccess.SaveEntryAsync(eventEntry);
+
+                var eventItem = new Event
+                {
+                    Title = eventEntry.Title,
+                    Description = eventEntry.Description,
+                    Date = eventEntry.Date,
+                    Email = eventEntry.Email,
+                    RowKey = eventEntry.RowKey,
+                    EndTime = eventEntry.EndTime,
+                    StartTime = eventEntry.StartTime,
+                    Zone = eventEntry.Zone,
+                    ZoneId = eventEntry.ZoneId,
+                    Count = eventEntry.Count
+                };
+
+                TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(eventItem.ZoneId);
+
+                var icsContent = GenerateICSContent(eventItem.Title, eventItem.Description, eventItem.StartTime, eventItem.EndTime, timeZoneInfo);
+
+                var byteArray = Encoding.UTF8.GetBytes(icsContent);
+
+                return new FileContentResult(byteArray, "text/calendar")
+                {
+                    FileDownloadName = "event.ics",
+                };
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
+
+        private string GenerateICSContent(string title, string description, DateTimeOffset startDateTime, DateTimeOffset endDateTime, TimeZoneInfo timeZoneInfo)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("BEGIN:VCALENDAR");
+            sb.AppendLine("VERSION:2.0");
+            sb.AppendLine("BEGIN:VEVENT");
+            sb.AppendLine($"SUMMARY:{title}");
+            sb.AppendLine($"DESCRIPTION:{description}");
+            sb.AppendLine($"DTSTART;TZID={timeZoneInfo}:{startDateTime.ToString("yyyyMMddTHHmmssZ")}");
+            sb.AppendLine($"DTEND;TZID={timeZoneInfo}:{endDateTime.ToString("yyyyMMddTHHmmssZ")}");
+            sb.AppendLine("END:VEVENT");
+            sb.AppendLine("END:VCALENDAR");
+
+            return sb.ToString();
         }
     }
 

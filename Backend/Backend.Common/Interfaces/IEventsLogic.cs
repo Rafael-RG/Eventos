@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Backend.Common.Models;
 using Backend.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Common.Interfaces
 {
@@ -20,13 +22,19 @@ namespace Backend.Common.Interfaces
         /// Gets all the documents
         /// </summary>
         /// <returns></returns>
-        Task<Result<bool>> SaveEventAsync(EventRequest newEvent);
+        Task<Result<(bool, string)>> SaveEventAsync(EventRequest newEvent);
 
         /// <summary>
         /// Gets all the documents
         /// </summary>
         /// <returns></returns>
         Task<Result<EventResponse>> GetEventsAsync(string email);
+
+        /// <summary>
+        /// Get event
+        /// </summary>
+        /// <returns></returns>
+        Task<FileContentResult> GetEventAsync(string rowKey);
     }
 
 

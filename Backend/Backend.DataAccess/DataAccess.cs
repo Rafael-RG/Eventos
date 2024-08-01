@@ -142,6 +142,32 @@ namespace Backend.DataAccess
             }
         }
 
+        /// <summary>
+        /// Get all the events from the table by email
+        /// </summary>
+        public async Task<EventEntry> GetEventAsync(string rowKey)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("events");
+                await tableClient.CreateIfNotExistsAsync();
+                var query = tableClient.QueryAsync<EventEntry>(filter: $"RowKey eq '{rowKey}'");
+                var eventEntity = new EventEntry();
+                
+                await foreach (var item in query)
+                {
+                    eventEntity = item;
+                    break;
+                }
+
+                return eventEntity;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
 
     }
 }
