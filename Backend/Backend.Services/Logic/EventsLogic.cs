@@ -149,7 +149,8 @@ namespace Backend.Service.BusinessLogic
                     RowKey = Guid.NewGuid().ToString(),
                     StartTime = newEvent.StartTime,
                     Zone = newEvent.Zone,
-                    ZoneId = newEvent.ZoneId
+                    ZoneId = newEvent.ZoneId,
+                    EventURl = newEvent.EventURl
                 };
 
                 var result = await this.dataAccess.SaveEntryAsync(eventEntry);
@@ -197,7 +198,8 @@ namespace Backend.Service.BusinessLogic
                         StartTime = x.StartTime,
                         Zone = x.Zone,
                         ZoneId = x.ZoneId,
-                        Count= x.Count
+                        Count= x.Count,
+                        EventURl = x.EventURl
                     }).ToList()
                 });
 
@@ -232,12 +234,13 @@ namespace Backend.Service.BusinessLogic
                     StartTime = eventEntry.StartTime,
                     Zone = eventEntry.Zone,
                     ZoneId = eventEntry.ZoneId,
-                    Count = eventEntry.Count
+                    Count = eventEntry.Count,
+                    EventURl = eventEntry.EventURl
                 };
 
                 TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(eventItem.ZoneId);
 
-                var icsContent = GenerateICSContent(eventItem.Title, eventItem.Description, eventItem.StartTime, eventItem.EndTime, timeZoneInfo);
+                var icsContent = GenerateICSContent(eventItem.Title, eventItem.Description, eventItem.StartTime, eventItem.EndTime, timeZoneInfo, eventEntry.EventURl);
 
                 var byteArray = Encoding.UTF8.GetBytes(icsContent);
 
@@ -253,23 +256,55 @@ namespace Backend.Service.BusinessLogic
 
         }
 
-
-        private string GenerateICSContent(string title, string description, DateTimeOffset startDateTime, DateTimeOffset endDateTime, TimeZoneInfo timeZoneInfo)
+        private string GenerateICSContent(string title, string description, DateTimeOffset startDateTime, DateTimeOffset endDateTime, TimeZoneInfo timeZoneInfo, string url)
         {
             StringBuilder sb = new StringBuilder();
+            string timeZoneId = timeZoneInfo.Id;
+            string timeZoneStart = startDateTime.ToString("yyyyMMddTHHmmss");
+            string timeZoneEnd = endDateTime.ToString("yyyyMMddTHHmmss");
+            string uid = Guid.NewGuid().ToString();
+            string dtStamp = DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ");
 
             sb.AppendLine("BEGIN:VCALENDAR");
             sb.AppendLine("VERSION:2.0");
+            sb.AppendLine("PRODID:-//YourCompany//YourProduct//EN");
+            sb.AppendLine("CALSCALE:GREGORIAN");
+
+            sb.AppendLine("BEGIN:VTIMEZONE");
+            sb.AppendLine($"TZID:{timeZoneId}");
+            sb.AppendLine("BEGIN:STANDARD");
+            sb.AppendLine($"DTSTART:{timeZoneStart}");
+            sb.AppendLine("TZOFFSETFROM:+0000"); // Ajusta según tu zona horaria
+            sb.AppendLine("TZOFFSETTO:+0000"); // Ajusta según tu zona horaria
+            sb.AppendLine("END:STANDARD");
+            sb.AppendLine("END:VTIMEZONE");
+
             sb.AppendLine("BEGIN:VEVENT");
-            sb.AppendLine($"SUMMARY:{title}");
-            sb.AppendLine($"DESCRIPTION:{description}");
-            sb.AppendLine($"DTSTART;TZID={timeZoneInfo}:{startDateTime.ToString("yyyyMMddTHHmmssZ")}");
-            sb.AppendLine($"DTEND;TZID={timeZoneInfo}:{endDateTime.ToString("yyyyMMddTHHmmssZ")}");
+            sb.AppendLine($"UID:{uid}");
+            sb.AppendLine($"DTSTAMP:{dtStamp}");
+            sb.AppendLine($"SUMMARY:{title.Replace(",", "\\,").Replace(";", "\\;")}");
+            sb.AppendLine($"DESCRIPTION:{description.Replace(",", "\\,").Replace(";", "\\;")}");
+            sb.AppendLine($"DTSTART;TZID={timeZoneId}:{timeZoneStart}");
+            sb.AppendLine($"DTEND;TZID={timeZoneId}:{timeZoneEnd}");
+            if (!string.IsNullOrEmpty(url))
+            {
+                sb.AppendLine($"URL:{url}");
+            }
+
+            // Añadir alerta (recordatorio)
+            sb.AppendLine("BEGIN:VALARM");
+            sb.AppendLine("TRIGGER:-PT15M");
+            sb.AppendLine("ACTION:DISPLAY");
+            sb.AppendLine($"DESCRIPTION:Reminder for {title}");
+            sb.AppendLine("END:VALARM");
+
             sb.AppendLine("END:VEVENT");
+
             sb.AppendLine("END:VCALENDAR");
 
             return sb.ToString();
         }
+
     }
 
 }

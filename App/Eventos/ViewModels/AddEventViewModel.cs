@@ -46,6 +46,9 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private TimeSpan endTime;
 
+        [ObservableProperty]
+        private string url;
+
 
 
         /// <summary>
@@ -54,9 +57,9 @@ namespace Eventos.ViewModels
         public AddEventViewModel(IServiceProvider provider, IHttpService httpService) : base(provider)
         {
             this.httpService = httpService;
-            this.User = AppShell.User;
+            //this.User = AppShell.User;
+            this.User = new User() { Email = "rafa_rg11@hotmail.com", FullName = "Rafael", UserName = "Rafael" };
         }
-
 
         public override async void OnAppearing()
         {
@@ -101,18 +104,18 @@ namespace Eventos.ViewModels
                 DateTimeOffset eventStart = TimeZoneInfo.ConvertTimeToUtc(startDateTimeLocal, userTimeZone);
                 DateTimeOffset eventEnd = TimeZoneInfo.ConvertTimeToUtc(endDateTimeLocal, userTimeZone);
 
-                string icsContent = GenerateICSContent(this.Title, this.Description, eventStart, eventEnd);
-
                 var newEvent = new Event
                 {
                     Email = this.User.Email,
                     Title = this.Title,
                     Description = this.Description,
-                    StartTime = eventStart.TimeOfDay,
-                    EndTime = eventEnd.TimeOfDay,
-                    Zone = this.SelectedZone.DaylightName,
-                    ICSContent = icsContent,
-                    Date =  DateTime.SpecifyKind(this.Date, DateTimeKind.Utc)
+                    StartTime = eventStart,
+                    EndTime = eventEnd,
+                    Zone = this.SelectedZone.DisplayName,
+                    ZoneId= this.SelectedZone.Id,
+                    Date =  DateTime.SpecifyKind(this.Date, DateTimeKind.Utc),
+                    Count = 0,
+                    EventURl = this.Url
                 };
 
                 var result = await this.httpService.PostAsync<ResponseData>(newEvent, Common.Constants.SaveEvent);
@@ -137,23 +140,5 @@ namespace Eventos.ViewModels
                      .Select(tz => tz)
              );
         }
-
-        private string GenerateICSContent(string title, string description, DateTimeOffset startDateTime, DateTimeOffset endDateTime)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine("BEGIN:VCALENDAR");
-            sb.AppendLine("VERSION:2.0");
-            sb.AppendLine("BEGIN:VEVENT");
-            sb.AppendLine($"SUMMARY:{title}");
-            sb.AppendLine($"DESCRIPTION:{description}");
-            sb.AppendLine($"DTSTART;TZID={selectedZone}:{startDateTime.ToString("yyyyMMddTHHmmssZ")}");
-            sb.AppendLine($"DTEND;TZID={selectedZone}:{endDateTime.ToString("yyyyMMddTHHmmssZ")}");
-            sb.AppendLine("END:VEVENT");
-            sb.AppendLine("END:VCALENDAR");
-
-            return sb.ToString();
-        }
-
     }
 }

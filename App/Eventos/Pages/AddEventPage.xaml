@@ -21,7 +21,11 @@
                 <Label Text="Descripción" FontSize="Medium" />
                 <Editor Text="{Binding Description}" Placeholder="Ingrese la descripción del evento" HeightRequest="90" />
 
-                <!-- Fecha del evento -->
+                <!-- Url del evento -->
+                <Label Text="Url" FontSize="Medium" />
+                <Entry Text="{Binding Url}" Placeholder="Ingrese la Url del evento" />
+
+            <!-- Fecha del evento -->
                 <Label Text="Fecha" FontSize="Medium" />
                 <DatePicker Date="{Binding Date}" Format="dd/MM/yyyy"/>
 

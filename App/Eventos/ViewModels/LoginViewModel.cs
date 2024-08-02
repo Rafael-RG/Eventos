@@ -35,25 +35,27 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void LoginWithGoogle()
         {
-            var loggedUser = await _googleAuthService.GetCurrrentUserAsync();
+            //var loggedUser = await _googleAuthService.GetCurrrentUserAsync();
 
-            if (loggedUser == null)
-            {
-                loggedUser = await _googleAuthService.AuthenticateAsync();
-            }
+            //if (loggedUser == null)
+            //{
+            //    loggedUser = await _googleAuthService.AuthenticateAsync();
+            //}
 
-            if (loggedUser != null)
-            {
-                AppShell.User = new User
-                {
-                    Email = loggedUser.Email,
-                    FullName = loggedUser.FullName,
-                    UserName = loggedUser.UserName
-                };
+            //if (loggedUser != null)
+            //{
+            //    AppShell.User = new User
+            //    {
+            //        Email = loggedUser.Email,
+            //        FullName = loggedUser.FullName,
+            //        UserName = loggedUser.UserName
+            //    };
 
-                await Shell.Current.GoToAsync("///HomePage",false);
-            }
-            
+            //    await Shell.Current.GoToAsync("///HomePage",false);
+            //}
+
+            await Shell.Current.GoToAsync("///HomePage", false);
+
         }
 
 
@@ -75,24 +77,26 @@ namespace Eventos.ViewModels
         {
             try
             {
-                var loggedUser = await _googleAuthService.GetCurrrentUserAsync();
+                //var loggedUser = await _googleAuthService.GetCurrrentUserAsync();
 
-                if (loggedUser == null)
-                {
-                    loggedUser = await _googleAuthService.AuthenticateAsync();
-                }
+                //if (loggedUser == null)
+                //{
+                //    loggedUser = await _googleAuthService.AuthenticateAsync();
+                //}
 
-                if (loggedUser != null)
-                {
-                    AppShell.User = new User
-                    {
-                        Email = loggedUser.Email,
-                        FullName = loggedUser.FullName,
-                        UserName = loggedUser.UserName
-                    };
+                //if (loggedUser != null)
+                //{
+                //    AppShell.User = new User
+                //    {
+                //        Email = loggedUser.Email,
+                //        FullName = loggedUser.FullName,
+                //        UserName = loggedUser.UserName
+                //    };
 
-                    await Shell.Current.GoToAsync("///HomePage",false);
-                }
+                //    await Shell.Current.GoToAsync("///HomePage",false);
+                //}
+
+                await Shell.Current.GoToAsync("///HomePage", false);
             }
             catch (Exception ex)
             {

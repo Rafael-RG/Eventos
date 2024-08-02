@@ -13,8 +13,10 @@ namespace Eventos.Models
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public string Zone { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
-        public string ICSContent { get; set; }
+        public string ZoneId { get; set; }
+        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset EndTime { get; set; }
+        public int Count { get; set; }
+        public string EventURl { get; set; }
     }
 }

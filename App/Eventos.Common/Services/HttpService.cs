@@ -35,7 +35,7 @@ namespace Eventos.Common.Services
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add(Constants.WebApiKeyHeader, Constants.WebApiKey);
+            //httpClient.DefaultRequestHeaders.Add(Constants.WebApiKeyHeader, Constants.WebApiKey);
             httpClient.Timeout = new TimeSpan(0, 0, 5, 0);
         }
 

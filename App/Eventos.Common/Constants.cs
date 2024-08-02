@@ -11,7 +11,8 @@
 
         public static string WebApiKey => (IsReleaseEnvironment) ? "WEB_API_KEY_PROPERTY" : "";
 
-        public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "http://10.0.2.2:7071/api/"; //"https://rememberpro.azurewebsites.net/api/";
+        //public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "http://10.0.2.2:7071/api/"; 
+        public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "https://rememberpro.azurewebsites.net/api/";
 
         public static string EnviromentName => (IsReleaseEnvironment) ? "ENVIRONMENT_NAME_PROPERTY" : "";
        
@@ -31,8 +32,10 @@
             }
         }
 
-        public static string GetEventsByUserUri => WebApiHost + "events?user={0}";
+        public static string GetEventsByUserUri => WebApiHost + "events?user={0}&code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
-        public static string SaveEvent => WebApiHost + "saveevent";
+        public static string SaveEvent => WebApiHost + "saveevent?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+
+        public static string WebFileUri => "https://ambitious-grass-0f2288a0f.5.azurestaticapps.net/?event={0}";
     }
 }

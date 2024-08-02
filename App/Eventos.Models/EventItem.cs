@@ -24,8 +24,16 @@ namespace Eventos.Models
         [JsonProperty("endTime")]
         public string EndTime { get; set; }
 
-        [JsonProperty("URLFile")]
         public string URLFile { get; set; }
+
+        [JsonProperty("rowKey")]
+        public string RowKey { get; set; }
+
+        [JsonProperty("count")]
+        public string Count { get; set; }
+
+        [JsonProperty("eventURL")]
+        public string EventURl { get; set; }
     }
 
     public class Data
