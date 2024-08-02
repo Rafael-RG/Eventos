@@ -32,9 +32,9 @@
             }
         }
 
-        //public static string GetEventsByUserUri => WebApiHost + "events?user={0}&code=";
+        public static string GetEventsByUserUri => WebApiHost + "events?user={0}&code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
-        //public static string SaveEvent => WebApiHost + "saveevent?code=";
+        public static string SaveEvent => WebApiHost + "saveevent?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
         public static string WebFileUri => "https://ambitious-grass-0f2288a0f.5.azurestaticapps.net/?event={0}";
     }
