@@ -62,7 +62,7 @@ namespace Eventos.Common.ViewModels
         /// Gets if the ViewModel is enabled.
         /// It's the inverse of IsBusy for easier binding. (If IsBusy = true them IsEnabled = false)
         /// </summary>
-        public bool IsEnabled { get => !this.isBusy; }
+        public bool IsEnabled => !IsBusy;
         //{
         //    get => !this.isBusy;
         //    set

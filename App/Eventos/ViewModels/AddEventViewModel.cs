@@ -63,6 +63,7 @@ namespace Eventos.ViewModels
 
         public override async void OnAppearing()
         {
+            IsBusy = true;
             this.SelectedZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
             this.Date = DateTime.Now.ToLocalTime();
             
@@ -74,7 +75,7 @@ namespace Eventos.ViewModels
             {
                 PopulateTimeZones();
             }
-            
+            IsBusy = false;
         }
 
         /// <summary>
@@ -83,6 +84,7 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void AddEvent()
         {
+            IsBusy = true;
             try 
             {
                 if (this.StartTime == this.EndTime)
@@ -130,15 +132,43 @@ namespace Eventos.ViewModels
             {
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al crear al evento");
             }
+
+            IsBusy = false;
         }
 
         private void PopulateTimeZones()
         {
+            var mainTimeZones = new[]
+            {
+                "America/New_York",         // Eastern Time (ET)
+                "America/Chicago",          // Central Time (CT)
+                "America/Denver",           // Mountain Time (MT)
+                "America/Los_Angeles",      // Pacific Time (PT)
+                "America/Sao_Paulo",        // São Paulo Time (SPT)
+                "America/Toronto",          // Toronto Time (ET)
+                "America/Mexico_City",      // Mexico City Time (CST)
+                "America/Buenos_Aires",     // Buenos Aires Time (ART)
+                "America/Caracas",          // Caracas Time (VET)
+                "America/Montevideo",        // Montevideo Time (UYT)
+                "America/Guayaquil",        // Guayaquil Time (ECT)
+                "America/Lima",             // Lima Time (PET)
+                "America/Panama",           // Panama Time (EST)
+                "America/Costa_Rica",       // Costa Rica Time (CST)
+                "America/Honduras",         // Honduras Time (CST)
+                "America/La_Paz",           // La Paz Time (BOT)
+                "America/Asuncion",         // Asuncion Time (PYT)
+                "America/Santo_Domingo",    // Santo Domingo Time (AST)
+                "America/Port-au-Prince",   // Haiti Time (ET)
+                "America/Barbados",         // Barbados Time (AST)
+                "America/Kingston",         // Kingston Time (ET)
+                "America/Belize"            // Belize Time (CST)
+            };
+
             this.Zones = new ObservableCollection<TimeZoneInfo>(
-                 TimeZoneInfo.GetSystemTimeZones()
-                     .Where(tz => tz.Id.Contains("America/"))
-                     .Select(tz => tz)
-             );
+                TimeZoneInfo.GetSystemTimeZones()
+                    .Where(tz => mainTimeZones.Contains(tz.Id))
+            );
         }
+
     }
 }

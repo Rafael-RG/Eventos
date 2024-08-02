@@ -4,51 +4,66 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:extensions="clr-namespace:Eventos.Extensions"
+    xmlns:local="clr-namespace:Eventos.Converters"
     xmlns:pages="clr-namespace:Eventos.Common.Pages;assembly=Eventos.Common"
     xmlns:viewModels="clr-namespace:Eventos.ViewModels"
     x:DataType="viewModels:AddEventViewModel"
     x:TypeArguments="viewModels:AddEventViewModel"
     Shell.NavBarIsVisible="false">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
-            <StackLayout Padding="20" Spacing="15">
+        <StackLayout Padding="20" Spacing="15">
 
-                <!-- Título del evento -->
-                <Label Text="Título" FontSize="Medium" />
-                <Entry Text="{Binding Title}" Placeholder="Ingrese el título del evento" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+                <!--  Título del evento  -->
+                <Label FontSize="Medium" Text="Título" />
+                <Entry Placeholder="Ingrese el título del evento" Text="{Binding Title}" />
 
-                <!-- Descripción del evento -->
-                <Label Text="Descripción" FontSize="Medium" />
-                <Editor Text="{Binding Description}" Placeholder="Ingrese la descripción del evento" HeightRequest="90" />
+                <!--  Descripción del evento  -->
+                <Label FontSize="Medium" Text="Descripción" />
+                <Editor
+                    HeightRequest="90"
+                    Placeholder="Ingrese la descripción del evento"
+                    Text="{Binding Description}" />
 
-                <!-- Url del evento -->
-                <Label Text="Url" FontSize="Medium" />
-                <Entry Text="{Binding Url}" Placeholder="Ingrese la Url del evento" />
+                <!--  Url del evento  -->
+                <Label FontSize="Medium" Text="Url" />
+                <Entry Placeholder="Ingrese la Url del evento" Text="{Binding Url}" />
 
-            <!-- Fecha del evento -->
-                <Label Text="Fecha" FontSize="Medium" />
-                <DatePicker Date="{Binding Date}" Format="dd/MM/yyyy"/>
+                <!--  Fecha del evento  -->
+                <Label FontSize="Medium" Text="Fecha" />
+                <DatePicker Date="{Binding Date}" Format="dd/MM/yyyy" />
 
-                <!-- Zona horaria del evento -->
-                <Label Text="Zona Horaria" FontSize="Medium" />
-                <Picker ItemsSource="{Binding Zones}" Title="Seleccione una zona horaria" SelectedItem="{Binding SelectedZone}"/>
+                <!--  Zona horaria del evento  -->
+                <Label FontSize="Medium" Text="Zona Horaria" />
+                <Picker
+                    Title="Seleccione una zona horaria"
+                    ItemsSource="{Binding Zones}"
+                    SelectedItem="{Binding SelectedZone}" />
 
-                <!-- Hora de inicio del evento -->
-                <Label Text="Hora de inicio" FontSize="Medium" />
-                <TimePicker Time="{Binding StartTime}"/>
+                <!--  Hora de inicio del evento  -->
+                <Label FontSize="Medium" Text="Hora de inicio" />
+                <TimePicker Time="{Binding StartTime}" />
 
-                <!-- Hora de fin del evento -->
-                <Label Text="Hora de fin" FontSize="Medium" />
+                <!--  Hora de fin del evento  -->
+                <Label FontSize="Medium" Text="Hora de fin" />
                 <TimePicker Time="{Binding EndTime}" />
 
-                <!-- Botón para agregar el evento -->
+                <!--  Botón para agregar el evento  -->
 
-                <Button 
-                    Text="Agregar Evento" 
-                    TextColor="Black"
-                    Command="{Binding AddEventCommand}" />
-
+                <Button
+                    Command="{Binding AddEventCommand}"
+                    Text="Agregar Evento"
+                    TextColor="Black" />
             </StackLayout>
-        </ScrollView>
+        </StackLayout>
+    </ScrollView>
 
 </pages:BaseContentPage>

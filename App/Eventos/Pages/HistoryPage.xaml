@@ -4,19 +4,33 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:extensions="clr-namespace:Eventos.Extensions"
+    xmlns:local="clr-namespace:Eventos.Converters"
+    xmlns:models="clr-namespace:Eventos.Models;assembly=Eventos.Models"
     xmlns:pages="clr-namespace:Eventos.Common.Pages;assembly=Eventos.Common"
     xmlns:viewModels="clr-namespace:Eventos.ViewModels"
     x:DataType="viewModels:HistoryViewModel"
-    xmlns:models="clr-namespace:Eventos.Models;assembly=Eventos.Models"
     x:TypeArguments="viewModels:HistoryViewModel"
     Shell.NavBarIsVisible="false">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <StackLayout>
-            <Button Margin="20" Text="Recargar" Command="{Binding RefreshAsyncCommand}" WidthRequest="100"/>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Button
+                Margin="20"
+                Command="{Binding RefreshAsyncCommand}"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                Text="Recargar"
+                WidthRequest="100" />
             <CollectionView
                 Margin="10"
                 BackgroundColor="Transparent"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HistoryViewModel}}, Path=Events}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventItem">
@@ -62,11 +76,11 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,6,0"
-                                    FontAttributes="Bold"
-                                    Text="Link"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HistoryViewModel}}, Path=CopyTextAsyncCommand}"
                                     CommandParameter="{Binding URLFile}"
-                                    TextColor="#61a60e"/>
+                                    FontAttributes="Bold"
+                                    Text="Link"
+                                    TextColor="#61a60e" />
                             </Grid>
                             <BoxView
                                 Grid.Row="3"

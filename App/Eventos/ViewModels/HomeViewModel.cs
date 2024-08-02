@@ -28,6 +28,7 @@ namespace Eventos.ViewModels
 
         public override async void OnAppearing()
         {
+            IsBusy = true;
             if (this.User == null)
             {
                 await Shell.Current.GoToAsync("///LoginPage", false);
@@ -36,6 +37,7 @@ namespace Eventos.ViewModels
             {
                 this.User = AppShell.User;
             }
+            IsBusy = false;
         }
 
 

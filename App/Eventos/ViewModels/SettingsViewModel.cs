@@ -27,11 +27,11 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void LogoutWithGoogle()
         {
-            await _googleAuthService.LogoutAsync();
+            //await _googleAuthService.LogoutAsync();
 
-            await this.NavigationService.Close(this);
+            //await this.NavigationService.Close(this);
 
-            await this.NavigationService.Navigate<LoginViewModel>();
+            //await this.NavigationService.Navigate<LoginViewModel>();
         }
     }
 }
