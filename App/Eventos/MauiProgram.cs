@@ -3,6 +3,7 @@ using Eventos.Common.Extensions;
 using Eventos.Common.Interfaces;
 using Eventos.Common.Services;
 using Eventos.DataAccess;
+using Eventos.Platforms.iOS;
 
 namespace Eventos;
 
@@ -30,6 +31,12 @@ public static class MauiProgram
 			});
         builder.Services.AddLocalization();
         builder.UseMauiApp<App>().UseMauiCommunityToolkit();
+		builder.ConfigureMauiHandlers(h =>
+		{
+#if IOS
+			h.AddHandler<Shell, CustomShellHandler>();
+#endif
+		});
         return builder.Build();
 	}
 }
