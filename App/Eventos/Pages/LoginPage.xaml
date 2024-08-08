@@ -26,12 +26,26 @@
             IsVisible="{Binding IsBusy}"
             WidthRequest="32" />
 
+        <Entry Placeholder="Correo" Text="{Binding Username}" />
+        <Entry
+            IsPassword="True"
+            Placeholder="Contraseña"
+            Text="{Binding Password}" />
 
         <Button
-             IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-            Command="{Binding LoginWithGoogleCommand}"
+            Command="{Binding RecoverPasswordCommand}"
+            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+            Text="Recuperar contraseña"
+            TextColor="Black" />
+
+
+        <Button
+            Command="{Binding LoginCommand}"
+            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
             Text="Iniciar con Google"
             TextColor="Black" />
+
+        <Button Command="{Binding RegistryUserCommand}" Text="Registrarse" />
 
     </StackLayout>
 

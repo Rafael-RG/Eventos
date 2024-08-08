@@ -14,7 +14,7 @@ namespace Eventos.Common.Interfaces
         /// <summary>
         /// Executes a post method 
         /// </summary>
-        Task<T> PostAsync<T>(object postData, string uri, JsonSerializerSettings settings = null);
+        Task<T> PostAsync<T>(object postData, string uri, Dictionary<string, string> headers = null, JsonSerializerSettings settings = null);
 
 
         /// <summary>

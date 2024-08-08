@@ -35,7 +35,6 @@ namespace Eventos.Common.Services
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //httpClient.DefaultRequestHeaders.Add(Constants.WebApiKeyHeader, Constants.WebApiKey);
             httpClient.Timeout = new TimeSpan(0, 0, 5, 0);
         }
 
@@ -44,9 +43,17 @@ namespace Eventos.Common.Services
         /// <summary>
         /// Post data 
         /// </summary>
-        public async Task<T> PostAsync<T>(object postData, string uri, JsonSerializerSettings settings = null)
+        public async Task<T> PostAsync<T>(object postData, string uri, Dictionary<string,string> headers = null, JsonSerializerSettings settings = null)
         {
             CreateHttpClient();
+
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+            }
             var data = JsonConvert.SerializeObject(postData);
             var contentPost = new StringContent(data, Encoding.UTF8, "application/json");
             var result = await httpClient.PostAsync(uri, contentPost);
@@ -58,7 +65,6 @@ namespace Eventos.Common.Services
             var resultData = JsonConvert.DeserializeObject<T>(response, settings);
             return resultData;
         }
-
 
 
         /// <summary>
