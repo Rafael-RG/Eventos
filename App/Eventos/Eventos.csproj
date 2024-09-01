@@ -11,7 +11,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>Eventos</ApplicationTitle>
+		<ApplicationTitle>Recuérdame</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.Eventos</ApplicationId>
@@ -22,15 +22,17 @@
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">26.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">34.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiIcon>
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128">
+		<MauiSplashScreen Include="Resources\Splash\splash.svg">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiSplashScreen>
 
@@ -39,17 +41,35 @@
 		<MauiImage Update="Resources\Images\Add.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiImage>
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\add.svg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiImage>
+		<MauiImage Update="Resources\Images\back.svg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiImage>
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" />
 		<MauiImage Update="Resources\Images\google.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiImage>
 		<MauiImage Update="Resources\Images\history.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiImage>
+		<MauiImage Update="Resources\Images\history.svg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiImage>
 		<MauiImage Update="Resources\Images\home.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiImage>
+		<MauiImage Update="Resources\Images\home.svg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiImage>
+		<MauiImage Update="Resources\Images\recuerdame.svg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiImage>
 		<MauiImage Update="Resources\Images\setting.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiImage>
+		<MauiImage Update="Resources\Images\setting.svg">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiImage>
 

@@ -10,17 +10,17 @@
     Shell.TabBarIsVisible="True">
 
     <TabBar>
-        <Tab Title="Inicio" Icon="home.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" Route="HomePage"/>
+        <Tab Title="Inicio" Icon="home.svg">
+            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" Route="HomePage" />
         </Tab>
-        <Tab Title="Nuevo" Icon="add.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" Route="AddEventPage"/>
+        <Tab Title="Nuevo" Icon="add.svg">
+            <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" Route="AddEventPage" />
         </Tab>
-        <Tab Title="Historial" Icon="history.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:HistoryPage}" Route="HistoryPage"/>
+        <Tab Title="Historial" Icon="history.svg">
+            <ShellContent ContentTemplate="{DataTemplate pages:HistoryPage}" Route="HistoryPage" />
         </Tab>
-        <Tab Title="Configuracion" Icon="setting.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" Route="SettingsPage"/>
+        <Tab Title="Configuracion" Icon="setting.svg">
+            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" Route="SettingsPage" />
         </Tab>
     </TabBar>
 

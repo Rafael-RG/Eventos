@@ -9,6 +9,7 @@
     xmlns:viewModels="clr-namespace:Eventos.ViewModels"
     x:DataType="viewModels:LoginViewModel"
     x:TypeArguments="viewModels:LoginViewModel"
+    BackgroundColor="#184159"
     Shell.NavBarIsVisible="false"
     Shell.TabBarIsVisible="False">
 
@@ -18,7 +19,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+    <StackLayout
+        Margin="20,0,20,0"
+        HorizontalOptions="CenterAndExpand"
+        VerticalOptions="FillAndExpand">
 
         <ActivityIndicator
             HeightRequest="32"
@@ -26,27 +30,647 @@
             IsVisible="{Binding IsBusy}"
             WidthRequest="32" />
 
-        <Entry Placeholder="Correo" Text="{Binding Username}" />
-        <Entry
-            IsPassword="True"
-            Placeholder="Contraseña"
-            Text="{Binding Password}" />
+        <Image
+            Margin="0,100,0,0"
+            Source="recuerdame"
+            VerticalOptions="Start" />
 
-        <Button
-            Command="{Binding RecoverPasswordCommand}"
-            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-            Text="Recuperar contraseña"
-            TextColor="Black" />
+        <!--#region Login-->
+
+        <!--  Login  -->
+        <StackLayout
+            Margin="6,0,6,0"
+            IsVisible="True"
+            VerticalOptions="FillAndExpand">
+            <Frame
+                Margin="0,100,0,0"
+                Padding="0"
+                CornerRadius="20">
+                <Entry
+                    Margin="20,0,20,0"
+                    FontSize="16"
+                    Placeholder="Correo electronico"
+                    PlaceholderColor="#205048"
+                    Text="{Binding Username}"
+                    TextColor="#205048" />
+            </Frame>
+
+            <Frame
+                Margin="0,20,0,0"
+                Padding="0"
+                CornerRadius="20">
+                <Entry
+                    Margin="20,0,20,0"
+                    FontSize="16"
+                    IsPassword="True"
+                    Placeholder="Contraseña"
+                    PlaceholderColor="#205048"
+                    Text="{Binding Password}"
+                    TextColor="#205048" />
+            </Frame>
+
+            <Button
+                BackgroundColor="Transparent"
+                Command="{Binding RecoverPasswordCommand}"
+                HorizontalOptions="End"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                Text="¿Olvidaste tu contraseña?"
+                TextColor="#D2E898" />
+
+            <Button
+                Margin="0,100,0,20"
+                BackgroundColor="#ABBA3C"
+                Command="{Binding LoginCommand}"
+                CornerRadius="20"
+                FontSize="16"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                Text="Iniciar Sesíon"
+                TextColor="Black" />
+
+            <Button
+                BackgroundColor="Transparent"
+                BorderColor="#ABBA3C"
+                Command="{Binding RegistryUserCommand}"
+                CornerRadius="20"
+                FontSize="16"
+                Text="Regístrarse"
+                TextColor="#ABBA3C" />
+
+            <Button
+                Margin="0,20,0,30"
+                BackgroundColor="Transparent"
+                Command="{Binding RegistryUserCommand}"
+                FontSize="16"
+                Text="Suscríbete"
+                TextColor="#DDDDDD"
+                VerticalOptions="EndAndExpand" />
+        </StackLayout>
+
+        <!--#endregion-->
+
+        <!--#region Registrarse-->
+
+        <!--  registrarse  -->
+        <StackLayout
+            Margin="6,50,6,0"
+            IsVisible="False"
+            VerticalOptions="FillAndExpand">
+            <Label
+                Margin="0,0,0,10"
+                FontSize="20"
+                Text="Registro de usuario"
+                TextColor="#ABBA3C" />
+
+            <Frame
+                Margin="0,10,0,0"
+                Padding="0"
+                BackgroundColor="#184159"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Nombre"
+                    PlaceholderColor="White"
+                    Text="{Binding Username}"
+                    TextColor="White" />
+            </Frame>
+
+            <Frame
+                Margin="0,20,0,0"
+                Padding="0"
+                BackgroundColor="#184159"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Correo electronico"
+                    PlaceholderColor="White"
+                    Text="{Binding Username}"
+                    TextColor="White" />
+            </Frame>
+
+            <Frame
+                Margin="0,20,0,0"
+                Padding="0"
+                BackgroundColor="#184159"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Contraseña"
+                    PlaceholderColor="White"
+                    Text="{Binding Username}"
+                    TextColor="White" />
+            </Frame>
+
+            <Frame
+                Margin="0,20,0,0"
+                Padding="0"
+                BackgroundColor="#184159"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Repetir contraseña"
+                    PlaceholderColor="White"
+                    Text="{Binding Username}"
+                    TextColor="White" />
+            </Frame>
+
+            <Frame
+                Margin="0,20,0,0"
+                Padding="0"
+                BackgroundColor="#184159"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="País"
+                    PlaceholderColor="White"
+                    Text="{Binding Username}"
+                    TextColor="White" />
+            </Frame>
+
+            <StackLayout
+                Margin="0,0,0,50"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                Spacing="30"
+                VerticalOptions="EndAndExpand">
+
+                <ImageButton
+                    HorizontalOptions="Start"
+                    Source="back.svg"
+                    VerticalOptions="Center" />
+                <Button
+                    Margin="0,0,0,0"
+                    BackgroundColor="#ABBA3C"
+                    Command="{Binding LoginCommand}"
+                    CornerRadius="20"
+                    HorizontalOptions="Start"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                    MinimumWidthRequest="150"
+                    Text="Crear Usuario"
+                    TextColor="#184159"
+                    VerticalOptions="EndAndExpand">
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="15"
+                            Offset="-4,4" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+
+        </StackLayout>
+
+        <!--  Activar cuenta  -->
+        <StackLayout
+            Margin="40,50,30,0"
+            HorizontalOptions="CenterAndExpand"
+            IsVisible="False"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                Margin="0,20,0,20"
+                FontSize="20"
+                Text="¡Cuenta casi lista!"
+                TextColor="#ABBA3C" />
+
+            <Label
+                Margin="0,0,0,20"
+                FontAttributes="Bold"
+                Text="Gracias por registrarte." />
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Para completar el proceso, por favor revisa tu correo electrónico e ingresa el " />
+                        <Span FontAttributes="Bold" Text="código de activación" />
+                        <Span Text=" que te hemos enviado." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Frame
+                Margin="0,30,0,30"
+                Padding="0"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Código de activación"
+                    PlaceholderColor="#184159"
+                    Text="{Binding Username}"
+                    TextColor="#184159" />
+            </Frame>
+
+            <Label Margin="0,10,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
+
+            <Label Text="Podrás reenviar el código en 02:59 minutos" />
+
+            <Button
+                BackgroundColor="Transparent"
+                Command="{Binding RecoverPasswordCommand}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                Text="Reenviar código"
+                TextColor="#D2E898" />
+
+            <StackLayout
+                Margin="0,0,0,50"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                Spacing="30"
+                VerticalOptions="EndAndExpand">
+
+                <ImageButton
+                    HorizontalOptions="Start"
+                    Source="back.svg"
+                    VerticalOptions="Center" />
+                <Button
+                    Margin="0,0,0,0"
+                    BackgroundColor="#ABBA3C"
+                    Command="{Binding LoginCommand}"
+                    CornerRadius="20"
+                    HorizontalOptions="Start"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                    MinimumWidthRequest="150"
+                    Text="Activar cuenta"
+                    TextColor="Black"
+                    VerticalOptions="Start">
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="15"
+                            Offset="-4,4" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+
+        </StackLayout>
+
+        <!--  Registro finalizado  -->
+        <StackLayout
+            Margin="0,60,0,20"
+            IsVisible="False"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                Margin="0,0,0,20"
+                FontSize="20"
+                Text="¡Registro finalizado!"
+                TextColor="#ABBA3C" />
+
+            <Label
+                Margin="0,0,0,10"
+                FontAttributes="Bold"
+                Text="Tu cuenta ha sido activada exitosamente." />
+
+            <Label Margin="0,10,0,0" Text="Vuelve para iniciar sesión." />
+
+            <Button
+                Margin="0,0,0,20"
+                BackgroundColor="Transparent"
+                BorderColor="#ABBA3C"
+                Command="{Binding RegistryUserCommand}"
+                CornerRadius="20"
+                MaximumWidthRequest="200"
+                MinimumWidthRequest="150"
+                Text="Volver al inicio"
+                TextColor="#ABBA3C"
+                VerticalOptions="EndAndExpand" />
+
+        </StackLayout>
+
+        <!--#endregion-->
+
+        <!--#region Recuperar contraseña-->
+
+        <!--  Recuperar contraseña  -->
+        <StackLayout
+            Margin="40,60,30,0"
+            IsVisible="False"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                Margin="0,0,0,20"
+                FontSize="20"
+                Text="Recupera tu contraseña"
+                TextColor="#ABBA3C" />
+
+            <Label Text="Introduce tu dirección de correo electrónico y te enviaremos un enlace para crear una nueva contraseña. " />
+
+            <Frame
+                Margin="0,30,0,30"
+                Padding="0"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Correo electronico"
+                    PlaceholderColor="#184159"
+                    Text="{Binding Username}"
+                    TextColor="#184159" />
+            </Frame>
 
 
-        <Button
-            Command="{Binding LoginCommand}"
-            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-            Text="Iniciar con Google"
-            TextColor="Black" />
+            <StackLayout
+                Margin="0,0,0,40"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                Spacing="30"
+                VerticalOptions="EndAndExpand">
 
-        <Button Command="{Binding RegistryUserCommand}" Text="Registrarse" />
+                <ImageButton
+                    HorizontalOptions="Start"
+                    Source="back.svg"
+                    VerticalOptions="Center" />
+                <Button
+                    Margin="0,0,0,0"
+                    BackgroundColor="#ABBA3C"
+                    Command="{Binding LoginCommand}"
+                    CornerRadius="20"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                    MinimumWidthRequest="150"
+                    Text="Siguiente"
+                    TextColor="#184159"
+                    VerticalOptions="EndAndExpand">
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="15"
+                            Offset="-4,4" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
 
+        </StackLayout>
+
+        <!--  Validar cuenta  -->
+        <StackLayout
+            Margin="40,60,40,0"
+            IsVisible="False"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                Margin="0,0,0,20"
+                FontSize="20"
+                Text="Valida tu cuenta"
+                TextColor="#ABBA3C" />
+
+            <Label Text="Introduce el código de verificación que hemos enviado a tu correo electrónico para continuar." />
+
+            <Frame
+                Margin="0,30,0,30"
+                Padding="0"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Código"
+                    PlaceholderColor="#184159"
+                    Text="{Binding Username}"
+                    TextColor="#184159" />
+            </Frame>
+
+            <Label Margin="0,20,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
+
+            <Label Text="Podrás reenviar el código en 02:59 minutos" />
+
+            <Button
+                BackgroundColor="Transparent"
+                Command="{Binding RecoverPasswordCommand}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                Text="Reenviar código"
+                TextColor="White" />
+
+            <StackLayout
+                Margin="0,0,0,40"
+                HorizontalOptions="Start"
+                Orientation="Horizontal"
+                Spacing="30"
+                VerticalOptions="EndAndExpand">
+
+                <ImageButton
+                    HorizontalOptions="Start"
+                    Source="back.svg"
+                    VerticalOptions="Center" />
+                <Button
+                    Margin="0,0,0,0"
+                    BackgroundColor="#ABBA3C"
+                    Command="{Binding LoginCommand}"
+                    CornerRadius="20"
+                    HorizontalOptions="Start"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                    MinimumWidthRequest="150"
+                    Text="Validar"
+                    TextColor="Black"
+                    VerticalOptions="Start">
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="15"
+                            Offset="-4,4" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+
+        </StackLayout>
+
+        <!--  Nueva contraseña  -->
+        <StackLayout
+            Margin="40,60,30,0"
+            IsVisible="False"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                Margin="0,30,0,0"
+                FontSize="20"
+                Text="Nueva contraseña"
+                TextColor="#ABBA3C" />
+
+            <Frame
+                Margin="0,20,0,0"
+                Padding="0"
+                BackgroundColor="#184159"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Contraseña"
+                    PlaceholderColor="White"
+                    Text="{Binding Username}"
+                    TextColor="White" />
+            </Frame>
+
+            <Frame
+                Margin="0,20,0,20"
+                Padding="0"
+                BackgroundColor="#184159"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="15"
+                        Offset="-4,4" />
+                </Frame.Shadow>
+                <Entry
+                    Margin="20,0,20,0"
+                    Placeholder="Repetir contraseña"
+                    PlaceholderColor="White"
+                    Text="{Binding Username}"
+                    TextColor="White" />
+            </Frame>
+
+            <Label Text="Tu contraseña debe tener al menos 8 caracteres, comenzar con una letra e  incluir números." />
+
+            <StackLayout
+                Margin="10,0,0,40"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                Spacing="30"
+                VerticalOptions="EndAndExpand">
+
+                <ImageButton
+                    HorizontalOptions="Start"
+                    Source="back.svg"
+                    VerticalOptions="Center" />
+                <Button
+                    Margin="0,0,0,0"
+                    BackgroundColor="#ABBA3C"
+                    Command="{Binding LoginCommand}"
+                    CornerRadius="20"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                    MinimumWidthRequest="150"
+                    Text="Confirmar"
+                    TextColor="#184159"
+                    VerticalOptions="Start">
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="15"
+                            Offset="-4,4" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+
+        </StackLayout>
+
+        <!--  Finalizado  -->
+        <StackLayout
+            Margin="50,70,50,20"
+            IsVisible="False"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                Margin="0,0,0,20"
+                FontSize="20"
+                Text="¡Actulización de contraseña!"
+                TextColor="#ABBA3C" />
+
+            <Label Margin="0,0,0,0" Text="Contraseña actulizada correctamente. " />
+
+            <Label Margin="0,15,0,0" Text="Vuelve para iniciar sesión." />
+
+            <Button
+                BackgroundColor="Transparent"
+                BorderColor="#ABBA3C"
+                Command="{Binding RegistryUserCommand}"
+                CornerRadius="20"
+                Text="Volver al inicio"
+                TextColor="#ABBA3C"
+                VerticalOptions="EndAndExpand" />
+
+        </StackLayout>
+
+        <!--#endregion-->
     </StackLayout>
 
 </pages:BaseContentPage>
