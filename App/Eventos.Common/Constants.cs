@@ -32,10 +32,14 @@
             }
         }
 
+        public static string WebFileUri => "https://ambitious-grass-0f2288a0f.5.azurestaticapps.net/?event={0}";
+
         public static string GetEventsByUserUri => WebApiHost + "events?user={0}&code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
         public static string SaveEvent => WebApiHost + "saveevent?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
-        public static string WebFileUri => "https://ambitious-grass-0f2288a0f.5.azurestaticapps.net/?event={0}";
+        public static string CreateUser => WebApiHost + "createuser?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+
+        public static string ValidateRegistry => WebApiHost + "codevalidateregistry?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
     }
 }

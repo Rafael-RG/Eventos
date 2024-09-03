@@ -40,7 +40,7 @@
         <!--  Login  -->
         <StackLayout
             Margin="6,0,6,0"
-            IsVisible="True"
+            IsVisible="{Binding IsVisibleLogin}"
             VerticalOptions="FillAndExpand">
             <Frame
                 Margin="0,100,0,0"
@@ -73,7 +73,6 @@
                 BackgroundColor="Transparent"
                 Command="{Binding RecoverPasswordCommand}"
                 HorizontalOptions="End"
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Text="¿Olvidaste tu contraseña?"
                 TextColor="#D2E898" />
 
@@ -83,7 +82,6 @@
                 Command="{Binding LoginCommand}"
                 CornerRadius="20"
                 FontSize="16"
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Text="Iniciar Sesíon"
                 TextColor="Black" />
 
@@ -100,6 +98,7 @@
                 Margin="0,20,0,30"
                 BackgroundColor="Transparent"
                 Command="{Binding RegistryUserCommand}"
+                CommandParameter="registry"
                 FontSize="16"
                 Text="Suscríbete"
                 TextColor="#DDDDDD"
@@ -113,7 +112,7 @@
         <!--  registrarse  -->
         <StackLayout
             Margin="6,50,6,0"
-            IsVisible="False"
+            IsVisible="{Binding IsVisibleRegistry}"
             VerticalOptions="FillAndExpand">
             <Label
                 Margin="0,0,0,10"
@@ -139,7 +138,7 @@
                     Margin="20,0,20,0"
                     Placeholder="Nombre"
                     PlaceholderColor="White"
-                    Text="{Binding Username}"
+                    Text="{Binding FullName}"
                     TextColor="White" />
             </Frame>
 
@@ -161,7 +160,7 @@
                     Margin="20,0,20,0"
                     Placeholder="Correo electronico"
                     PlaceholderColor="White"
-                    Text="{Binding Username}"
+                    Text="{Binding UserEmail}"
                     TextColor="White" />
             </Frame>
 
@@ -183,7 +182,7 @@
                     Margin="20,0,20,0"
                     Placeholder="Contraseña"
                     PlaceholderColor="White"
-                    Text="{Binding Username}"
+                    Text="{Binding Password}"
                     TextColor="White" />
             </Frame>
 
@@ -205,7 +204,7 @@
                     Margin="20,0,20,0"
                     Placeholder="Repetir contraseña"
                     PlaceholderColor="White"
-                    Text="{Binding Username}"
+                    Text="{Binding RepeatPassword}"
                     TextColor="White" />
             </Frame>
 
@@ -227,7 +226,7 @@
                     Margin="20,0,20,0"
                     Placeholder="País"
                     PlaceholderColor="White"
-                    Text="{Binding Username}"
+                    Text="{Binding Country}"
                     TextColor="White" />
             </Frame>
 
@@ -239,16 +238,17 @@
                 VerticalOptions="EndAndExpand">
 
                 <ImageButton
+                    Command="{Binding BackViewCommand}"
+                    CommandParameter="Login"
                     HorizontalOptions="Start"
                     Source="back.svg"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
                     BackgroundColor="#ABBA3C"
-                    Command="{Binding LoginCommand}"
+                    Command="{Binding CreateUserCommand}"
                     CornerRadius="20"
                     HorizontalOptions="Start"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     MinimumWidthRequest="150"
                     Text="Crear Usuario"
                     TextColor="#184159"
@@ -269,7 +269,7 @@
         <StackLayout
             Margin="40,50,30,0"
             HorizontalOptions="CenterAndExpand"
-            IsVisible="False"
+            IsVisible="{Binding IsVisibleActivateAccount}"
             VerticalOptions="FillAndExpand">
 
             <Label
@@ -311,7 +311,7 @@
                     Margin="20,0,20,0"
                     Placeholder="Código de activación"
                     PlaceholderColor="#184159"
-                    Text="{Binding Username}"
+                    Text="{Binding ValidateCode}"
                     TextColor="#184159" />
             </Frame>
 
@@ -323,7 +323,6 @@
                 BackgroundColor="Transparent"
                 Command="{Binding RecoverPasswordCommand}"
                 HorizontalOptions="Center"
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Text="Reenviar código"
                 TextColor="#D2E898" />
 
@@ -335,16 +334,17 @@
                 VerticalOptions="EndAndExpand">
 
                 <ImageButton
+                    Command="{Binding BackViewCommand}"
+                    CommandParameter="Registry"
                     HorizontalOptions="Start"
                     Source="back.svg"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
                     BackgroundColor="#ABBA3C"
-                    Command="{Binding LoginCommand}"
+                    Command="{Binding ValidateAccountCommand}"
                     CornerRadius="20"
                     HorizontalOptions="Start"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     MinimumWidthRequest="150"
                     Text="Activar cuenta"
                     TextColor="Black"
@@ -364,7 +364,7 @@
         <!--  Registro finalizado  -->
         <StackLayout
             Margin="0,60,0,20"
-            IsVisible="False"
+            IsVisible="{Binding IsVisibleRegistrySuccess}"
             VerticalOptions="FillAndExpand">
 
             <Label

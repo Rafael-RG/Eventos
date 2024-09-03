@@ -4,8 +4,7 @@ using Eventos.Common.ViewModels;
 using Eventos.GoogleAuth;
 using Eventos.Models;
 using Eventos.Common.Interfaces;
-using Microsoft.Maui.ApplicationModel.Communication;
-using System.Text;
+using Eventos.Common;
 
 namespace Eventos.ViewModels
 {
@@ -14,21 +13,44 @@ namespace Eventos.ViewModels
     /// </summary>
     public partial class LoginViewModel : BaseViewModel
     {
-        //private readonly IGoogleAuthService _googleAuthService;
-
         private IHttpService httpService;
 
         [ObservableProperty]
-        private string username;
+        private bool isVisibleLogin;
+
 
         [ObservableProperty]
-        private string password;
+        private bool isVisibleRegistry;
+
+        [ObservableProperty]
+        private bool isVisibleActivateAccount;
+
+        [ObservableProperty]
+        private bool isVisibleRegistrySuccess;
+
+        [ObservableProperty]
+        private string validateCode;
+
+
+        [ObservableProperty]
+        private bool isVisibleRecoverPassword;
+
+
+
+        [ObservableProperty]
+        private string userEmail;
 
         [ObservableProperty]
         private string fullName;
 
         [ObservableProperty]
+        private string password;
+
+        [ObservableProperty]
         private string repeatPassword;
+
+        [ObservableProperty]
+        private string country;
 
         /// <summary>
         /// Gets by DI the required services
@@ -36,7 +58,6 @@ namespace Eventos.ViewModels
         public LoginViewModel(IServiceProvider provider, IGoogleAuthService googleAuthService, IHttpService httpService) : base(provider)
         {
             this.httpService = httpService;
-            //_googleAuthService = googleAuthService;
         }
 
         /// <summary>
@@ -77,15 +98,94 @@ namespace Eventos.ViewModels
             await Shell.Current.GoToAsync("///RecoverPage", false);
         }
 
+        [RelayCommand]
+        private void BackView(string view)
+        {
+            ChangeView(view);
+        }
 
         [RelayCommand]
-        private async void RegistryUser()
+        private void RegistryUser()
         {
-            await SendEmail();
+            ClearData();
+            ChangeView("Registry");
+        }
 
-            await Shell.Current.GoToAsync("///HomePage", false);
+        [RelayCommand]
+        private async void CreateUser()
+        {
+            if (this.Password != this.RepeatPassword)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Las contraseñas no coinciden", "OK");
+                return;
+            }
 
-            //await Shell.Current.GoToAsync("///RegistryPage", false);
+            if (this.FullName.Length == 0 || this.Password.Length == 0 || this.UserEmail.Length == 0 || this.Country.Length == 0)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son requeridos", "OK");
+                return;
+            }
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(this.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
+                return;
+            }
+
+            var newUser = new NewUser
+            {
+                FullName = this.FullName,
+                Email = this.UserEmail,
+                UserName = this.UserEmail,
+                Password = this.Password,
+                Country = this.Country
+            };
+
+            var result = await this.httpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
+
+            if (result.Success)
+            {
+                this.ValidateCode = string.Empty;
+                ChangeView("ActivateAccount");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+            }
+        }
+
+        [RelayCommand]
+        private async void ValidateAccount()
+        {
+            if (this.ValidateCode.Length < 4)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "El código de validación debe tener 4 caracteres", "OK");
+                return;
+            }
+
+            var validateRegistry = new
+            {
+                email = this.UserEmail,
+                code = this.ValidateCode
+            };
+
+            var result = await this.httpService.PostAsync<ResponseData>(validateRegistry, Constants.ValidateRegistry);
+
+            if (result.Success)
+            {
+                ChangeView("RegistrySuccess");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+            }
+        }
+
+        [RelayCommand]
+        private void FinishRegistry()
+        {
+            ClearData();
+            ChangeView("Login");
         }
 
 
@@ -125,7 +225,9 @@ namespace Eventos.ViewModels
                     await Shell.Current.GoToAsync("///HomePage", false);
                 }
 
-                //await Shell.Current.GoToAsync("///HomePage", false);
+                ChangeView("Login");
+
+                await Shell.Current.GoToAsync("///LoginPage", false);
             }
             catch (Exception ex)
             {
@@ -133,7 +235,7 @@ namespace Eventos.ViewModels
                 await NotificationService.NotifyAsync(GetText("Error"), (ex.Message), GetText("Close"));
                 await LogExceptionAsync(ex);
             }
-            
+
         }
 
         public async Task SendEmail()
@@ -158,7 +260,7 @@ namespace Eventos.ViewModels
                     htmlContent = "<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Brevo.</p></body></html>"
                 };
 
-              
+
                 using (var client = new HttpClient())
                 {
                     var headers = new Dictionary<string, string>
@@ -166,7 +268,7 @@ namespace Eventos.ViewModels
                         { "api-key", apiKey },
                     };
 
-                    var response = await this.httpService.PostAsync<ResponseData>(emailData, url,headers);
+                    var response = await this.httpService.PostAsync<ResponseData>(emailData, url, headers);
 
                     if (response.Success)
                     {
@@ -176,7 +278,7 @@ namespace Eventos.ViewModels
                     else
                     {
                         Console.WriteLine("Error: " + response.Message);
-                        var responseBody =  response.Data;
+                        var responseBody = response.Data;
                         Console.WriteLine("Details: " + responseBody);
                     }
                 }
@@ -184,6 +286,58 @@ namespace Eventos.ViewModels
             catch (Exception ex)
             {
                 // Otro error
+            }
+        }
+
+        private void ClearData()
+        {
+            this.FullName = string.Empty;
+            this.Password = string.Empty;
+            this.RepeatPassword = string.Empty;
+            this.UserEmail = string.Empty;
+            this.Country = string.Empty;
+            this.ValidateCode = string.Empty;
+        }
+
+        private void ChangeView(string view)
+        {
+            switch (view)
+            {
+                case "Login":
+                    this.IsVisibleLogin = true;
+                    this.IsVisibleRegistry = false;
+                    this.IsVisibleRecoverPassword = false;
+                    this.IsVisibleActivateAccount = false;
+                    this.IsVisibleRegistrySuccess = false;
+                    break;
+                case "Registry":
+                    this.IsVisibleLogin = false;
+                    this.IsVisibleRegistry = true;
+                    this.IsVisibleRecoverPassword = false;
+                    this.IsVisibleActivateAccount = false;
+                    this.IsVisibleRegistrySuccess = false;
+                    break;
+                case "Recover":
+                    this.IsVisibleLogin = false;
+                    this.IsVisibleRegistry = false;
+                    this.IsVisibleRecoverPassword = true;
+                    this.IsVisibleActivateAccount = false;
+                    this.IsVisibleRegistrySuccess = false;
+                    break;
+                case "ActivateAccount":
+                    this.IsVisibleLogin = false;
+                    this.IsVisibleRegistry = false;
+                    this.IsVisibleRecoverPassword = false;
+                    this.IsVisibleActivateAccount = true;
+                    this.IsVisibleRegistrySuccess = false;
+                    break;
+                case "RegistrySuccess":
+                    this.IsVisibleLogin = false;
+                    this.IsVisibleRegistry = false;
+                    this.IsVisibleRecoverPassword = false;
+                    this.IsVisibleActivateAccount = false;
+                    this.IsVisibleRegistrySuccess = true;
+                    break;
             }
         }
     }
