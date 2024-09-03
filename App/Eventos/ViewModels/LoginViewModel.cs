@@ -31,6 +31,16 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private string validateCode;
 
+        [ObservableProperty]
+        private bool isActiveSendCode;
+
+        [ObservableProperty]
+        private IDispatcherTimer timer;
+
+        [ObservableProperty]
+        private string timerText;
+
+
 
         [ObservableProperty]
         private bool isVisibleRecoverPassword;
@@ -138,7 +148,8 @@ namespace Eventos.ViewModels
                 Email = this.UserEmail,
                 UserName = this.UserEmail,
                 Password = this.Password,
-                Country = this.Country
+                Country = this.Country,
+                RetryValidate = false
             };
 
             var result = await this.httpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
@@ -147,6 +158,48 @@ namespace Eventos.ViewModels
             {
                 this.ValidateCode = string.Empty;
                 ChangeView("ActivateAccount");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+            }
+        }
+
+        [RelayCommand]
+        private async void ResendCode()
+        {
+            var validateRegistry = new NewUser
+            {
+                Email = this.UserEmail,
+                RetryValidate = true,
+                Password = this.Password,
+                Country = this.Country,
+                FullName = this.FullName,
+                UserName = this.UserEmail
+            };
+
+            var result = await this.httpService.PostAsync<ResponseData>(validateRegistry, Constants.ValidateRegistry);
+
+            if (result.Success)
+            {
+                TimeSpan maxDuration = TimeSpan.FromSeconds(30);
+                this.Timer.Interval = TimeSpan.FromSeconds(1);
+                this.Timer.Tick += (s, e) =>
+                {
+                    // Restar 1 segundo a la duración máxima
+                    maxDuration = maxDuration.Subtract(TimeSpan.FromSeconds(1));
+
+                    // Actualizar el texto del temporizador
+                    this.TimerText = string.Format("{0:ss}", maxDuration);
+
+                    // Verificar si el tiempo ha llegado a cero
+                    if (maxDuration.TotalSeconds <= 0)
+                    {
+                        // Detener el temporizador y ejecutar la acción final
+                        this.Timer.Stop();
+                        this.IsActiveSendCode = true;
+                    }
+                };
             }
             else
             {
