@@ -13,6 +13,10 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Net.Mail;
+using System.Net;
 
 
 namespace Backend.Service.BusinessLogic
@@ -28,7 +32,7 @@ namespace Backend.Service.BusinessLogic
         /// Gets by DI the dependeciees
         /// </summary>
         /// <param name="dataAccess"></param>
-        public EventsLogic(ISessionProvider sessionProvider, IDataAccess dataAccess, ILogger<EventsLogic> logger) : base(sessionProvider, dataAccess, logger)
+        public EventsLogic(ISessionProvider sessionProvider, IDataAccess dataAccess, ILogger<EventsLogic> logger, IHttpService httpService) : base(sessionProvider, dataAccess, logger, httpService)
         {
             this.SubscriptionProductId = Convert.ToInt32(Environment.GetEnvironmentVariable("HotmartSubscriptionProductId"));
             this.ClientId = Environment.GetEnvironmentVariable("HotmartClientId");
@@ -303,6 +307,141 @@ namespace Backend.Service.BusinessLogic
             sb.AppendLine("END:VCALENDAR");
 
             return sb.ToString();
+        }
+
+        public async Task<Result<(bool, string)>> CreateUserAsync(NewUser newUser)
+        {
+            var response = new Result<(bool, string)>();
+
+            try
+            {
+                var user = await this.dataAccess.GetUserAsync(newUser.Email);
+
+                if (user.PartitionKey != null && user.IsActive) 
+                {
+                    response.Data = (false, "El usuario ya existe");
+                    response.Success = false;
+                }
+                else if (user.PartitionKey != null && !newUser.RetryValidate)
+                {
+                    await SendEmail(user.LastCodeActivation, newUser.Email, newUser.FullName);
+                }
+                else
+                {
+                    var code = new Random().Next(1000, 9999).ToString();
+
+                    var userEntry = new UserEntry
+                    {
+                        FullName = newUser.FullName,
+                        Email = newUser.Email,
+                        Password = newUser.Password,
+                        Country = newUser.Country,
+                        PartitionKey = newUser.Email,
+                        RowKey = Guid.NewGuid().ToString(),
+                        IsActive = false,
+                        LastCodeActivation = code
+                    };
+
+                    var result = await this.dataAccess.SaveNewUserAsync(userEntry);
+
+                    if (result)
+                    {
+                        await SendEmail(code, newUser.Email, newUser.FullName);
+
+                        response.Data = (true, "Creado y enviado");
+                        response.Success = true;
+                    }
+                    else
+                    {
+                        response.Data = (false, "Ocurrió un error al crear el usuario");
+                        response.Success = false;
+                    }
+                }
+
+            }
+            catch
+            {
+                response.Data = (false, "Ocurrió un error al crear el usuario");
+                response.Success = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Result<bool>> ValidateRegistryAsync(ValidateRegistry validateUserRequest)
+        {
+            var response = new Result<bool>();
+
+            try
+            {
+                var user = await this.dataAccess.GetUserAsync(validateUserRequest.Email);
+
+                if (user.PartitionKey != null && user.LastCodeActivation == validateUserRequest.Code)
+                {
+                    user.IsActive = true;
+                    user.LastCodeActivation = string.Empty;
+
+                    var result = await this.dataAccess.SaveNewUserAsync(user);
+
+                    if (result)
+                    {
+                        response.Data = true;
+                        response.Success = true;
+                    }
+                    else
+                    {
+                        response.Data = false;
+                        response.Success = false;
+                    }
+                }
+                else
+                {
+                    response.Data = false;
+                    response.Success = false;
+                }
+
+            }
+            catch
+            {
+                response.Data = false;
+                response.Success = false;
+            }
+
+            return response;
+        }
+
+        private async Task SendEmail(string code, string email, string name)
+        {
+            try
+            {
+                // Credenciales y configuración SMTP
+                var smtpClient = new SmtpClient("host.globalpingames.com")
+                {
+                    Port = 465,
+                    Credentials = new NetworkCredential("soporte@recuerdame.app", "R@F@el94006859R@"),
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false
+                };
+
+                // Crear el mensaje de correo electrónico
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("soporte@recuerdame.app"),
+                    Subject = "Valida tu cuenta",
+                    Body = $"<html><head></head><body><p>Hola {name}, bienvenido a Recuérdame,</p>Este es tu código de validación {code}, el cual deberás ingresar en la app.</p></body></html>",
+                    IsBodyHtml = true,
+                };
+                mailMessage.To.Add(email);
+
+                // Enviar el correo electrónico
+                await smtpClient.SendMailAsync(mailMessage);
+
+            }
+            catch (Exception ex)
+            {
+                // Otro error
+            }
         }
 
     }

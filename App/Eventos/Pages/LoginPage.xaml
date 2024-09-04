@@ -319,7 +319,7 @@
 
             <Label Text="Podrás reenviar el código en 02:59 segundos" />
 
-            <Label IsVisible="{Binding IsActiveSendCode,Converter={local:InvertedBoolConverter}}">
+            <Label IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Podrás reenviar el código en " />
@@ -332,8 +332,8 @@
             <Button
                 BackgroundColor="Transparent"
                 Command="{Binding CreateUserCommand}"
-                IsEnabled="{Binding IsActiveSendCode}"
                 HorizontalOptions="Center"
+                IsEnabled="{Binding IsActiveSendCode}"
                 Text="Reenviar código"
                 TextColor="#D2E898" />
 

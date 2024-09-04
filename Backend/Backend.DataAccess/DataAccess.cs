@@ -121,6 +121,51 @@ namespace Backend.DataAccess
         }
 
         /// <summary>
+        /// create a new table in the storage account
+        /// </summary>
+        public async Task<bool> SaveNewUserAsync(UserEntry newUser)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("users");
+                await tableClient.CreateIfNotExistsAsync();
+
+                await tableClient.UpsertEntityAsync(newUser);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// Get all the events from the table by email
+        /// </summary>
+        public async Task<UserEntry> GetUserAsync(string email)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("users");
+                await tableClient.CreateIfNotExistsAsync();
+                var query = tableClient.QueryAsync<UserEntry>(filter: $"PartitionKey eq '{email}'");
+                var user = new UserEntry();
+                await foreach (var item in query)
+                {
+                    user = item;
+                    break;
+                }
+                return user;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Get all the events from the table by email
         /// </summary>
         public async Task<List<EventEntry>> GetEventsAsync(string email)

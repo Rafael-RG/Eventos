@@ -104,6 +104,32 @@ namespace Backend.Service.Functions
 
             return await this.businessLogic.GetEventAsync(eventItem);
         }
+
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(CreateUserAsync))]
+        public async Task<HttpResponseData> CreateUserAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "createuser")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.CreateUserAsync, request.DeserializeBody<NewUser>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(ValidateRegistryAsync))]
+        public async Task<HttpResponseData> ValidateRegistryAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "codevalidateregistry")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.ValidateRegistryAsync, request.DeserializeBody<ValidateRegistry>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
     }
 }
 

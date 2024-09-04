@@ -12,6 +12,7 @@ using Backend.Common.Middleware;
 using Backend.DataAccess;
 using Backend.Service.BusinessLogic;
 using Microsoft.Extensions.Logging;
+using Backend.Common.Services;
 
 namespace Backend.Service
 {
@@ -71,6 +72,7 @@ namespace Backend.Service
                   services.AddScoped<ISessionProvider, SessionProvider>();
                   services.AddScoped<IEventsLogic, EventsLogic>();   
                   services.AddScoped<IDataAccess, DataAccess.DataAccess>();
+                  services.AddScoped<IHttpService, HttpService>();
               })
               .Build();
 

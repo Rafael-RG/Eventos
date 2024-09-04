@@ -13,17 +13,19 @@ namespace Backend.Common.Logic
         protected readonly ILogger logger;
         protected readonly ISessionProvider sessionProvider;
         protected readonly IDataAccess dataAccess;
+        protected readonly IHttpService httpService;
 
 
         /// <summary>
         /// Gets by DI the dependeciees
         /// </summary>
         /// <param name="dataAccess"></param>
-        public BaseLogic(ISessionProvider sessionProvider, IDataAccess dataAccess, ILogger logger)
+        public BaseLogic(ISessionProvider sessionProvider, IDataAccess dataAccess, ILogger logger, IHttpService httpService = null)
         {
             this.sessionProvider = sessionProvider;
             this.dataAccess = dataAccess; 
             this.logger = logger;
+            this.httpService = httpService;
         }
 
 

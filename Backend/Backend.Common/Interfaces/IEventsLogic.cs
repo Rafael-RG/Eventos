@@ -35,6 +35,18 @@ namespace Backend.Common.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<FileContentResult> GetEventAsync(string rowKey);
+
+        /// <summary>
+        /// Gets all the documents
+        /// </summary>
+        /// <returns></returns>
+        Task<Result<(bool, string)>> CreateUserAsync(NewUser newEvent);
+
+        /// <summary>
+        /// Gets all the documents
+        /// </summary>
+        /// <returns></returns>
+        Task<Result<bool>> ValidateRegistryAsync(ValidateRegistry newEvent);
     }
 
 

@@ -47,5 +47,15 @@ namespace Backend.Common.Interfaces
         /// </summary>
         Task<EventEntry> GetEventAsync(string rowKey);
 
+        /// <summary>
+        /// Create a new user
+        /// </summary>
+        Task<bool> SaveNewUserAsync(UserEntry newUser);
+
+        /// <summary>
+        /// Get users
+        /// </summary>
+        Task<UserEntry> GetUserAsync(string email);
+
     }
 }

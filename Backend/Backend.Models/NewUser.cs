@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventos.Models
+namespace Backend.Models
 {
     public class NewUser
     {

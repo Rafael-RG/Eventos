@@ -146,7 +146,6 @@ namespace Eventos.ViewModels
             {
                 FullName = this.FullName,
                 Email = this.UserEmail,
-                UserName = this.UserEmail,
                 Password = this.Password,
                 Country = this.Country,
                 RetryValidate = false
@@ -174,8 +173,7 @@ namespace Eventos.ViewModels
                 RetryValidate = true,
                 Password = this.Password,
                 Country = this.Country,
-                FullName = this.FullName,
-                UserName = this.UserEmail
+                FullName = this.FullName
             };
 
             var result = await this.httpService.PostAsync<ResponseData>(validateRegistry, Constants.ValidateRegistry);
@@ -212,14 +210,14 @@ namespace Eventos.ViewModels
         {
             if (this.ValidateCode.Length < 4)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "El código de validación debe tener 4 caracteres", "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "El código de validación debe tener 4 dígitos", "OK");
                 return;
             }
 
-            var validateRegistry = new
+            var validateRegistry = new ValidateRegistry
             {
-                email = this.UserEmail,
-                code = this.ValidateCode
+                Email = this.UserEmail,
+                Code = this.ValidateCode
             };
 
             var result = await this.httpService.PostAsync<ResponseData>(validateRegistry, Constants.ValidateRegistry);
@@ -248,7 +246,7 @@ namespace Eventos.ViewModels
         /// <returns></returns>
         private bool AreCredentialComplete()
         {
-            return this.Username.Length > 0 || this.Password.Length > 0;
+            return this.UserEmail.Length > 0 || this.Password.Length > 0;
         }
 
 
