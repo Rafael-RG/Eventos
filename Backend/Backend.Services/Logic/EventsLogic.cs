@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Extensions.Hosting;
 
 
 namespace Backend.Service.BusinessLogic
@@ -322,9 +323,11 @@ namespace Backend.Service.BusinessLogic
                     response.Data = (false, "El usuario ya existe");
                     response.Success = false;
                 }
-                else if (user.PartitionKey != null && !newUser.RetryValidate)
+                else if (user.PartitionKey != null && !user.IsActive)
                 {
                     await SendEmail(user.LastCodeActivation, newUser.Email, newUser.FullName);
+                    response.Data = (true, $"Correo reenviado: {newUser.Email}");
+                    response.Success = true;
                 }
                 else
                 {
@@ -414,29 +417,28 @@ namespace Backend.Service.BusinessLogic
         {
             try
             {
-                // Credenciales y configuración SMTP
-                var smtpClient = new SmtpClient("host.globalpingames.com")
-                {
-                    Port = 465,
-                    Credentials = new NetworkCredential("soporte@recuerdame.app", "R@F@el94006859R@"),
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false
-                };
+                SmtpClient smtpClient = new SmtpClient();
+                NetworkCredential smtpCredentials = new NetworkCredential("soporte@recuerdame.app", "R@F@el94006859R@");
 
-                // Crear el mensaje de correo electrónico
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress("soporte@recuerdame.app"),
-                    Subject = "Valida tu cuenta",
-                    Body = $"<html><head></head><body><p>Hola {name}, bienvenido a Recuérdame,</p>Este es tu código de validación {code}, el cual deberás ingresar en la app.</p></body></html>",
-                    IsBodyHtml = true,
-                };
-                mailMessage.To.Add(email);
+                MailMessage message = new MailMessage();
+                MailAddress fromAddress = new MailAddress("soporte@recuerdame.app");
+                MailAddress toAddress = new MailAddress(email);
 
-                // Enviar el correo electrónico
-                await smtpClient.SendMailAsync(mailMessage);
+                smtpClient.Host = "host.globalpingames.com";
+                smtpClient.Port = 587;
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = smtpCredentials;
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.Timeout = 60000;
 
+                message.From = fromAddress;
+                message.To.Add(toAddress);
+                message.IsBodyHtml = true;
+                message.Subject = "¡Bienvenido a Recuérdame!";
+                message.Body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Nos alegra mucho que te hayas unido a <strong>Recuérdame</strong>.</p>\r\n    <p>Para que puedas empezar a disfrutar de todos nuestros servicios, por favor ingresa el siguiente código de verificación en la app:</p>\r\n    <h2 style=\"color: #ABBA3C;\">{code}</h2>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>¡Bienvenido a la comunidad de <strong>Recuérdame</strong>!</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
+
+                smtpClient.Send(message);
             }
             catch (Exception ex)
             {
