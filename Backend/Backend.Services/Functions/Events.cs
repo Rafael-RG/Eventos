@@ -130,6 +130,47 @@ namespace Backend.Service.Functions
                 responseLinks.Links = new Dictionary<string, string> { };
             }, logger);
         }
+
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(FindUserAndSendCodeAsync))]
+        public async Task<HttpResponseData> FindUserAndSendCodeAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "finduserandsendcode")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.FindUserAndSendCodeAsync, request.DeserializeBody<string>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(ValidateCodeAsync))]
+        public async Task<HttpResponseData> ValidateCodeAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "validatecode")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.ValidateCodeAsync, request.DeserializeBody<ValidateRegistry>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(RecoveryPasswordAsync))]
+        public async Task<HttpResponseData> RecoveryPasswordAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "recoverpassword")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.RecoveryPasswordAsync, request.DeserializeBody<RecoveryPassword>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
+
     }
 }
 

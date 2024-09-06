@@ -413,10 +413,142 @@ namespace Backend.Service.BusinessLogic
             return response;
         }
 
-        private async Task SendEmail(string code, string email, string name)
+        public async Task<Result<bool>> FindUserAndSendCodeAsync(string email)
+        {
+            var response = new Result<bool>();
+
+            try
+            {
+                var user = await this.dataAccess.GetUserAsync(email);
+
+                if (user.PartitionKey != null)
+                {
+                    var code = new Random().Next(1000, 9999).ToString();
+
+                    user.LastCodeActivation = code;
+
+                    var result = await this.dataAccess.SaveNewUserAsync(user);
+
+                    if (result)
+                    {
+                        await SendEmail(code, email, user.FullName, 1);
+
+                        response.Data = true;
+                        response.Success = true;
+                    }
+                    else
+                    {
+                        response.Data = false;
+                        response.Success = false;
+                    }
+                }
+                else
+                {
+                    response.Data = false;
+                    response.Success = false;
+                }
+
+            }
+            catch
+            {
+                response.Data = false;
+                response.Success = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Result<bool>> ValidateCodeAsync(ValidateRegistry validateUserRequest)
+        {
+            var response = new Result<bool>();
+
+            try
+            {
+                var user = await this.dataAccess.GetUserAsync(validateUserRequest.Email);
+
+                if (user.PartitionKey != null && user.LastCodeActivation == validateUserRequest.Code)
+                {
+                    response.Data = true;
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Data = false;
+                    response.Success = false;
+                }
+
+            }
+            catch
+            {
+                response.Data = false;
+                response.Success = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Result<bool>> RecoveryPasswordAsync(RecoveryPassword recoveryPassword)
+        {
+            var response = new Result<bool>();
+
+            try
+            {
+                var user = await this.dataAccess.GetUserAsync(recoveryPassword.Email);
+
+                if (user.PartitionKey != null)
+                {
+
+                    user.Password = recoveryPassword.Password;
+
+                    var result = await this.dataAccess.SaveNewUserAsync(user);
+
+                    if (result)
+                    {
+                        await SendEmail("", recoveryPassword.Email, user.FullName, 2);
+
+                        response.Data = true;
+                        response.Success = true;
+                    }
+                    else
+                    {
+                        response.Data = false;
+                        response.Success = false;
+                    }
+                }
+                else
+                {
+                    response.Data = false;
+                    response.Success = false;
+                }
+
+            }
+            catch
+            {
+                response.Data = false;
+                response.Success = false;
+            }
+
+            return response;
+        }
+
+        private async Task SendEmail(string code, string email, string name, int recovery = 0)
         {
             try
             {
+                var body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Nos alegra mucho que te hayas unido a <strong>Recuérdame</strong>.</p>\r\n    <p>Para que puedas empezar a disfrutar de todos nuestros servicios, por favor ingresa el siguiente código de verificación en la app:</p>\r\n    <h2 style=\"color: #ABBA3C;\">{code}</h2>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>¡Bienvenido a la comunidad de <strong>Recuérdame</strong>!</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
+                var subject = "¡Bienvenido a Recuérdame!";
+
+                if (recovery == 1)
+                {
+                    body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Recibimos una solicitud para recuperar tu contraseña en <strong>Recuérdame</strong>.</p>\r\n    <p>Para que puedas recuperar tu contraseña, por favor ingresa el siguiente código en la app:</p>\r\n    <h2 style=\"color: #ABBA3C;\">{code}</h2>\r\n    <p>Si no solicitaste recuperar tu contraseña, por favor ignora este mensaje.</p>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>¡Bienvenido a la comunidad de <strong>Recuérdame</strong>!</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
+                    subject = "Recuperación de contraseña";
+                }
+                else if (recovery == 2)
+                {
+                    body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Recibimos una solicitud para recuperar tu contraseña en <strong>Recuérdame</strong>.</p>\r\n    <p>Te informamos que tu contraseña ha sido actualizada satisfactoriamente.</p>\r\n    <p>Si no solicitaste recuperar tu contraseña, por favor ignora este mensaje.</p>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>¡Bienvenido a la comunidad de <strong>Recuérdame</strong>!</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
+                    subject = "Se cambió tu contraseña";
+                }
+
                 SmtpClient smtpClient = new SmtpClient();
                 NetworkCredential smtpCredentials = new NetworkCredential("soporte@recuerdame.app", "R@F@el94006859R@");
 
@@ -435,8 +567,8 @@ namespace Backend.Service.BusinessLogic
                 message.From = fromAddress;
                 message.To.Add(toAddress);
                 message.IsBodyHtml = true;
-                message.Subject = "¡Bienvenido a Recuérdame!";
-                message.Body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Nos alegra mucho que te hayas unido a <strong>Recuérdame</strong>.</p>\r\n    <p>Para que puedas empezar a disfrutar de todos nuestros servicios, por favor ingresa el siguiente código de verificación en la app:</p>\r\n    <h2 style=\"color: #ABBA3C;\">{code}</h2>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>¡Bienvenido a la comunidad de <strong>Recuérdame</strong>!</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
+                message.Subject = subject;
+                message.Body = body;
 
                 smtpClient.Send(message);
             }

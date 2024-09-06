@@ -18,6 +18,13 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private bool isVisibleLogin;
 
+        [ObservableProperty]
+        private string userEmailLogin;
+
+        [ObservableProperty]
+        private string passwordLogin;
+
+
 
         [ObservableProperty]
         private bool isVisibleRegistry;
@@ -44,6 +51,15 @@ namespace Eventos.ViewModels
 
         [ObservableProperty]
         private bool isVisibleRecoverPassword;
+
+        [ObservableProperty]
+        private bool isVisibleValidateRecoverPassword;
+
+        [ObservableProperty]
+        private bool isVisibleCreateNewPassword;
+
+        [ObservableProperty]
+        private bool isVisibleFinishedRecoverPassword;
 
 
 
@@ -103,9 +119,101 @@ namespace Eventos.ViewModels
         /// Login with active directory
         /// </summary>
         [RelayCommand]
-        private async void RecoverPassword()
+        private void RecoverPassword()
         {
-            await Shell.Current.GoToAsync("///RecoverPage", false);
+            ClearData();
+            ChangeView("Recover");
+        }
+
+        /// <summary>
+        /// Login with active directory
+        /// </summary>
+        [RelayCommand]
+        private async void FindUserRecoverPassword()
+        {
+            if (this.UserEmail.Length == 0)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "El correo electrónico es requerido", "OK");
+                return;
+            }
+
+            var result = await this.httpService.PostAsync<ResponseData>(userEmail, Constants.FindUserAndSendCode);
+
+            if (result.Success) 
+            {
+                ChangeView("ValidateRecoverPassword");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "El correo electrónico no está registrado", "OK");
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Login with active directory
+        /// </summary>
+        [RelayCommand]
+        private async void ValidateRecoverPassword()
+        {
+            if (this.ValidateCode.Length < 4)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "El código de validación debe tener 4 dígitos", "OK");
+                return;
+            }
+
+            var validateCode = new ValidateRegistry
+            {
+                Email = this.UserEmail,
+                Code = this.ValidateCode
+            };
+
+            var result = await this.httpService.PostAsync<ResponseData>(validateCode, Constants.ValidateCode);
+
+            if (result.Success)
+            {
+                ChangeView("CreateNewPassword");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+            }
+        }
+
+        /// <summary>
+        /// Login with active directory
+        /// </summary>
+        [RelayCommand]
+        private async void CreateNewPassword()
+        {
+            if(this.Password != this.RepeatPassword)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Las contraseñas no coinciden", "OK");
+                return;
+            }
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(this.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
+                return;
+            }
+
+            var recoveryPassword = new RecoveryPassword
+            {
+                Email = this.UserEmail,
+                Password = this.Password
+            };
+
+            var result = await this.httpService.PostAsync<ResponseData>(recoveryPassword, Constants.RecoverPassword);
+
+            if (result.Success) 
+            {
+                ChangeView("FinishedRecoverPassword");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+            }
         }
 
         [RelayCommand]
@@ -155,6 +263,7 @@ namespace Eventos.ViewModels
 
             if (result.Success)
             {
+                this.IsActiveSendCode = true;
                 this.ValidateCode = string.Empty;
                 ChangeView("ActivateAccount");
             }
@@ -167,7 +276,35 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void ResendCode()
         {
-            var validateRegistry = new NewUser
+            this.IsActiveSendCode = false;
+
+            // Inicializar el temporizador
+
+            this.Timer = Dispatcher.GetForCurrentThread().CreateTimer();
+
+            TimeSpan maxDuration = TimeSpan.FromSeconds(10);
+            this.Timer.Interval = TimeSpan.FromSeconds(1);
+            this.Timer.Tick += (s, e) =>
+            {
+                // Restar 1 segundo a la duración máxima
+                maxDuration = maxDuration.Subtract(TimeSpan.FromSeconds(1));
+
+                // Actualizar el texto del temporizador
+                this.TimerText = string.Format("{0:ss}", maxDuration);
+
+                // Verificar si el tiempo ha llegado a cero
+                if (maxDuration.TotalSeconds <= 0)
+                {
+                    // Detener el temporizador y ejecutar la acción final
+                    this.Timer.Stop();
+                    this.IsActiveSendCode = true;
+                }
+            };
+
+            // Iniciar el temporizador
+            this.Timer.Start();
+
+            var newUser = new NewUser
             {
                 Email = this.UserEmail,
                 RetryValidate = true,
@@ -176,30 +313,9 @@ namespace Eventos.ViewModels
                 FullName = this.FullName
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(validateRegistry, Constants.ValidateRegistry);
+            var result = await this.httpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
 
-            if (result.Success)
-            {
-                TimeSpan maxDuration = TimeSpan.FromSeconds(30);
-                this.Timer.Interval = TimeSpan.FromSeconds(1);
-                this.Timer.Tick += (s, e) =>
-                {
-                    // Restar 1 segundo a la duración máxima
-                    maxDuration = maxDuration.Subtract(TimeSpan.FromSeconds(1));
-
-                    // Actualizar el texto del temporizador
-                    this.TimerText = string.Format("{0:ss}", maxDuration);
-
-                    // Verificar si el tiempo ha llegado a cero
-                    if (maxDuration.TotalSeconds <= 0)
-                    {
-                        // Detener el temporizador y ejecutar la acción final
-                        this.Timer.Stop();
-                        this.IsActiveSendCode = true;
-                    }
-                };
-            }
-            else
+            if (!result.Success)
             {
                 await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
             }
@@ -239,6 +355,13 @@ namespace Eventos.ViewModels
             ChangeView("Login");
         }
 
+
+        [RelayCommand]
+        private async void Suscribe()
+        {
+            //open link 
+            await Launcher.OpenAsync("https://www.recuerdame.app/");
+        }
 
         /// <summary>
         /// Validates if the user submitted the credentials
@@ -360,6 +483,9 @@ namespace Eventos.ViewModels
                     this.IsVisibleRecoverPassword = false;
                     this.IsVisibleActivateAccount = false;
                     this.IsVisibleRegistrySuccess = false;
+                    this.IsVisibleValidateRecoverPassword = false;
+                    this.IsVisibleCreateNewPassword = false;
+                    this.IsVisibleFinishedRecoverPassword = false;
                     break;
                 case "Registry":
                     this.IsVisibleLogin = false;
@@ -367,6 +493,9 @@ namespace Eventos.ViewModels
                     this.IsVisibleRecoverPassword = false;
                     this.IsVisibleActivateAccount = false;
                     this.IsVisibleRegistrySuccess = false;
+                    this.IsVisibleValidateRecoverPassword = false;
+                    this.IsVisibleCreateNewPassword = false;
+                    this.IsVisibleFinishedRecoverPassword = false;
                     break;
                 case "Recover":
                     this.IsVisibleLogin = false;
@@ -374,6 +503,9 @@ namespace Eventos.ViewModels
                     this.IsVisibleRecoverPassword = true;
                     this.IsVisibleActivateAccount = false;
                     this.IsVisibleRegistrySuccess = false;
+                    this.IsVisibleValidateRecoverPassword = false;
+                    this.IsVisibleCreateNewPassword = false;
+                    this.IsVisibleFinishedRecoverPassword = false;
                     break;
                 case "ActivateAccount":
                     this.IsVisibleLogin = false;
@@ -381,6 +513,9 @@ namespace Eventos.ViewModels
                     this.IsVisibleRecoverPassword = false;
                     this.IsVisibleActivateAccount = true;
                     this.IsVisibleRegistrySuccess = false;
+                    this.IsVisibleValidateRecoverPassword = false;
+                    this.IsVisibleCreateNewPassword = false;
+                    this.IsVisibleFinishedRecoverPassword = false;
                     break;
                 case "RegistrySuccess":
                     this.IsVisibleLogin = false;
@@ -388,7 +523,41 @@ namespace Eventos.ViewModels
                     this.IsVisibleRecoverPassword = false;
                     this.IsVisibleActivateAccount = false;
                     this.IsVisibleRegistrySuccess = true;
+                    this.IsVisibleValidateRecoverPassword = false;
+                    this.IsVisibleCreateNewPassword = false;
+                    this.IsVisibleFinishedRecoverPassword = false;
                     break;
+                case "ValidateRecoverPassword":
+                    this.IsVisibleLogin = false;
+                    this.IsVisibleRegistry = false;
+                    this.IsVisibleRecoverPassword = false;
+                    this.IsVisibleActivateAccount = false;
+                    this.IsVisibleRegistrySuccess = false;
+                    this.IsVisibleValidateRecoverPassword = true;
+                    this.IsVisibleCreateNewPassword = false;
+                    this.IsVisibleFinishedRecoverPassword = false;
+                    break;
+                case "CreateNewPassword":
+                    this.IsVisibleLogin = false;
+                    this.IsVisibleRegistry = false;
+                    this.IsVisibleRecoverPassword = false;
+                    this.IsVisibleActivateAccount = false;
+                    this.IsVisibleRegistrySuccess = false;
+                    this.IsVisibleValidateRecoverPassword = false;
+                    this.IsVisibleCreateNewPassword = true;
+                    this.IsVisibleFinishedRecoverPassword = false;
+                    break;
+                case "FinishedRecoverPassword":
+                    this.IsVisibleLogin = false;
+                    this.IsVisibleRegistry = false;
+                    this.IsVisibleRecoverPassword = false;
+                    this.IsVisibleActivateAccount = false;
+                    this.IsVisibleRegistrySuccess = false;
+                    this.IsVisibleValidateRecoverPassword = false;
+                    this.IsVisibleCreateNewPassword = false;
+                    this.IsVisibleFinishedRecoverPassword = true;
+                    break;
+
             }
         }
     }

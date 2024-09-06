@@ -41,5 +41,11 @@
         public static string CreateUser => WebApiHost + "createuser?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
         public static string ValidateRegistry => WebApiHost + "codevalidateregistry?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+    
+        public static string FindUserAndSendCode => WebApiHost + "finduserandsendcode?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+
+        public static string ValidateCode => WebApiHost + "validatecode?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+
+        public static string RecoverPassword => WebApiHost + "recoverpassword?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
     }
 }

@@ -51,7 +51,7 @@
                     FontSize="16"
                     Placeholder="Correo electronico"
                     PlaceholderColor="#205048"
-                    Text="{Binding Username}"
+                    Text="{Binding UserEmailLogin}"
                     TextColor="#205048" />
             </Frame>
 
@@ -65,7 +65,7 @@
                     IsPassword="True"
                     Placeholder="Contraseña"
                     PlaceholderColor="#205048"
-                    Text="{Binding Password}"
+                    Text="{Binding PasswordLogin}"
                     TextColor="#205048" />
             </Frame>
 
@@ -97,8 +97,7 @@
             <Button
                 Margin="0,20,0,30"
                 BackgroundColor="Transparent"
-                Command="{Binding RegistryUserCommand}"
-                CommandParameter="registry"
+                Command="{Binding SuscribeCommand}"
                 FontSize="16"
                 Text="Suscríbete"
                 TextColor="#DDDDDD"
@@ -317,21 +316,20 @@
 
             <Label Margin="0,10,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
 
-            <Label Text="Podrás reenviar el código en 02:59 segundos" />
-
-            <Label IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
+            <Label Margin="0,0,0,10" IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Podrás reenviar el código en " />
-                        <Span Text="{Binding Timer}" />
-                        <Span Text=" minutos" />
+                        <Span Text="{Binding TimerText, StringFormat='{}{0:ss}'}" />
+                        <Span Text=" segundo" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
 
             <Button
+                Background="Transparent"
                 BackgroundColor="Transparent"
-                Command="{Binding CreateUserCommand}"
+                Command="{Binding ResendCodeCommand}"
                 HorizontalOptions="Center"
                 IsEnabled="{Binding IsActiveSendCode}"
                 Text="Reenviar código"
@@ -412,7 +410,7 @@
         <!--  Recuperar contraseña  -->
         <StackLayout
             Margin="40,60,30,0"
-            IsVisible="False"
+            IsVisible="{Binding IsVisibleRecoverPassword}"
             VerticalOptions="FillAndExpand">
 
             <Label
@@ -421,7 +419,7 @@
                 Text="Recupera tu contraseña"
                 TextColor="#ABBA3C" />
 
-            <Label Text="Introduce tu dirección de correo electrónico y te enviaremos un enlace para crear una nueva contraseña. " />
+            <Label Text="Introduce tu dirección de correo electrónico para crear una nueva contraseña. " />
 
             <Frame
                 Margin="0,30,0,30"
@@ -441,7 +439,7 @@
                     Margin="20,0,20,0"
                     Placeholder="Correo electronico"
                     PlaceholderColor="#184159"
-                    Text="{Binding Username}"
+                    Text="{Binding UserEmail}"
                     TextColor="#184159" />
             </Frame>
 
@@ -454,16 +452,17 @@
                 VerticalOptions="EndAndExpand">
 
                 <ImageButton
+                    Command="{Binding BackViewCommand}"
+                    CommandParameter="Login"
                     HorizontalOptions="Start"
                     Source="back.svg"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
                     BackgroundColor="#ABBA3C"
-                    Command="{Binding LoginCommand}"
+                    Command="{Binding FindUserRecoverPasswordCommand}"
                     CornerRadius="20"
                     HorizontalOptions="Center"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     MinimumWidthRequest="150"
                     Text="Siguiente"
                     TextColor="#184159"
@@ -483,7 +482,7 @@
         <!--  Validar cuenta  -->
         <StackLayout
             Margin="40,60,40,0"
-            IsVisible="False"
+            IsVisible="{Binding IsVisibleValidateRecoverPassword}"
             VerticalOptions="FillAndExpand">
 
             <Label
@@ -512,21 +511,30 @@
                     Margin="20,0,20,0"
                     Placeholder="Código"
                     PlaceholderColor="#184159"
-                    Text="{Binding Username}"
+                    Text="{Binding ValidateCode}"
                     TextColor="#184159" />
             </Frame>
 
             <Label Margin="0,20,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
 
-            <Label Text="Podrás reenviar el código en 02:59 minutos" />
+            <Label Margin="0,0,0,10" IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Podrás reenviar el código en " />
+                        <Span Text="{Binding TimerText, StringFormat='{}{0:ss}'}" />
+                        <Span Text=" segundo" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
 
             <Button
+                Background="Transparent"
                 BackgroundColor="Transparent"
-                Command="{Binding RecoverPasswordCommand}"
+                Command="{Binding ResendCodeCommand}"
                 HorizontalOptions="Center"
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                IsEnabled="{Binding IsActiveSendCode}"
                 Text="Reenviar código"
-                TextColor="White" />
+                TextColor="#D2E898" />
 
             <StackLayout
                 Margin="0,0,0,40"
@@ -536,16 +544,17 @@
                 VerticalOptions="EndAndExpand">
 
                 <ImageButton
+                    Command="{Binding BackViewCommand}"
+                    CommandParameter="Recover"
                     HorizontalOptions="Start"
                     Source="back.svg"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
                     BackgroundColor="#ABBA3C"
-                    Command="{Binding LoginCommand}"
+                    Command="{Binding ValidateRecoverPasswordCommand}"
                     CornerRadius="20"
                     HorizontalOptions="Start"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     MinimumWidthRequest="150"
                     Text="Validar"
                     TextColor="Black"
@@ -565,7 +574,7 @@
         <!--  Nueva contraseña  -->
         <StackLayout
             Margin="40,60,30,0"
-            IsVisible="False"
+            IsVisible="{Binding IsVisibleCreateNewPassword}"
             VerticalOptions="FillAndExpand">
 
             <Label
@@ -592,7 +601,7 @@
                     Margin="20,0,20,0"
                     Placeholder="Contraseña"
                     PlaceholderColor="White"
-                    Text="{Binding Username}"
+                    Text="{Binding Password}"
                     TextColor="White" />
             </Frame>
 
@@ -614,11 +623,11 @@
                     Margin="20,0,20,0"
                     Placeholder="Repetir contraseña"
                     PlaceholderColor="White"
-                    Text="{Binding Username}"
+                    Text="{Binding RepeatPassword}"
                     TextColor="White" />
             </Frame>
 
-            <Label Text="Tu contraseña debe tener al menos 8 caracteres, comenzar con una letra e  incluir números." />
+            <Label Text="La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres." />
 
             <StackLayout
                 Margin="10,0,0,40"
@@ -628,16 +637,17 @@
                 VerticalOptions="EndAndExpand">
 
                 <ImageButton
+                    Command="{Binding BackViewCommand}"
+                    CommandParameter="ValidateRecoverPassword"
                     HorizontalOptions="Start"
                     Source="back.svg"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
                     BackgroundColor="#ABBA3C"
-                    Command="{Binding LoginCommand}"
+                    Command="{Binding CreateNewPasswordCommand}"
                     CornerRadius="20"
                     HorizontalOptions="Center"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     MinimumWidthRequest="150"
                     Text="Confirmar"
                     TextColor="#184159"
@@ -657,7 +667,7 @@
         <!--  Finalizado  -->
         <StackLayout
             Margin="50,70,50,20"
-            IsVisible="False"
+            IsVisible="{Binding IsVisibleFinishedRecoverPassword}"
             VerticalOptions="FillAndExpand">
 
             <Label
@@ -671,9 +681,11 @@
             <Label Margin="0,15,0,0" Text="Vuelve para iniciar sesión." />
 
             <Button
+                Margin="0,0,0,40"
                 BackgroundColor="Transparent"
                 BorderColor="#ABBA3C"
-                Command="{Binding RegistryUserCommand}"
+                Command="{Binding BackViewCommand}"
+                CommandParameter="Login"
                 CornerRadius="20"
                 Text="Volver al inicio"
                 TextColor="#ABBA3C"

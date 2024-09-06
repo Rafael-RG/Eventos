@@ -47,6 +47,18 @@ namespace Backend.Common.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<Result<bool>> ValidateRegistryAsync(ValidateRegistry newEvent);
+
+        Task<Result<bool>> FindUserAndSendCodeAsync(string userEmail);
+
+        Task<Result<bool>> ValidateCodeAsync(ValidateRegistry validateCode);
+
+        /// <summary>
+        /// Update Password
+        /// </summary>
+        /// <returns></returns>
+        Task<Result<bool>> RecoveryPasswordAsync(RecoveryPassword recoveryPassword);
+
+
     }
 
 
