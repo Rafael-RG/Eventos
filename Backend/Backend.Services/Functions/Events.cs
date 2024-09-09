@@ -138,7 +138,7 @@ namespace Backend.Service.Functions
         public async Task<HttpResponseData> FindUserAndSendCodeAsync(
          [HttpTrigger(AuthorizationLevel.Function, "post", Route = "finduserandsendcode")] HttpRequestData request)
         {
-            return await request.CreateResponse(this.businessLogic.FindUserAndSendCodeAsync, request.DeserializeBody<string>(), responseLinks =>
+            return await request.CreateResponse(this.businessLogic.FindUserAndSendCodeAsync, request.DeserializeBody<UserEmail>(), responseLinks =>
             {
                 responseLinks.Links = new Dictionary<string, string> { };
             }, logger);
@@ -170,6 +170,18 @@ namespace Backend.Service.Functions
             }, logger);
         }
 
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(LoginAsync))]
+        public async Task<HttpResponseData> LoginAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "login")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.LoginAsync, request.DeserializeBody<RecoveryPassword>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
 
     }
 }

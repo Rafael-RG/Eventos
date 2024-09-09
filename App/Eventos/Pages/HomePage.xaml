@@ -36,7 +36,7 @@
                     FontSize="32"
                     HorizontalOptions="Center"
                     SemanticProperties.HeadingLevel="Level1"
-                    Text="{Binding User.UserName}" />
+                    Text="{Binding User.FullName}" />
 
 
             </VerticalStackLayout>

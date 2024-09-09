@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Eventos.Common.Extensions;
 using Eventos.Common.Interfaces;
-using Eventos.Common.Services;
 using Eventos.DataAccess;
 
 namespace Eventos;
@@ -28,6 +27,8 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+        builder.Services.AddDbContext<DatabaseContext>();
+        builder.Services.AddSingleton<IDataService, DataService>();
         builder.Services.AddLocalization();
         builder.UseMauiApp<App>().UseMauiCommunityToolkit();
 		builder.ConfigureMauiHandlers(h =>

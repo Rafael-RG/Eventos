@@ -35,7 +35,7 @@ namespace Eventos.ViewModels
         {
             this.httpService = httpService;
             //this.User = AppShell;
-            this.User = new User() {Email="rafa_rg11@hotmail.com",FullName="Rafael", UserName="Rafael" };
+            this.User = new User() {Email="rafa_rg11@hotmail.com",FullName="Rafael" };
         }
 
         public override async void OnAppearing()

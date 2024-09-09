@@ -413,13 +413,13 @@ namespace Backend.Service.BusinessLogic
             return response;
         }
 
-        public async Task<Result<bool>> FindUserAndSendCodeAsync(string email)
+        public async Task<Result<bool>> FindUserAndSendCodeAsync(UserEmail userEmail)
         {
             var response = new Result<bool>();
 
             try
             {
-                var user = await this.dataAccess.GetUserAsync(email);
+                var user = await this.dataAccess.GetUserAsync(userEmail.Email);
 
                 if (user.PartitionKey != null)
                 {
@@ -431,7 +431,7 @@ namespace Backend.Service.BusinessLogic
 
                     if (result)
                     {
-                        await SendEmail(code, email, user.FullName, 1);
+                        await SendEmail(code, user.Email, user.FullName, 1);
 
                         response.Data = true;
                         response.Success = true;
@@ -531,6 +531,35 @@ namespace Backend.Service.BusinessLogic
             return response;
         }
 
+        public async Task<Result<string>> LoginAsync(RecoveryPassword credentials)
+        {
+            var response = new Result<string>();
+
+            try
+            {
+                var user = await this.dataAccess.GetUserAsync(credentials.Email);
+
+                if (user.PartitionKey != null && user.Password == credentials.Password)
+                {
+                    response.Data = user.FullName;
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Data = "Usuario o contraseña incorrectos";
+                    response.Success = false;
+                }
+
+            }
+            catch
+            {
+                response.Data = "Usuario o contraseña incorrectos";
+                response.Success = false;
+            }
+
+            return response;
+        }
+
         private async Task SendEmail(string code, string email, string name, int recovery = 0)
         {
             try
@@ -540,12 +569,12 @@ namespace Backend.Service.BusinessLogic
 
                 if (recovery == 1)
                 {
-                    body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Recibimos una solicitud para recuperar tu contraseña en <strong>Recuérdame</strong>.</p>\r\n    <p>Para que puedas recuperar tu contraseña, por favor ingresa el siguiente código en la app:</p>\r\n    <h2 style=\"color: #ABBA3C;\">{code}</h2>\r\n    <p>Si no solicitaste recuperar tu contraseña, por favor ignora este mensaje.</p>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>¡Bienvenido a la comunidad de <strong>Recuérdame</strong>!</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
+                    body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Recibimos una solicitud para recuperar tu contraseña en <strong>Recuérdame</strong>.</p>\r\n    <p>Para que puedas recuperar tu contraseña, por favor ingresa el siguiente código en la app:</p>\r\n    <h2 style=\"color: #ABBA3C;\">{code}</h2>\r\n    <p>Si no solicitaste recuperar tu contraseña, por favor ignora este mensaje.</p>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
                     subject = "Recuperación de contraseña";
                 }
                 else if (recovery == 2)
                 {
-                    body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n    <p>Recibimos una solicitud para recuperar tu contraseña en <strong>Recuérdame</strong>.</p>\r\n    <p>Te informamos que tu contraseña ha sido actualizada satisfactoriamente.</p>\r\n    <p>Si no solicitaste recuperar tu contraseña, por favor ignora este mensaje.</p>\r\n    <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n    <p>¡Bienvenido a la comunidad de <strong>Recuérdame</strong>!</p>\r\n    <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
+                    body = $"<html>\r\n  <head></head>\r\n  <body>\r\n    <p>¡Hola {name}!</p>\r\n   <p>Te informamos que tu contraseña ha sido actualizada satisfactoriamente.</p>\r\n   <p>Si tienes alguna duda o necesitas ayuda, no dudes en contactarnos.</p>\r\n      <p>Saludos,</p>\r\n    <p>El equipo de Recuérdame</p>\r\n  </body>\r\n</html>\r\n";
                     subject = "Se cambió tu contraseña";
                 }
 

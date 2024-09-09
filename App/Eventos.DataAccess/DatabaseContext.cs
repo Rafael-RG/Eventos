@@ -9,8 +9,6 @@ namespace Eventos.DataAccess
     /// </summary>
     public class DatabaseContext : DbContext
     {
-        public DbSet<Item> Items { get; set; }
-
         public DbSet<User> User { get; set; }
 
 
@@ -29,7 +27,7 @@ namespace Eventos.DataAccess
         /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Constants.DatabaseName);
+            var databasePath = Path.Combine(FileSystem.AppDataDirectory, Constants.DatabaseName);
             optionsBuilder.UseSqlite($"Filename={databasePath}");
         }
     }

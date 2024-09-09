@@ -530,7 +530,7 @@
             <Button
                 Background="Transparent"
                 BackgroundColor="Transparent"
-                Command="{Binding ResendCodeCommand}"
+                Command="{Binding ResendCodeRecoveryCommand}"
                 HorizontalOptions="Center"
                 IsEnabled="{Binding IsActiveSendCode}"
                 Text="Reenviar código"

@@ -8,14 +8,6 @@ namespace Eventos.Common.Interfaces
     /// </summary>
     public interface IDataService
     {
-
-        /// <summary>
-        /// Checks if the synchronization is mandatory
-        /// </summary>
-        /// <returns></returns>
-        Task<bool> MustSynchronizeAsync();
-     
-
         /// <summary>
         /// Save a collections of items
         /// </summary>
@@ -36,6 +28,6 @@ namespace Eventos.Common.Interfaces
         /// <summary>
         /// Loads items from the local storage
         /// </summary>
-        Task<List<Item>> LoadItemsAsync();
+        Task<User> LoadUserAsync();
     }
 }

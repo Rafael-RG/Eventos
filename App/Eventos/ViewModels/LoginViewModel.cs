@@ -5,6 +5,8 @@ using Eventos.GoogleAuth;
 using Eventos.Models;
 using Eventos.Common.Interfaces;
 using Eventos.Common;
+using Microsoft.Maui;
+using Newtonsoft.Json.Linq;
 
 namespace Eventos.ViewModels
 {
@@ -92,27 +94,40 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void Login()
         {
-            User loggedUser = null;
-
-            //if (loggedUser == null)
-            //{
-            //    loggedUser = new User();
-            //}
-
-            if (loggedUser != null)
+            if (this.UserEmailLogin == null || this.PasswordLogin == null || this.UserEmailLogin?.Length == 0 || this.PasswordLogin?.Length == 0)
             {
-                AppShell.User = new User
-                {
-                    Email = loggedUser.Email,
-                    FullName = loggedUser.FullName,
-                    UserName = loggedUser.UserName
-                };
-
-                await Shell.Current.GoToAsync("///HomePage", false);
+                await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son requeridos", "OK");
+                return;
             }
 
-            //await Shell.Current.GoToAsync("///HomePage", false);
+            var user = new RecoveryPassword
+            {
+                Email = this.UserEmailLogin.ToLower(),
+                Password = this.PasswordLogin
+            };
 
+            var response = await this.httpService.PostAsync<ResponseData>(user, Constants.Login);
+            if (response.Success)
+            {
+                User loggedUser = new User
+                {
+                    Email = this.UserEmailLogin.ToLower(),
+                    FullName = response.Data.ToString(),
+                };
+
+                //save in local storage
+                var result = await this.DataService.InsertOrUpdateItemsAsync(loggedUser);
+
+                if (result > 0)
+                {
+                    AppShell.User = loggedUser;
+                    await Shell.Current.GoToAsync("///HomePage", false);
+                }    
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", response.Message, "OK");
+            }
         }
 
         /// <summary>
@@ -137,10 +152,17 @@ namespace Eventos.ViewModels
                 return;
             }
 
-            var result = await this.httpService.PostAsync<ResponseData>(userEmail, Constants.FindUserAndSendCode);
+            var email = new
+            {
+                Email = this.UserEmail.ToLower()
+            };
+
+            var result = await this.httpService.PostAsync<ResponseData>(email, Constants.FindUserAndSendCode);
 
             if (result.Success) 
             {
+                this.IsActiveSendCode = true;
+                this.ValidateCode = string.Empty;
                 ChangeView("ValidateRecoverPassword");
             }
             else
@@ -217,6 +239,50 @@ namespace Eventos.ViewModels
         }
 
         [RelayCommand]
+        private async void ResendCodeRecovery()
+        {
+            this.IsActiveSendCode = false;
+
+            // Inicializar el temporizador
+
+            this.Timer = Dispatcher.GetForCurrentThread().CreateTimer();
+
+            TimeSpan maxDuration = TimeSpan.FromSeconds(10);
+            this.Timer.Interval = TimeSpan.FromSeconds(1);
+            this.Timer.Tick += (s, e) =>
+            {
+                // Restar 1 segundo a la duración máxima
+                maxDuration = maxDuration.Subtract(TimeSpan.FromSeconds(1));
+
+                // Actualizar el texto del temporizador
+                this.TimerText = string.Format("{0:ss}", maxDuration);
+
+                // Verificar si el tiempo ha llegado a cero
+                if (maxDuration.TotalSeconds <= 0)
+                {
+                    // Detener el temporizador y ejecutar la acción final
+                    this.Timer.Stop();
+                    this.IsActiveSendCode = true;
+                }
+            };
+
+            // Iniciar el temporizador
+            this.Timer.Start();
+
+            var userEmail = new
+            {
+                Email = this.UserEmail.ToLower()
+            };
+
+            var result = await this.httpService.PostAsync<ResponseData>(userEmail, Constants.FindUserAndSendCode);
+
+            if (!result.Success)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+            }
+        }
+
+        [RelayCommand]
         private void BackView(string view)
         {
             ChangeView(view);
@@ -253,7 +319,7 @@ namespace Eventos.ViewModels
             var newUser = new NewUser
             {
                 FullName = this.FullName,
-                Email = this.UserEmail,
+                Email = this.UserEmail.ToLower(),
                 Password = this.Password,
                 Country = this.Country,
                 RetryValidate = false
@@ -332,7 +398,7 @@ namespace Eventos.ViewModels
 
             var validateRegistry = new ValidateRegistry
             {
-                Email = this.UserEmail,
+                Email = this.UserEmail.ToLower(),
                 Code = this.ValidateCode
             };
 
@@ -354,7 +420,6 @@ namespace Eventos.ViewModels
             ClearData();
             ChangeView("Login");
         }
-
 
         [RelayCommand]
         private async void Suscribe()
@@ -380,28 +445,18 @@ namespace Eventos.ViewModels
         {
             try
             {
-                User loggedUser = null;
+                var user = await this.DataService.LoadUserAsync();
 
-                //if (loggedUser == null)
-                //{
-                //    loggedUser = new User();
-                //}
-
-                if (loggedUser != null)
+                if (user != null)
                 {
-                    AppShell.User = new User
-                    {
-                        Email = loggedUser.Email,
-                        FullName = loggedUser.FullName,
-                        UserName = loggedUser.UserName
-                    };
-
+                    AppShell.User = user;
                     await Shell.Current.GoToAsync("///HomePage", false);
                 }
+                else 
+                {
+                    ChangeView("Login");
+                }
 
-                ChangeView("Login");
-
-                await Shell.Current.GoToAsync("///LoginPage", false);
             }
             catch (Exception ex)
             {

@@ -47,5 +47,7 @@
         public static string ValidateCode => WebApiHost + "validatecode?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
         public static string RecoverPassword => WebApiHost + "recoverpassword?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+    
+        public static string Login => WebApiHost + "login?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
     }
 }

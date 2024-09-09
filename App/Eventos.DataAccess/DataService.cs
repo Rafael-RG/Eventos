@@ -20,18 +20,6 @@ namespace Eventos.DataAccess
 
 
         ///<inheritdoc/>
-        public async Task<bool> MustSynchronizeAsync()
-        {
-            var count = 0;
-            using (var databaseContext = new DatabaseContext())
-            {
-                count = await databaseContext.Items.CountAsync();
-            }
-            return count == 0;
-        }
-
-
-        ///<inheritdoc/>
         public async Task<int> SaveItemsAsync<T>(IEnumerable<T> items, string tableName) where T : class
         {
             using (var databaseContext = new DatabaseContext())
@@ -71,12 +59,12 @@ namespace Eventos.DataAccess
 
 
         ///<inheritdoc/>
-        public async Task<List<Item>> LoadItemsAsync()
+        public async Task<User> LoadUserAsync()
         {
             using (var databaseContext = new DatabaseContext())
             {
-                var items = await databaseContext.Items.ToListAsync().ConfigureAwait(false);
-                return items;
+                var user = await databaseContext.User.FirstOrDefaultAsync();
+                return user;
             }
         }
     }
