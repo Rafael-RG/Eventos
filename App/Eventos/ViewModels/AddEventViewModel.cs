@@ -84,18 +84,20 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void AddEvent()
         {
-            IsBusy = true;
+            this.IsBusy = true;
             try 
             {
                 if (this.StartTime == this.EndTime)
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "La hora de inicio y fin no pueden ser iguales.", "OK");
+                    this.IsBusy = false;
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(this.Title) || string.IsNullOrWhiteSpace(this.Description) || this.SelectedZone == null)
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "Por favor, complete todos los campos obligatorios.", "OK");
+                    this.IsBusy = false;
                     return;
                 }
 
@@ -130,10 +132,11 @@ namespace Eventos.ViewModels
             }
             catch(Exception ex)
             {
+                this.IsBusy = false;
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al crear al evento");
             }
 
-            IsBusy = false;
+            this.IsBusy = false;
         }
 
         private void PopulateTimeZones()

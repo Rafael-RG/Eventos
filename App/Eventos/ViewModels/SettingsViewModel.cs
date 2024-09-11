@@ -25,13 +25,12 @@ namespace Eventos.ViewModels
         /// Login with active directory
         /// </summary>
         [RelayCommand]
-        private async void LogoutWithGoogle()
+        private async void Logout()
         {
-            //await _googleAuthService.LogoutAsync();
 
-            //await this.NavigationService.Close(this);
+            await this.DataService.DeleteItemAsync(AppShell.User);
 
-            //await this.NavigationService.Navigate<LoginViewModel>();
+            await Shell.Current.GoToAsync("///LoginPage", false);
         }
     }
 }

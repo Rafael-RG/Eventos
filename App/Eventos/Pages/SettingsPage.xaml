@@ -10,26 +10,38 @@
     x:TypeArguments="viewModels:SettingsViewModel"
     Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout
-        Padding="30,0"
-        Spacing="25"
-        VerticalOptions="Center">
+    <StackLayout BackgroundColor="White">
+        <Border
+            Padding="20"
+            BackgroundColor="#184159"
+            Stroke="#184159"
+            StrokeThickness="1">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,30,30" />
+            </Border.StrokeShape>
+            <Image Source="recuerdame_white.svg" />
+        </Border>
+        <StackLayout
+            Padding="30,0"
+            Spacing="25"
+            VerticalOptions="FillAndExpand">
 
-            <StackLayout Margin="0,12,0,0" HeightRequest="32">
-                <ActivityIndicator
-                    HeightRequest="32"
-                    IsRunning="True"
-                    IsVisible="{Binding IsBusy}"
-                    WidthRequest="32" />
-            </StackLayout>
+            <ActivityIndicator
+                HeightRequest="32"
+                IsRunning="True"
+                IsVisible="{Binding IsBusy}"
+                WidthRequest="32" />
 
             <Button
-                TextColor="Black"
-                Command="{Binding LogoutWithGoogleCommand}"
-                Text="Cerrar sesion" />
+                Margin="0,10,0,40"
+                BackgroundColor="#419387"
+                Command="{Binding LogoutCommand}"
+                CornerRadius="20"
+                Text="Cerrar sesion"
+                TextColor="White"
+                VerticalOptions="EndAndExpand" />
 
-        </VerticalStackLayout>
-    </ScrollView>
+        </StackLayout>
+    </StackLayout>
 
 </pages:BaseContentPage>

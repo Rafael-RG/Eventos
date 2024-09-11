@@ -7,19 +7,23 @@
     xmlns:pages="clr-namespace:Eventos.Pages"
     FlyoutHeaderBehavior="CollapseOnScroll"
     Shell.FlyoutBehavior="Disabled"
-    Shell.TabBarIsVisible="True">
+    Shell.TabBarIsVisible="True"
+    Shell.TabBarBackgroundColor="#184159"
+    Shell.TabBarForegroundColor="#D2E898"
+    Shell.TabBarUnselectedColor="#FFFFFF"
+    Shell.TabBarTitleColor="#D2E898">
 
     <TabBar>
         <Tab Title="Inicio" Icon="home.svg">
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" Route="HomePage" />
         </Tab>
-        <Tab Title="Nuevo" Icon="add.svg">
-            <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" Route="AddEventPage" />
-        </Tab>
         <Tab Title="Historial" Icon="history.svg">
             <ShellContent ContentTemplate="{DataTemplate pages:HistoryPage}" Route="HistoryPage" />
         </Tab>
-        <Tab Title="Configuracion" Icon="setting.svg">
+        <Tab Title="Crear evento" Icon="add.svg">
+            <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" Route="AddEventPage" />
+        </Tab>
+        <Tab Title="Perfil" Icon="setting.svg">
             <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" Route="SettingsPage" />
         </Tab>
     </TabBar>

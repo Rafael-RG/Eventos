@@ -86,6 +86,8 @@ namespace Eventos.ViewModels
         public LoginViewModel(IServiceProvider provider, IGoogleAuthService googleAuthService, IHttpService httpService) : base(provider)
         {
             this.httpService = httpService;
+            ClearData();
+            ChangeView("Login");
         }
 
         /// <summary>
@@ -454,6 +456,7 @@ namespace Eventos.ViewModels
                 }
                 else 
                 {
+                    ClearData();
                     ChangeView("Login");
                 }
 
@@ -526,6 +529,9 @@ namespace Eventos.ViewModels
             this.UserEmail = string.Empty;
             this.Country = string.Empty;
             this.ValidateCode = string.Empty;
+            this.UserEmailLogin = string.Empty;
+            this.PasswordLogin = string.Empty;
+            this.IsActiveSendCode = true;
         }
 
         private void ChangeView(string view)

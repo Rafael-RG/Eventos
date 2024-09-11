@@ -17,20 +17,24 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
+    <StackLayout BackgroundColor="White">
         <StackLayout>
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
             <VerticalStackLayout
-                Padding="30,0"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Spacing="25"
                 VerticalOptions="Center">
 
-                <Label
-                    FontSize="32"
-                    HorizontalOptions="Center"
-                    SemanticProperties.HeadingLevel="Level1"
-                    Text="Bienvenido" />
+                <Border
+                    Padding="20"
+                    BackgroundColor="#184159"
+                    Stroke="#184159"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0,0,30,30" />
+                    </Border.StrokeShape>
+                    <Image Source="recuerdame_white.svg" />
+                </Border>
 
                 <Label
                     FontSize="32"
@@ -42,6 +46,6 @@
             </VerticalStackLayout>
         </StackLayout>
 
-    </ScrollView>
+    </StackLayout>
 
 </pages:BaseContentPage>
