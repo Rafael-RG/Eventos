@@ -63,7 +63,7 @@ namespace Backend.Common.Interfaces
         /// Update Password
         /// </summary>
         /// <returns></returns>
-        Task<Result<string>> LoginAsync(RecoveryPassword credentials);
+        Task<Result<UserEntry>> LoginAsync(RecoveryPassword credentials);
 
     }
 

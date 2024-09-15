@@ -603,9 +603,9 @@ namespace Backend.Service.BusinessLogic
             return response;
         }
 
-        public async Task<Result<string>> LoginAsync(RecoveryPassword credentials)
+        public async Task<Result<UserEntry>> LoginAsync(RecoveryPassword credentials)
         {
-            var response = new Result<string>();
+            var response = new Result<UserEntry>();
 
             try
             {
@@ -613,19 +613,19 @@ namespace Backend.Service.BusinessLogic
 
                 if (user.PartitionKey != null && user.Password == credentials.Password)
                 {
-                    response.Data = user.FullName;
+                    response.Data = user;
                     response.Success = true;
                 }
                 else
                 {
-                    response.Data = "Usuario o contraseña incorrectos";
+                    response.Message = "Usuario o contraseña incorrectos";
                     response.Success = false;
                 }
 
             }
             catch
             {
-                response.Data = "Usuario o contraseña incorrectos";
+                response.Message = "Usuario o contraseña incorrectos";
                 response.Success = false;
             }
 
