@@ -17,8 +17,11 @@ namespace Backend.Models
         public string Country { get; set; }
         public string PartitionKey { get; set; }
         public string RowKey { get; set; }
+        public int TotalClicks { get; set; }
+        public int TotalClicksCurrentPeriod { get; set; }
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
         public string LastCodeActivation { get; set; }
+        public long LastPeriod { get; set; }
     }
 }

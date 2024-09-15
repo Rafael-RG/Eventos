@@ -214,6 +214,32 @@ namespace Backend.DataAccess
             }
         }
 
+        /// <summary>
+        /// Get all the events from the table by email
+        /// </summary>
+        public async Task<List<PlanSuscribeEntry>> GetPlansAsync()
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("events");
+                await tableClient.CreateIfNotExistsAsync();
+                var query = tableClient.QueryAsync<PlanSuscribeEntry>(filter: $"PartitionKey eq 'recuerdame'");
+                var eventEntity = new List<PlanSuscribeEntry>();
+
+                await foreach (var item in query)
+                {
+                    eventEntity.Add(item);
+                    break;
+                }
+
+                return eventEntity;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
 
     }
 }

@@ -27,7 +27,6 @@ namespace Backend.Service.BusinessLogic
     /// </inheritdoc/>
     public class EventsLogic : BaseLogic, IEventsLogic
     {
-        private int SubscriptionProductId { get; set; }
         private string ClientId { get; set; }
         private string ClientSecret { get; set; }
 
@@ -37,25 +36,28 @@ namespace Backend.Service.BusinessLogic
         /// <param name="dataAccess"></param>
         public EventsLogic(ISessionProvider sessionProvider, IDataAccess dataAccess, ILogger<EventsLogic> logger, IHttpService httpService) : base(sessionProvider, dataAccess, logger, httpService)
         {
-            this.SubscriptionProductId = Convert.ToInt32(Environment.GetEnvironmentVariable("HotmartSubscriptionProductId"));
             this.ClientId = Environment.GetEnvironmentVariable("HotmartClientId");
             this.ClientSecret = Environment.GetEnvironmentVariable("HotmartClientSecret");
         }
 
 
         /// </inheritdoc/>
-        public async Task<Result<bool>> ValidateSubscriptionAsync(ValidateSubscriptionRequest validateSubscriptionRequest)
+        public async Task<Result<SuscriberUserInfo>> ValidateSubscriptionAsync(ValidateSubscriptionRequest validateSubscriptionRequest)
         {
+            var res = new Result<SuscriberUserInfo>();
+
             try
             {
                 var accessToken = await this.GetAccessTokenAsync();
 
                 var userEmail = validateSubscriptionRequest.UserEmail;
-                bool isActive = false;
 
                 if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(userEmail))
                 {
-                    return new Result<bool>(isActive);
+                    res.Success = false;
+                    res.Data = null;
+                    res.Message = "No se pudo obtener el token de acceso";
+                    return res;
                 }
 
                 using (var client = new HttpClient())
@@ -72,29 +74,56 @@ namespace Backend.Service.BusinessLogic
                         string responseBody = await response.Content.ReadAsStringAsync();
                         var subscriptionData = JsonConvert.DeserializeObject<SubscriptionsResponse>(responseBody);
 
+                        var plans = await this.dataAccess.GetPlansAsync();
+
+                        var suscriberUserInfo = new SuscriberUserInfo();
+                        suscriberUserInfo.IsSubscribed = false;
+                        suscriberUserInfo.ClickCount = 0;
+
                         foreach (var subscription in subscriptionData.Items)
                         {
-                            var productId = subscription.Product.Id;
-                            string status = subscription.Status;
 
-                            if (productId == this.SubscriptionProductId && status == "ACTIVE")
+                            if (plans.Any(p=>p.RowKey == subscription.Plan.Id.ToString()) 
+                                && subscription.Status == "ACTIVE")
                             {
-                                isActive = true;
+                                var user = await this.dataAccess.GetUserAsync(userEmail);
+                                if (user.LastPeriod != subscription.DateNextCharge) 
+                                {
+                                    user.LastPeriod = subscription.DateNextCharge;
+                                    user.TotalClicksCurrentPeriod = 0;
+                                    await this.dataAccess.SaveNewUserAsync(user);
+                                }
+                                
+                                var plan = plans.FirstOrDefault(p => p.RowKey == subscription.Plan.Id.ToString());
+
+                                suscriberUserInfo.IsSubscribed = true;
+                                suscriberUserInfo.Email = userEmail;
+                                suscriberUserInfo.ClickCount = plan.Clicks;
+                                suscriberUserInfo.Plan = subscription.Plan.Name;
+                                suscriberUserInfo.PlanFinishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.DateNextCharge);
                             }
                         }
 
-                        return new Result<bool>(isActive);
+                        res.Success = true;
+                        res.Data = suscriberUserInfo;
+                        return res;
                     }
                     else
                     {
-                        return new Result<bool>(isActive);
+                        res.Success = false;
+                        res.Data = null;
+                        res.Message = "No se pudo obtener la información de la suscripción";
+                        return res;
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                return new Result<bool>(false);
+                res.Success = false;
+                res.Data = null;
+                res.Message = ex.Message;
+                return res;
             }
         }
 
@@ -181,6 +210,7 @@ namespace Backend.Service.BusinessLogic
                         eventEntry.EndTime = newEvent.EndTime;
                         eventEntry.Zone = newEvent.Zone;
                         eventEntry.ZoneId = newEvent.ZoneId;
+                        eventEntry.EventURl = newEvent.EventURl;
                     }
                 }
 
@@ -251,7 +281,20 @@ namespace Backend.Service.BusinessLogic
             {
                 var eventEntry = await this.dataAccess.GetEventAsync(rowKey);
 
+                var suscription = await this.ValidateSubscriptionAsync(new ValidateSubscriptionRequest { UserEmail = eventEntry.Email });
+
+                if (!suscription.Data.IsSubscribed)
+                {
+                    return null;
+                }
+
+                var user = await this.dataAccess.GetUserAsync(eventEntry.Email);
+
                 eventEntry.Count= eventEntry.Count + 1;
+                user.TotalClicks = user.TotalClicks + 1;
+                user.TotalClicksCurrentPeriod = user.TotalClicksCurrentPeriod + 1;
+
+                await this.dataAccess.SaveNewUserAsync(user); 
 
                 var result = await this.dataAccess.SaveEntryAsync(eventEntry);
 
@@ -276,9 +319,11 @@ namespace Backend.Service.BusinessLogic
 
                 var byteArray = Encoding.UTF8.GetBytes(icsContent);
 
+                var fileName = $"{eventItem.Title}.ics";
+
                 return new FileContentResult(byteArray, "text/calendar")
                 {
-                    FileDownloadName = "event.ics",
+                    FileDownloadName = fileName,
                 };
             }
             catch

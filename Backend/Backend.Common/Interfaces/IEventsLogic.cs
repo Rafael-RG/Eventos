@@ -16,7 +16,7 @@ namespace Backend.Common.Interfaces
         /// Gets all the documents
         /// </summary>
         /// <returns></returns>
-        Task<Result<bool>> ValidateSubscriptionAsync(ValidateSubscriptionRequest validateSubscriptionRequest);
+        Task<Result<SuscriberUserInfo>> ValidateSubscriptionAsync(ValidateSubscriptionRequest validateSubscriptionRequest);
 
         /// <summary>
         /// Gets all the documents

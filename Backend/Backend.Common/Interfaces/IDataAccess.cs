@@ -57,5 +57,7 @@ namespace Backend.Common.Interfaces
         /// </summary>
         Task<UserEntry> GetUserAsync(string email);
 
+        Task<List<PlanSuscribeEntry>> GetPlansAsync();
+
     }
 }
