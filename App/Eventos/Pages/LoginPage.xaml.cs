@@ -14,6 +14,7 @@ public partial class LoginPage
 	public LoginPage(LoginViewModel viewModel) : base(viewModel, "LoginPage")
 	{
         this.BindingContext = viewModel;
+        Application.Current.UserAppTheme = AppTheme.Light;
         InitializeComponent();
     }
 

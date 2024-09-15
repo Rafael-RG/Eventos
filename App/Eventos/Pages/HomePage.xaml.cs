@@ -15,7 +15,8 @@ public partial class HomePage
 	public HomePage(HomeViewModel viewModel) : base(viewModel, "HomePage")
 	{
 		InitializeComponent();
-		this.BindingContext = viewModel;
+        Application.Current.UserAppTheme = AppTheme.Light;
+        this.BindingContext = viewModel;
 	}
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)

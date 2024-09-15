@@ -14,6 +14,7 @@ public partial class AddEventPage
 	public AddEventPage(AddEventViewModel viewModel) : base(viewModel, "AddEventPage")
 	{
 		InitializeComponent();
+        Application.Current.UserAppTheme = AppTheme.Light;
         this.BindingContext = viewModel;
     }
 

@@ -132,6 +132,18 @@ namespace Eventos.ViewModels
             this.IsBusy = false;
         }
 
+        [RelayCommand]
+        private void Clear()
+        {
+            this.Title = string.Empty;
+            this.Description = string.Empty;
+            this.Date = DateTime.Now;
+            this.StartTime = DateTime.Now.TimeOfDay;
+            this.EndTime = DateTime.Now.AddHours(1).TimeOfDay;
+            this.SelectedZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
+            this.Url = string.Empty;
+        }
+
         private void PopulateTimeZones()
         {
             var mainTimeZones = new[]

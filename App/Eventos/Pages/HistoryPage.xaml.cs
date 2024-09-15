@@ -14,6 +14,7 @@ public partial class HistoryPage
     public HistoryPage(HistoryViewModel viewModel, IServiceProvider provider) : base(viewModel, "HistoryPage")
     {
         InitializeComponent();
+        Application.Current.UserAppTheme = AppTheme.Light;
         this.BindingContext = viewModel;
         this.viewModel = viewModel;
         this.provider = provider;

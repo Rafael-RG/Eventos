@@ -27,10 +27,11 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void Logout()
         {
-
+            this.IsBusy = true;
             await this.DataService.DeleteItemAsync(AppShell.User);
 
             await Shell.Current.GoToAsync("///LoginPage", false);
+            this.IsBusy = false;
         }
     }
 }

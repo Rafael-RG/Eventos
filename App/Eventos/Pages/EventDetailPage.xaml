@@ -79,7 +79,7 @@
                 TextColor="#184159" />
             <Label
                 Margin="0,0,0,20"
-                Text="{Binding EventItem.URLFile}"
+                Text="{Binding EventItem.EventURl}"
                 TextColor="#666666" />
             <Label
                 FontSize="16"
@@ -157,10 +157,10 @@
         </StackLayout>
 
         <StackLayout
-            VerticalOptions="FillAndExpand"
             Margin="20"
             IsVisible="{Binding UpdateView}"
-            Spacing="15">
+            Spacing="15"
+            VerticalOptions="FillAndExpand">
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
             <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" VerticalOptions="FillAndExpand">
 
@@ -191,6 +191,17 @@
                     Placeholder="Ingrese la descripción del evento"
                     PlaceholderColor="#666666"
                     Text="{Binding UpdatedEventItem.Description}"
+                    TextColor="#666666" />
+
+                <Label
+                    FontSize="Medium"
+                    Text="URL"
+                    TextColor="#184159" />
+                <Editor
+                    HeightRequest="60"
+                    Placeholder="Ingrese la URL del evento"
+                    PlaceholderColor="#666666"
+                    Text="{Binding UpdatedEventItem.EventURl}"
                     TextColor="#666666" />
 
                 <!--  Fecha del evento  -->
@@ -239,13 +250,14 @@
 
                 <!--  Botón para agregar el evento  -->
 
-                <Button VerticalOptions="EndAndExpand"
+                <Button
                     Margin="0,40,0,10"
                     BackgroundColor="#419387"
                     Clicked="Button_Clicked_Update"
                     CornerRadius="20"
                     Text="Guardar edición"
-                    TextColor="White" />
+                    TextColor="White"
+                    VerticalOptions="EndAndExpand" />
 
                 <Button
                     BackgroundColor="#D2E898"

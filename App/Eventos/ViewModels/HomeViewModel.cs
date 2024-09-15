@@ -8,6 +8,7 @@ namespace Eventos.ViewModels
     /// <summary>
     /// Home logic
     /// </summary>
+    [QueryProperty("User", "User")]
     public partial class HomeViewModel : BaseViewModel
     {
         ///// <summary>

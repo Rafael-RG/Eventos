@@ -179,6 +179,7 @@
                 </Frame.Shadow>
                 <Entry
                     Margin="20,0,20,0"
+                    IsPassword="True"
                     Placeholder="Contraseña"
                     PlaceholderColor="White"
                     Text="{Binding Password}"
@@ -201,6 +202,7 @@
                 </Frame.Shadow>
                 <Entry
                     Margin="20,0,20,0"
+                    IsPassword="True"
                     Placeholder="Repetir contraseña"
                     PlaceholderColor="White"
                     Text="{Binding RepeatPassword}"
@@ -221,12 +223,14 @@
                         Radius="15"
                         Offset="-4,4" />
                 </Frame.Shadow>
-                <Entry
+
+                <Picker
+                    Title="Seleccione su país"
                     Margin="20,0,20,0"
-                    Placeholder="País"
-                    PlaceholderColor="White"
-                    Text="{Binding Country}"
-                    TextColor="White" />
+                    ItemsSource="{Binding Countries}"
+                    SelectedItem="{Binding Country}"
+                    TextColor="White"
+                    TitleColor="White" />
             </Frame>
 
             <StackLayout

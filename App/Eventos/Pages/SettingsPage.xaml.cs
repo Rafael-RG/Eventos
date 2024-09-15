@@ -14,6 +14,7 @@ public partial class SettingsPage
 	public SettingsPage(SettingsViewModel viewModel) : base(viewModel, "SettingsPage")
 	{
 		InitializeComponent();
+        Application.Current.UserAppTheme = AppTheme.Light;
         this.BindingContext = viewModel;
     }
 

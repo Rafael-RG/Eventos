@@ -16,6 +16,7 @@ public partial class EventDetailPage
     public EventDetailPage(EventDetailViewModel viewModel, Action onPop) : base(viewModel, "EventDetailPage")
 	{
 		InitializeComponent();
+        Application.Current.UserAppTheme = AppTheme.Light;
         onPopCallback = onPop;
         this.BindingContext = viewModel;
     }

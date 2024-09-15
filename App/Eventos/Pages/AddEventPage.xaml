@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout BackgroundColor="White">
+    <StackLayout BackgroundColor="#DDDDDD">
         <Border
             Padding="20"
             BackgroundColor="#184159"
@@ -124,9 +124,9 @@
 
                 <Button
                     BackgroundColor="#D2E898"
-                    Command="{Binding AddEventCommand}"
+                    Command="{Binding ClearCommand}"
                     CornerRadius="20"
-                    Text="Volver"
+                    Text="Cancelar"
                     TextColor="#205048" />
             </StackLayout>
         </StackLayout>

@@ -142,6 +142,7 @@ namespace Eventos.ViewModels
                     newEvent.Zone = this.SelectedZone.DisplayName;
                     newEvent.ZoneId = this.SelectedZone.Id;
                     newEvent.RowKey = this.UpdatedEventItem.RowKey;
+                    newEvent.EventURl = this.UpdatedEventItem.EventURl;
                 }
 
                 var uri = Constants.SaveEvent;

@@ -7,6 +7,7 @@ using Eventos.Common.Interfaces;
 using Eventos.Common;
 using Microsoft.Maui;
 using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
 
 namespace Eventos.ViewModels
 {
@@ -78,6 +79,10 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private string country;
 
+        [ObservableProperty]
+        private ObservableCollection<string> countries;
+
+
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
@@ -120,7 +125,12 @@ namespace Eventos.ViewModels
                 if (result > 0)
                 {
                     AppShell.User = loggedUser;
-                    await Shell.Current.GoToAsync("///HomePage", false);
+                    this.UserEmailLogin = string.Empty;
+                    this.PasswordLogin = string.Empty;
+                    await Shell.Current.GoToAsync("///HomePage", new Dictionary<string, object> 
+                    {
+                        { "User", loggedUser }
+                    });
                 }    
             }
             else
@@ -449,11 +459,21 @@ namespace Eventos.ViewModels
                 if (user != null)
                 {
                     AppShell.User = user;
-                    await Shell.Current.GoToAsync("///HomePage", false);
+                    await Shell.Current.GoToAsync("///HomePage", new Dictionary<string, object>
+                    {
+                        { "User", user }
+                    });
                 }
                 else 
                 {
                     ClearData();
+
+                    if(this.Countries == null || !this.Countries.Any())
+                    {
+                        PopulateContries();
+                        this.Country = this.Countries.FirstOrDefault();
+                    }
+
                     ChangeView("Login");
                 }
 
@@ -617,6 +637,44 @@ namespace Eventos.ViewModels
                     break;
 
             }
+        }
+
+        private void PopulateContries() 
+        {
+            var countriesOfAmerica = new[]
+            {
+                "Argentina",
+                "Bolivia",
+                "Brasil",
+                "Canadá",
+                "Chile",
+                "Colombia",
+                "Costa Rica",
+                "Cuba",
+                "Ecuador",
+                "El Salvador",
+                "Estados Unidos",
+                "Granada",
+                "Guatemala",
+                "Guyana",
+                "Haití",
+                "Honduras",
+                "Jamaica",
+                "México",
+                "Nicaragua",
+                "Panamá",
+                "Paraguay",
+                "Perú",
+                "Puerto Rico",
+                "República Dominicana",
+                "Surinam",
+                "Trinidad y Tobago",
+                "Uruguay",
+                "Venezuela"
+            };
+
+
+            this.Countries = new ObservableCollection<string>(countriesOfAmerica);
         }
     }
 }
