@@ -18,6 +18,8 @@ using System.Runtime.CompilerServices;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.Extensions.Hosting;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Security.Policy;
 
 
 namespace Backend.Service.BusinessLogic
@@ -142,21 +144,45 @@ namespace Backend.Service.BusinessLogic
 
             try
             {
-                var eventEntry = new EventEntry
+                var eventEntry = new EventEntry();
+
+                if (string.IsNullOrEmpty(newEvent?.RowKey)) 
                 {
-                    Title = newEvent.Title,
-                    Description = newEvent.Description,
-                    Date = newEvent.Date,
-                    Email = newEvent.Email,
-                    EndTime = newEvent.EndTime,
-                    Count = newEvent.Count,
-                    PartitionKey = newEvent.Email,
-                    RowKey = Guid.NewGuid().ToString(),
-                    StartTime = newEvent.StartTime,
-                    Zone = newEvent.Zone,
-                    ZoneId = newEvent.ZoneId,
-                    EventURl = newEvent.EventURl
-                };
+                    eventEntry.Title = newEvent.Title;
+                    eventEntry.Description = newEvent.Description;
+                    eventEntry.Date = newEvent.Date;
+                    eventEntry.Email = newEvent.Email;
+                    eventEntry.EndTime = newEvent.EndTime;
+                    eventEntry.Count = newEvent.Count;
+                    eventEntry.PartitionKey = newEvent.Email;
+                    eventEntry.StartTime = newEvent.StartTime;
+                    eventEntry.Zone = newEvent.Zone;
+                    eventEntry.ZoneId = newEvent.ZoneId;
+                    eventEntry.EventURl = newEvent.EventURl;
+                    eventEntry.IsDeleted = newEvent.IsDelete;
+                    eventEntry.RowKey = Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    var getEvent = await this.dataAccess.GetEventAsync(newEvent.RowKey);
+                    
+                    eventEntry = getEvent;
+
+                    if (newEvent.IsDelete)
+                    {
+                        eventEntry.IsDeleted = true;
+                    }
+                    else 
+                    {
+                        eventEntry.Title = newEvent.Title;
+                        eventEntry.Description = newEvent.Description;
+                        eventEntry.Date = newEvent.Date;
+                        eventEntry.StartTime = newEvent.StartTime;
+                        eventEntry.EndTime = newEvent.EndTime;
+                        eventEntry.Zone = newEvent.Zone;
+                        eventEntry.ZoneId = newEvent.ZoneId;
+                    }
+                }
 
                 var result = await this.dataAccess.SaveEntryAsync(eventEntry);
 
@@ -204,7 +230,8 @@ namespace Backend.Service.BusinessLogic
                         Zone = x.Zone,
                         ZoneId = x.ZoneId,
                         Count= x.Count,
-                        EventURl = x.EventURl
+                        EventURl = x.EventURl,
+                        IsDelete = x.IsDeleted
                     }).ToList()
                 });
 

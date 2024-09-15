@@ -2,21 +2,45 @@
 
 namespace Eventos.Models
 {
-    public class EventItem
+    public class EventItem : Bindableitem
     {
+        private string title;
+        private string description;
+
         [JsonProperty("email")]
         public string Email { get; set; }
 
         [JsonProperty("title")]
-        public string Title { get; set; }
+        public string Title
+        {
+            get => this.title;
+            set
+            {
+                this.title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
 
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public string Description
+        {
+            get => this.description;
+            set
+            {
+                this.description = value;
+                OnPropertyChanged(nameof(Description));
+            }
+        }
 
         [JsonProperty("date")]
         public DateTime Date { get; set; }
         [JsonProperty("zone")]
         public string Zone { get; set; }
+        
+        [JsonProperty("zoneId")]
+        public string ZoneId { get; set; }
+
+
 
         [JsonProperty("startTime")]
         public string StartTime { get; set; }
@@ -34,6 +58,9 @@ namespace Eventos.Models
 
         [JsonProperty("eventURL")]
         public string EventURl { get; set; }
+
+        [JsonProperty("isDelete")]
+        public bool IsDelete { get; set; }
     }
 
     public class Data

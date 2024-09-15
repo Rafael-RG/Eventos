@@ -14,11 +14,6 @@ namespace Eventos.ViewModels
     /// </summary>
     public partial class AddEventViewModel : BaseViewModel
     {
-        private IHttpService httpService;
-
-        ///// <summary>
-        ///// User
-        ///// </summary>
         [ObservableProperty]
         private User user;
 
@@ -54,11 +49,9 @@ namespace Eventos.ViewModels
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public AddEventViewModel(IServiceProvider provider, IHttpService httpService) : base(provider)
+        public AddEventViewModel(IServiceProvider provider) : base(provider)
         {
-            this.httpService = httpService;
-            //this.User = AppShell.User;
-            this.User = new User() { Email = "rafa_rg11@hotmail.com", FullName = "Rafael" };
+            this.User = AppShell.User;
         }
 
         public override async void OnAppearing()
@@ -71,7 +64,7 @@ namespace Eventos.ViewModels
             this.StartTime = time.TimeOfDay;
             this.EndTime = time.AddHours(1).TimeOfDay;
 
-            if (this.Zones == null || this.Zones.Any()) 
+            if (this.Zones == null || !this.Zones.Any()) 
             {
                 PopulateTimeZones();
             }
@@ -122,7 +115,7 @@ namespace Eventos.ViewModels
                     EventURl = this.Url
                 };
 
-                var result = await this.httpService.PostAsync<ResponseData>(newEvent, Common.Constants.SaveEvent);
+                var result = await this.HttpService.PostAsync<ResponseData>(newEvent, Common.Constants.SaveEvent);
 
                 if (result.Success) 
                 {

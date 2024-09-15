@@ -24,5 +24,6 @@ namespace Backend.Models
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
         public string EventURl { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

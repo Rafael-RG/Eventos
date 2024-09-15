@@ -15,8 +15,6 @@ namespace Eventos.ViewModels
     /// </summary>
     public partial class HistoryViewModel : BaseViewModel
     {
-        private IHttpService httpService;
-
         ///// <summary>
         ///// User
         ///// </summary>
@@ -26,16 +24,16 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private ObservableCollection<EventItem> events;
 
+        [ObservableProperty]
+        private bool isRefreshingList;
+
 
 
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public HistoryViewModel(IServiceProvider provider, IHttpService httpService) : base(provider)
+        public HistoryViewModel(IServiceProvider provider) : base(provider)
         {
-            this.httpService = httpService;
-            //this.User = AppShell;
-            this.User = new User() {Email="rafa_rg11@hotmail.com",FullName="Rafael" };
         }
 
         public override async void OnAppearing()
@@ -43,20 +41,9 @@ namespace Eventos.ViewModels
             IsBusy = true;
             try
             {
-                var uri = string.Format(Common.Constants.GetEventsByUserUri, this.User.Email);
+                this.User = await this.DataService.LoadUserAsync();
 
-                var response = await this.httpService.GetJsonObjectAsync(uri);
-
-                var data = JsonConvert.DeserializeObject<ResponseData>(response.ToString());
-
-                var events = JsonConvert.DeserializeObject<Data>(data.Data.ToString());
-
-                foreach (var item in events.Events)
-                {
-                    item.URLFile = string.Format(Constants.WebFileUri, item.RowKey);
-                }
-
-                this.Events = new ObservableCollection<EventItem>(events.Events);
+                this.refreshAsyncCommand.Execute(null);
             }
             catch (Exception ex) 
             {
@@ -73,28 +60,25 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void RefreshAsync()
         {
-            IsBusy = true;
+            this.IsRefreshingList = true;
             try
             {
                 var uri = string.Format(Common.Constants.GetEventsByUserUri, this.User.Email);
 
-                var response = await this.httpService.GetJsonObjectAsync(uri);
+                var response = await this.HttpService.GetJsonObjectAsync(uri);
 
                 var data = JsonConvert.DeserializeObject<ResponseData>(response.ToString());
 
                 var events = JsonConvert.DeserializeObject<Data>(data.Data.ToString());
 
-                foreach (var item in events.Events)
+                var evetsActive = events.Events.Where(x => !x.IsDelete).ToList();
+
+                foreach (var item in evetsActive)
                 {
                     item.URLFile = string.Format(Constants.WebFileUri, item.RowKey);
                 }
 
-                this.Events = new ObservableCollection<EventItem>(events.Events);
-
-                if (events.Events.Count()>0)
-                {
-                    await App.Current.MainPage.DisplayAlert("Completado", "Se recargo la lista de eventos.", "OK");
-                }
+                this.Events = new ObservableCollection<EventItem>(evetsActive);
 
             }
             catch (Exception ex)
@@ -102,7 +86,7 @@ namespace Eventos.ViewModels
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al cargar los eventos");
             }
 
-            IsBusy = false;
+            this.IsRefreshingList = false;
         }
 
         /// <summary>

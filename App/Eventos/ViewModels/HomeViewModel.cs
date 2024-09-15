@@ -22,20 +22,23 @@ namespace Eventos.ViewModels
         /// </summary>
         public HomeViewModel(IServiceProvider provider) :  base(provider)
         {
-            this.User = AppShell.User;
+            
         }
 
 
         public override async void OnAppearing()
         {
             IsBusy = true;
-            if (this.User == null)
+
+            this.User = await this.DataService.LoadUserAsync();
+
+            if (string.IsNullOrEmpty(this.User?.FullName))
             {
                 await Shell.Current.GoToAsync("///LoginPage", false);
             }
             else 
             {
-                this.User = AppShell.User;
+                AppShell.User = this.User;
             }
             IsBusy = false;
         }

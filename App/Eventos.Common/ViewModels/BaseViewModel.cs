@@ -12,6 +12,7 @@ using Eventos.Common.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Eventos.Common.Services;
+using System.ComponentModel.Design;
 
 namespace Eventos.Common.ViewModels
 {
@@ -98,6 +99,8 @@ namespace Eventos.Common.ViewModels
         //protected IPlatformService PlatformService { get; }
 
 
+        protected IHttpService HttpService { get; }
+
         /// <summary>
         /// Notification service
         /// </summary>
@@ -141,7 +144,8 @@ namespace Eventos.Common.ViewModels
             this.NotificationService = provider.GetService<INotificationService>();
             this.LocalizationService = provider.GetRequiredService<ILocalizationService>();
             DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
-            this.Version = VersionTracking.CurrentVersion;          
+            this.Version = VersionTracking.CurrentVersion;     
+            this.HttpService = provider.GetService<IHttpService>();
         }
 
 

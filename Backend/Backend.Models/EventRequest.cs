@@ -18,5 +18,7 @@ namespace Backend.Models
         public DateTimeOffset EndTime { get; set; }
         public int Count { get; set; }
         public string EventURl { get; set; }
+        public bool IsDelete { get; set; }
+        public string RowKey { get; set; }
     }
 }

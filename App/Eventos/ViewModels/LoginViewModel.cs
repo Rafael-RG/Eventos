@@ -15,8 +15,6 @@ namespace Eventos.ViewModels
     /// </summary>
     public partial class LoginViewModel : BaseViewModel
     {
-        private IHttpService httpService;
-
         [ObservableProperty]
         private bool isVisibleLogin;
 
@@ -83,9 +81,8 @@ namespace Eventos.ViewModels
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public LoginViewModel(IServiceProvider provider, IGoogleAuthService googleAuthService, IHttpService httpService) : base(provider)
+        public LoginViewModel(IServiceProvider provider, IGoogleAuthService googleAuthService) : base(provider)
         {
-            this.httpService = httpService;
             ClearData();
             ChangeView("Login");
         }
@@ -108,7 +105,7 @@ namespace Eventos.ViewModels
                 Password = this.PasswordLogin
             };
 
-            var response = await this.httpService.PostAsync<ResponseData>(user, Constants.Login);
+            var response = await this.HttpService.PostAsync<ResponseData>(user, Constants.Login);
             if (response.Success)
             {
                 User loggedUser = new User
@@ -159,7 +156,7 @@ namespace Eventos.ViewModels
                 Email = this.UserEmail.ToLower()
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(email, Constants.FindUserAndSendCode);
+            var result = await this.HttpService.PostAsync<ResponseData>(email, Constants.FindUserAndSendCode);
 
             if (result.Success) 
             {
@@ -192,7 +189,7 @@ namespace Eventos.ViewModels
                 Code = this.ValidateCode
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(validateCode, Constants.ValidateCode);
+            var result = await this.HttpService.PostAsync<ResponseData>(validateCode, Constants.ValidateCode);
 
             if (result.Success)
             {
@@ -228,7 +225,7 @@ namespace Eventos.ViewModels
                 Password = this.Password
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(recoveryPassword, Constants.RecoverPassword);
+            var result = await this.HttpService.PostAsync<ResponseData>(recoveryPassword, Constants.RecoverPassword);
 
             if (result.Success) 
             {
@@ -276,7 +273,7 @@ namespace Eventos.ViewModels
                 Email = this.UserEmail.ToLower()
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(userEmail, Constants.FindUserAndSendCode);
+            var result = await this.HttpService.PostAsync<ResponseData>(userEmail, Constants.FindUserAndSendCode);
 
             if (!result.Success)
             {
@@ -327,7 +324,7 @@ namespace Eventos.ViewModels
                 RetryValidate = false
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
+            var result = await this.HttpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
 
             if (result.Success)
             {
@@ -381,7 +378,7 @@ namespace Eventos.ViewModels
                 FullName = this.FullName
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
+            var result = await this.HttpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
 
             if (!result.Success)
             {
@@ -404,7 +401,7 @@ namespace Eventos.ViewModels
                 Code = this.ValidateCode
             };
 
-            var result = await this.httpService.PostAsync<ResponseData>(validateRegistry, Constants.ValidateRegistry);
+            var result = await this.HttpService.PostAsync<ResponseData>(validateRegistry, Constants.ValidateRegistry);
 
             if (result.Success)
             {
@@ -500,7 +497,7 @@ namespace Eventos.ViewModels
                         { "api-key", apiKey },
                     };
 
-                    var response = await this.httpService.PostAsync<ResponseData>(emailData, url, headers);
+                    var response = await this.HttpService.PostAsync<ResponseData>(emailData, url, headers);
 
                     if (response.Success)
                     {

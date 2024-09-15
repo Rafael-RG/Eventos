@@ -170,10 +170,6 @@
 	  </PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Converters\" />
-	</ItemGroup>
-
-	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionEventosHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionEventosHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionEventosHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

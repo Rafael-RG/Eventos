@@ -24,5 +24,6 @@ namespace Backend.Models
         public int Count { get; set; }
         public string RowKey { get; set; }
         public string EventURl { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

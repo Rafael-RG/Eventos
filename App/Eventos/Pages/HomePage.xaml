@@ -20,9 +20,9 @@
     <StackLayout BackgroundColor="White">
         <StackLayout>
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
-            <VerticalStackLayout
+            <StackLayout
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                Spacing="25"
+                Spacing="010"
                 VerticalOptions="Center">
 
                 <Border
@@ -37,13 +37,97 @@
                 </Border>
 
                 <Label
-                    FontSize="32"
-                    HorizontalOptions="Center"
-                    SemanticProperties.HeadingLevel="Level1"
-                    Text="{Binding User.FullName}" />
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    FontAttributes="Bold"
+                    HorizontalOptions="FillAndExpand"
+                    MaxLines="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span
+                                FontSize="22"
+                                Text="Hola "
+                                TextColor="#184159" />
+                            <Span
+                                FontSize="22"
+                                Text="{Binding User.FullName}"
+                                TextColor="#184159" />
+                            <Span
+                                FontSize="22"
+                                Text="!"
+                                TextColor="#184159" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 
+                <StackLayout HorizontalOptions="FillAndExpand">
+                    <Grid Margin="20,0,0,0">
 
-            </VerticalStackLayout>
+                        <!--  Contenedor con un fondo y bordes redondeados  -->
+                        <Frame
+                            Padding="0"
+                            BackgroundColor="#184159"
+                            BorderColor="#D2E898"
+                            CornerRadius="15"
+                            HasShadow="False"
+                            HeightRequest="40"
+                            HorizontalOptions="Start"
+                            WidthRequest="340">
+
+                            <Grid>
+                                <!--  Progreso animado con gradiente y efectos de brillo  -->
+                                <ProgressBar
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="40"
+                                    HorizontalOptions="FillAndExpand"
+                                    Progress="0.7"
+                                    ProgressColor="#D2E898"
+                                    VerticalOptions="Center">
+                                    <ProgressBar.Background>
+                                        <!--  Efecto de fondo degradado  -->
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Offset="0.0" Color="#184159" />
+                                            <GradientStop Offset="1.0" Color="#D2E898" />
+                                        </LinearGradientBrush>
+                                    </ProgressBar.Background>
+                                </ProgressBar>
+
+                            </Grid>
+                        </Frame>
+
+                    </Grid>
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="25,0,0,0"
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        MaxLines="1">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontSize="16"
+                                    Text="Click: "
+                                    TextColor="#184159" />
+                                <Span
+                                    FontSize="16"
+                                    Text="100"
+                                    TextColor="#184159" />
+                                <Span
+                                    FontSize="16"
+                                    Text="/"
+                                    TextColor="#184159" />
+                                <Span
+                                    FontSize="16"
+                                    Text="1000"
+                                    TextColor="#184159" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
 
     </StackLayout>

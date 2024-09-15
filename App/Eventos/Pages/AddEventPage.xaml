@@ -89,7 +89,10 @@
                     ItemsSource="{Binding Zones}"
                     SelectedItem="{Binding SelectedZone}"
                     TitleColor="#666666" />
-                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="70">
+                <StackLayout
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal"
+                    Spacing="70">
                     <StackLayout>
                         <!--  Hora de inicio del evento  -->
                         <Label
