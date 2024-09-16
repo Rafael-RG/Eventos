@@ -12,14 +12,8 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using System.IO;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Net.Mail;
 using System.Net;
-using Microsoft.Extensions.Hosting;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Security.Policy;
 
 
 namespace Backend.Service.BusinessLogic
