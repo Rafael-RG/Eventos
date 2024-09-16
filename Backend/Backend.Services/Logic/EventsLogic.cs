@@ -46,11 +46,19 @@ namespace Backend.Service.BusinessLogic
 
                 var userEmail = validateSubscriptionRequest.UserEmail;
 
-                if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(userEmail))
+                if (string.IsNullOrEmpty(accessToken))
                 {
                     res.Success = false;
                     res.Data = null;
                     res.Message = "No se pudo obtener el token de acceso";
+                    return res;
+                }
+
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    res.Success = false;
+                    res.Data = null;
+                    res.Message = "Error al validar suscripcion";
                     return res;
                 }
 
