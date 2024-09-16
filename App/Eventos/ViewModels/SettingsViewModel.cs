@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Eventos.Common.Interfaces;
 using Eventos.Common.ViewModels;
 using Eventos.GoogleAuth;
+using Eventos.Models;
 
 
 namespace Eventos.ViewModels
@@ -11,14 +13,33 @@ namespace Eventos.ViewModels
     /// </summary>
     public partial class SettingsViewModel : BaseViewModel
     {
-        private readonly IGoogleAuthService _googleAuthService;
+        [ObservableProperty]
+        private User user;
+
 
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public SettingsViewModel(IServiceProvider provider, IGoogleAuthService googleAuthService) : base(provider)
+        public SettingsViewModel(IServiceProvider provider) : base(provider)
         {
-            _googleAuthService = googleAuthService;
+            
+        }
+
+        public override async void OnAppearing()
+        {
+            IsBusy = true;
+
+            this.User = await this.DataService.LoadUserAsync();
+
+            if (string.IsNullOrEmpty(this.User?.FullName))
+            {
+                await Shell.Current.GoToAsync("///LoginPage", false);
+            }
+            else
+            {
+                AppShell.User = this.User;
+            }
+            IsBusy = false;
         }
 
         /// <summary>

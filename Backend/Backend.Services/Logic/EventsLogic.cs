@@ -87,9 +87,10 @@ namespace Backend.Service.BusinessLogic
                                 && subscription.Status == "ACTIVE")
                             {
                                 var user = await this.dataAccess.GetUserAsync(userEmail);
-                                if (user.LastPeriod != subscription.DateNextCharge) 
+                                if (user.LastPeriod != subscription.Date_Next_Charge) 
+
                                 {
-                                    user.LastPeriod = subscription.DateNextCharge;
+                                    user.LastPeriod = subscription.Date_Next_Charge;
                                     user.TotalClicksCurrentPeriod = 0;
                                     await this.dataAccess.SaveNewUserAsync(user);
                                 }
@@ -100,7 +101,7 @@ namespace Backend.Service.BusinessLogic
                                 suscriberUserInfo.Email = userEmail;
                                 suscriberUserInfo.ClickCount = plan.Clicks;
                                 suscriberUserInfo.Plan = subscription.Plan.Name;
-                                suscriberUserInfo.PlanFinishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.DateNextCharge);
+                                suscriberUserInfo.PlanFinishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.Date_Next_Charge/1000);
                             }
                         }
 

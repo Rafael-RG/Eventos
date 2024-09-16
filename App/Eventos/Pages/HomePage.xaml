@@ -120,8 +120,8 @@
                                     TextColor="#184159" />
                                 <Span
                                     FontSize="16"
-                                    Text="1000"
-                                    TextColor="{Binding User.ClickCount}" />
+                                    Text="{Binding User.ClickCount}"
+                                    TextColor="#184159" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

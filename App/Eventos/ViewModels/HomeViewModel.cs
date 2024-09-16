@@ -3,6 +3,7 @@ using Eventos.Models;
 using Eventos.Common.ViewModels;
 using CommunityToolkit.Mvvm.Input;
 using Eventos.Common;
+using Newtonsoft.Json;
 
 namespace Eventos.ViewModels
 {
@@ -53,22 +54,34 @@ namespace Eventos.ViewModels
         {
             this.IsRefreshingList = true;
 
-            var userInfo = await this.HttpService.PostAsync<SuscriberUserInfo>(new ValidateSubscriptionRequest { UserEmail= this.User.Email}, Constants.ValidateSuscription);
+            var datasuscription = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail= this.User.Email}, Constants.ValidateSuscription);
 
-            this.User.IsSubscribed = userInfo.IsSubscribed;
-
-            if(this.User.IsSubscribed)
+            if (datasuscription.Success) 
             {
-                this.User.Plan = userInfo.Plan;
-                this.User.PlanFinishDate = userInfo.PlanFinishDate;
-                this.User.ClickCount = userInfo.ClickCount;
+                var userInfo = JsonConvert.DeserializeObject<SuscriberUserInfo>(datasuscription.Data.ToString());
+
+                this.User.IsSubscribed = userInfo.IsSubscribed;
+
+                if (this.User.IsSubscribed)
+                {
+                    this.User.Plan = userInfo.Plan;
+                    this.User.PlanFinishDate = userInfo.PlanFinishDate;
+
+                }
+
+              this.User.ClickCount = userInfo.ClickCount;
             }
 
-            var userStorage = await this.HttpService.PostAsync<LoginUser>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.GetUser);
+            var userData = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.GetUser);
 
-            this.User.TotalClicks = userStorage.TotalClicks;
-            this.User.TotalClicksCurrentPeriod = userStorage.TotalClicksCurrentPeriod;
-            this.User.LastPeriod = userStorage.LastPeriod;
+            if (userData.Success)
+            {
+                var userStorage = JsonConvert.DeserializeObject<LoginUser>(userData.Data.ToString());
+
+                this.User.TotalClicks = userStorage.TotalClicks;
+                this.User.TotalClicksCurrentPeriod = userStorage.TotalClicksCurrentPeriod;
+                this.User.LastPeriod = userStorage.LastPeriod;
+            }
 
             await this.DataService.InsertOrUpdateItemsAsync(this.User);
             

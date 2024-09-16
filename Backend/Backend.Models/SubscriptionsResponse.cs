@@ -21,7 +21,7 @@ namespace Backend.Models
         public long AccessionDate { get; set; }
         public long EndAccessionDate { get; set; }
         public long RequestDate { get; set; }
-        public long DateNextCharge { get; set; }
+        public long Date_Next_Charge { get; set; }
         public bool Trial { get; set; }
         public string Transaction { get; set; }
         public Plan Plan { get; set; }

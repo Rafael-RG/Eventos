@@ -5,7 +5,7 @@ namespace Eventos.Models
     /// <summary>
     /// User details
     /// </summary>
-    public class User:Bindableitem
+    public class User : Bindableitem
     {
         private string fullName;
 
@@ -32,5 +32,15 @@ namespace Eventos.Models
         public string Plan { get; set; }
 
         public DateTimeOffset PlanFinishDate { get; set; }
+
+        public string State
+        {
+            get => IsSubscribed ? "Suscripto" : "No suscripto";
+        }
+
+        public string PlanInfo
+        {
+            get => IsSubscribed ? $"{PlanFinishDate:dd/MM/yyyy}" : "N/A";
+        }
     }
 }
