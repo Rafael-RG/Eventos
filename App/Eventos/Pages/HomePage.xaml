@@ -60,7 +60,6 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-
                 <StackLayout HorizontalOptions="FillAndExpand">
                     <Grid Margin="20,0,0,0">
 
@@ -113,7 +112,7 @@
                                     TextColor="#184159" />
                                 <Span
                                     FontSize="16"
-                                    Text="100"
+                                    Text="{Binding User.TotalClicksCurrentPeriod}"
                                     TextColor="#184159" />
                                 <Span
                                     FontSize="16"
@@ -122,11 +121,13 @@
                                 <Span
                                     FontSize="16"
                                     Text="1000"
-                                    TextColor="#184159" />
+                                    TextColor="{Binding User.ClickCount}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                 </StackLayout>
+
+                <Button Command="{Binding LoadDataCommand}" Text="refresh"/>
             </StackLayout>
         </StackLayout>
 

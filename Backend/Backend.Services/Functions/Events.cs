@@ -183,6 +183,20 @@ namespace Backend.Service.Functions
             }, logger);
         }
 
+
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(GetUserAsync))]
+        public async Task<HttpResponseData> GetUserAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "user")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.GetUserAsync, request.DeserializeBody<ValidateSubscriptionRequest>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
     }
 }
 

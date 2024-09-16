@@ -8,6 +8,7 @@ using Eventos.Common;
 using Microsoft.Maui;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace Eventos.ViewModels
 {
@@ -113,10 +114,12 @@ namespace Eventos.ViewModels
             var response = await this.HttpService.PostAsync<ResponseData>(user, Constants.Login);
             if (response.Success)
             {
+                var dataUser = JsonConvert.DeserializeObject<LoginUser>(response.Data.ToString());
+
                 User loggedUser = new User
                 {
                     Email = this.UserEmailLogin.ToLower(),
-                    FullName = response.Data.ToString(),
+                    FullName = dataUser.FullName
                 };
 
                 //save in local storage

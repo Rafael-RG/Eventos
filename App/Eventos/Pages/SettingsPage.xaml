@@ -37,7 +37,7 @@
             WidthRequest="32" />
         <StackLayout
             Padding="30,0"
-            IsVisible="{Binding IsBusy,Converter={StaticResource InvertedBoolConverter}}"
+            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
             Spacing="25"
             VerticalOptions="FillAndExpand">
 

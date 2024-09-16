@@ -290,12 +290,16 @@ namespace Backend.Service.BusinessLogic
 
                 var user = await this.dataAccess.GetUserAsync(eventEntry.Email);
 
-                eventEntry.Count= eventEntry.Count + 1;
+                if (user.TotalClicksCurrentPeriod >= suscription.Data.ClickCount)
+                {
+                    return null;
+                }
+
                 user.TotalClicks = user.TotalClicks + 1;
                 user.TotalClicksCurrentPeriod = user.TotalClicksCurrentPeriod + 1;
+                await this.dataAccess.SaveNewUserAsync(user);
 
-                await this.dataAccess.SaveNewUserAsync(user); 
-
+                eventEntry.Count = eventEntry.Count + 1;
                 var result = await this.dataAccess.SaveEntryAsync(eventEntry);
 
                 var eventItem = new Event
@@ -626,6 +630,35 @@ namespace Backend.Service.BusinessLogic
             catch
             {
                 response.Message = "Usuario o contraseña incorrectos";
+                response.Success = false;
+            }
+
+            return response;
+        }
+        
+        public async Task<Result<UserEntry>> GetUserAsync(ValidateSubscriptionRequest data)
+        {
+            var response = new Result<UserEntry>();
+
+            try
+            {
+                var user = await this.dataAccess.GetUserAsync(data.UserEmail);
+
+                if (user.PartitionKey != null)
+                {
+                    response.Data = user;
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Message = "Usuario no encontrado";
+                    response.Success = false;
+                }
+
+            }
+            catch
+            {
+                response.Message = "Usuario no encontrado";
                 response.Success = false;
             }
 

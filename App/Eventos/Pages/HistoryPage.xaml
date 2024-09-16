@@ -35,113 +35,113 @@
 
         <RefreshView Command="{Binding RefreshAsyncCommand}" IsRefreshing="{Binding IsRefreshingList}">
             <CollectionView
-            Margin="10"
-            BackgroundColor="Transparent"
-            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-            ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HistoryViewModel}}, Path=Events, Mode=TwoWay}"
-            VerticalOptions="FillAndExpand">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" />
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:EventItem">
-                    <Frame Margin="9" BorderColor="Transparent">
-                        <Frame.Shadow>
-                            <Shadow
-                                Brush="#000000"
-                                Opacity="0.5"
-                                Radius="15"
-                                Offset="-4,4" />
-                        </Frame.Shadow>
-                        <Grid
-                            ColumnDefinitions="auto,*"
-                            HorizontalOptions="FillAndExpand"
-                            RowDefinitions="auto,auto"
-                            RowSpacing="3"
-                            VerticalOptions="Start">
-
-                            <Label
+                Margin="10"
+                BackgroundColor="Transparent"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HistoryViewModel}}, Path=Events, Mode=TwoWay}"
+                VerticalOptions="FillAndExpand">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:EventItem">
+                        <Frame Margin="9" BorderColor="Transparent">
+                            <Frame.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.5"
+                                    Radius="15"
+                                    Offset="-4,4" />
+                            </Frame.Shadow>
+                            <Grid
+                                ColumnDefinitions="auto,*"
                                 HorizontalOptions="FillAndExpand"
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                MaxLines="1"
-                                FontAttributes="Bold"
-                                TextColor="#61a60e">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span
-                                            FontSize="22"
-                                            Text="{Binding Title}"
-                                            TextColor="#184159" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                                RowDefinitions="auto,auto"
+                                RowSpacing="3"
+                                VerticalOptions="Start">
 
-                            <StackLayout
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Orientation="Vertical">
                                 <Label
-                                    Margin="0,0,0,5"
-                                    MaxLines="1"
-                                    Text="{Binding Description}"
-                                    TextColor="#184159"
-                                    VerticalOptions="Start" />
-                                <Label
-                                    Margin="0,0,6,0"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
                                     FontAttributes="Bold"
-                                    FontSize="14"
-                                    TextColor="#184159">
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1"
+                                    TextColor="#61a60e">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding Count}" />
-                                            <Span Text=" clicks " />
+                                            <Span
+                                                FontSize="22"
+                                                Text="{Binding Title}"
+                                                TextColor="#184159" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                            </StackLayout>
+
+                                <StackLayout
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        MaxLines="1"
+                                        Text="{Binding Description}"
+                                        TextColor="#184159"
+                                        VerticalOptions="Start" />
+                                    <Label
+                                        Margin="0,0,6,0"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        TextColor="#184159">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Count}" />
+                                                <Span Text=" clicks " />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
 
 
-                            <ImageButton
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,0,6,0"
-                                Padding="10"
-                                BackgroundColor="#D2E898"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HistoryViewModel}}, Path=CopyTextAsyncCommand}"
-                                CommandParameter="{Binding URLFile}"
-                                CornerRadius="100"
-                                HeightRequest="40"
-                                HorizontalOptions="End"
-                                Source="link.svg"
-                                WidthRequest="40" />
+                                <ImageButton
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,6,0"
+                                    Padding="10"
+                                    BackgroundColor="#D2E898"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HistoryViewModel}}, Path=CopyTextAsyncCommand}"
+                                    CommandParameter="{Binding URLFile}"
+                                    CornerRadius="100"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    Source="link.svg"
+                                    WidthRequest="40" />
 
-                            <ImageButton
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="0,0,6,0"
-                                Padding="10"
-                                BackgroundColor="#D2E898"
-                                Clicked="ImageButton_Clicked"
-                                CornerRadius="100"
-                                HeightRequest="40"
-                                HorizontalOptions="End"
-                                Source="eye"
-                                VerticalOptions="End"
-                                WidthRequest="40" />
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.EmptyView>
-                <Label
-                    FontSize="20"
-                    HorizontalOptions="Center"
-                    Text="No hay eventos"
-                    TextColor="#61a60e"
-                    VerticalOptions="CenterAndExpand" />
-            </CollectionView.EmptyView>
-        </CollectionView>
+                                <ImageButton
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,6,0"
+                                    Padding="10"
+                                    BackgroundColor="#D2E898"
+                                    Clicked="ImageButton_Clicked"
+                                    CornerRadius="100"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    Source="eye"
+                                    VerticalOptions="End"
+                                    WidthRequest="40" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="No hay eventos"
+                        TextColor="#61a60e"
+                        VerticalOptions="CenterAndExpand" />
+                </CollectionView.EmptyView>
+            </CollectionView>
         </RefreshView>
     </StackLayout>
 

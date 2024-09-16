@@ -65,6 +65,8 @@ namespace Backend.Common.Interfaces
         /// <returns></returns>
         Task<Result<UserEntry>> LoginAsync(RecoveryPassword credentials);
 
+        Task<Result<UserEntry>> GetUserAsync(ValidateSubscriptionRequest data);
+
     }
 
 

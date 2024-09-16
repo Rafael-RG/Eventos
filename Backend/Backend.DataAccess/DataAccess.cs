@@ -221,7 +221,7 @@ namespace Backend.DataAccess
         {
             try
             {
-                var tableClient = this.tableServiceClient.GetTableClient("events");
+                var tableClient = this.tableServiceClient.GetTableClient("planes");
                 await tableClient.CreateIfNotExistsAsync();
                 var query = tableClient.QueryAsync<PlanSuscribeEntry>(filter: $"PartitionKey eq 'recuerdame'");
                 var eventEntity = new List<PlanSuscribeEntry>();
@@ -229,7 +229,6 @@ namespace Backend.DataAccess
                 await foreach (var item in query)
                 {
                     eventEntity.Add(item);
-                    break;
                 }
 
                 return eventEntity;
