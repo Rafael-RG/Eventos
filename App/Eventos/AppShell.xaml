@@ -14,16 +14,16 @@
     Shell.TabBarUnselectedColor="#FFFFFF">
 
     <TabBar>
-        <Tab Title="Inicio" Icon="home.svg">
+        <Tab Title="Inicio" Icon="home">
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" Route="HomePage" />
         </Tab>
-        <Tab Title="Historial" Icon="history.svg">
+        <Tab Title="Historial" Icon="history">
             <ShellContent ContentTemplate="{DataTemplate pages:HistoryPage}" Route="HistoryPage" />
         </Tab>
-        <Tab Title="Crear evento" Icon="add.svg">
+        <Tab Title="Crear evento" Icon="add">
             <ShellContent ContentTemplate="{DataTemplate pages:AddEventPage}" Route="AddEventPage" />
         </Tab>
-        <Tab Title="Perfil" Icon="setting.svg">
+        <Tab Title="Perfil" Icon="setting">
             <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" Route="SettingsPage" />
         </Tab>
     </TabBar>
