@@ -67,6 +67,23 @@
                 </Label.FormattedText>
             </Label>
 
+            <Label
+                Margin="25,0,0,0"
+                HorizontalOptions="FillAndExpand"
+                MaxLines="1">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span
+                            FontSize="16"
+                            Text="- Estado: "
+                            TextColor="#184159" />
+                        <Span
+                            FontSize="16"
+                            Text="{Binding User.State}"
+                            TextColor="#184159" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
 
             <Label
                 Margin="25,0,0,0"
@@ -81,23 +98,6 @@
                         <Span
                             FontSize="16"
                             Text="{Binding User.Plan}"
-                            TextColor="#184159" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <Label
-                Margin="25,0,0,0"
-                HorizontalOptions="FillAndExpand"
-                MaxLines="1">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span
-                            FontSize="16"
-                            Text="- Estado: "
-                            TextColor="#184159" />
-                        <Span
-                            FontSize="16"
-                            Text="{Binding User.State}"
                             TextColor="#184159" />
                     </FormattedString>
                 </Label.FormattedText>

@@ -423,7 +423,7 @@
                 Text="Recupera tu contraseña"
                 TextColor="#ABBA3C" />
 
-            <Label Text="Introduce tu dirección de correo electrónico para crear una nueva contraseña. " TextColor="White"/>
+            <Label Text="Introduce tu dirección de correo electrónico para crear una nueva contraseña. " TextColor="White" />
 
             <Frame
                 Margin="0,30,0,30"

@@ -7,11 +7,10 @@ namespace Eventos.Pages;
 /// </summary>
 public partial class LoginPage
 {
-
-	/// <summary>
-	/// Receives the depedencies by DI
-	/// </summary>
-	public LoginPage(LoginViewModel viewModel) : base(viewModel, "LoginPage")
+    /// <summary>
+    /// Receives the depedencies by DI
+    /// </summary>
+    public LoginPage(LoginViewModel viewModel) : base(viewModel, "LoginPage")
 	{
         this.BindingContext = viewModel;
         Application.Current.UserAppTheme = AppTheme.Light;

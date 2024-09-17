@@ -8,6 +8,14 @@ namespace Eventos.Models
     public class User : Bindableitem
     {
         private string fullName;
+        private string email;
+        private int totalClicks;
+        private int totalClicksCurrentPeriod;
+        private long lastPeriod;
+        private bool isSubscribed;
+        private int clickCount;
+        private string plan;
+        private DateTimeOffset planFinishDate;
 
         [Key]
         public string FullName
@@ -19,19 +27,87 @@ namespace Eventos.Models
                 OnPropertyChanged(nameof(FullName));
             }
         }
-        public string Email { get; set; }
+        public string Email
+        {
+            get => this.email;
+            set
+            {
+                this.email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+
+        }
         public string Country { get; set; }
-        public int TotalClicks { get; set; }
-        public int TotalClicksCurrentPeriod { get; set; }
-        public long LastPeriod { get; set; }
+        public int TotalClicks
+        {
+            get => this.totalClicks;
+            set
+            {
+                this.totalClicks = value;
+                OnPropertyChanged(nameof(TotalClicks));
+            }
+        }
+        public int TotalClicksCurrentPeriod
+        {
+            get => this.totalClicksCurrentPeriod;
+            set
+            {
+                this.totalClicksCurrentPeriod = value;
+                OnPropertyChanged(nameof(TotalClicksCurrentPeriod));
+            }
+        }
+        public long LastPeriod
+        {
+            get => this.lastPeriod;
+            set
+            {
+                this.lastPeriod = value;
+                OnPropertyChanged(nameof(LastPeriod));
 
-        public bool IsSubscribed { get; set; }
+            }
+        }
 
-        public int ClickCount { get; set; }
+        public bool IsSubscribed
+        {
+            get => this.isSubscribed;
+            set
+            {
+                this.isSubscribed = value;
+                OnPropertyChanged(nameof(IsSubscribed));
+            }
 
-        public string Plan { get; set; }
+        }
+        public int ClickCount
+        {
+            get => this.clickCount;
+            set
+            {
+                this.clickCount = value;
+                OnPropertyChanged(nameof(ClickCount));
+            }
+        }
 
-        public DateTimeOffset PlanFinishDate { get; set; }
+        public string Plan
+        {
+            get => this.plan;
+            set
+            {
+                this.plan = value;
+                OnPropertyChanged(nameof(Plan));
+            }
+
+        }
+
+        public DateTimeOffset PlanFinishDate
+        {
+            get => this.planFinishDate;
+            set
+            {
+                this.planFinishDate = value;
+                OnPropertyChanged(nameof(PlanFinishDate));
+            }
+
+        }
 
         public string State
         {
