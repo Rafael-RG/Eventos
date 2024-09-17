@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Eventos.Common.ViewModels;
-using Eventos.GoogleAuth;
 using Eventos.Models;
 using Eventos.Common.Interfaces;
 using Eventos.Common;
@@ -87,7 +86,7 @@ namespace Eventos.ViewModels
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public LoginViewModel(IServiceProvider provider, IGoogleAuthService googleAuthService) : base(provider)
+        public LoginViewModel(IServiceProvider provider) : base(provider)
         {
             ClearData();
             ChangeView("Login");

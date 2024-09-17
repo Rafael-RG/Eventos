@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Eventos.Common.Interfaces;
 using Eventos.Common.ViewModels;
-using Eventos.GoogleAuth;
 using Eventos.Models;
 
 
