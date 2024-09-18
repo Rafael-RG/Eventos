@@ -4,6 +4,9 @@ using Eventos.Common.ViewModels;
 using CommunityToolkit.Mvvm.Input;
 using Eventos.Common;
 using Newtonsoft.Json;
+using Microcharts;
+using System.Collections.ObjectModel;
+using SkiaSharp;
 
 namespace Eventos.ViewModels
 {
@@ -21,6 +24,9 @@ namespace Eventos.ViewModels
 
         [ObservableProperty]
         private bool isRefreshingList;
+
+        [ObservableProperty]
+        private ObservableCollection<Chart> charts;
 
 
         /// <summary>
@@ -86,7 +92,45 @@ namespace Eventos.ViewModels
 
                 await this.DataService.InsertOrUpdateItemsAsync(this.User);
             }
+
+            var entries = new[]
+            {
+                new ChartEntry(200)
+                {
+                    Label = "January",
+                    ValueLabel = "200",
+                    Color = SKColor.Parse("#184159")
+                },
+                new ChartEntry(400)
+                {
+                    Label = "February",
+                    ValueLabel = "400",
+                    Color = SKColor.Parse("#D2E898")
+                },
+                new ChartEntry(100)
+                {
+                    Label = "March",
+                    ValueLabel = "100",
+                    Color = SKColor.Parse("#184159")
+                },
+                new ChartEntry(300)
+                {
+                    Label = "April",
+                    ValueLabel = "300",
+                    Color = SKColor.Parse("#D2E898")
+                }
+            };
+
+            this.Charts = new ObservableCollection<Chart>
+            {
+                new BarChart { Entries = entries, LabelTextSize = 40 },
+                new LineChart { Entries = entries, LabelTextSize = 40 },
+                new PointChart { Entries = entries, LabelTextSize = 40 },
+                new DonutChart { Entries = entries, LabelTextSize = 40 },
+                new RadialGaugeChart { Entries = entries, LabelTextSize = 40 }
+            };
             this.IsRefreshingList = false;
+
         }   
 
 

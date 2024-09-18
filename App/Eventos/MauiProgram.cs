@@ -2,6 +2,7 @@
 using Eventos.Common.Extensions;
 using Eventos.Common.Interfaces;
 using Eventos.DataAccess;
+using Microcharts.Maui;
 
 namespace Eventos;
 
@@ -20,8 +21,9 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
-			.UseMauiApp<App>()	
-			.RegisterViewModelsAndServices()
+			.UseMauiApp<App>()
+            .UseMicrocharts()
+            .RegisterViewModelsAndServices()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -30,11 +32,12 @@ public static class MauiProgram
         builder.Services.AddDbContext<DatabaseContext>();
         builder.Services.AddSingleton<IDataService, DataService>();
         builder.Services.AddLocalization();
+
         builder.UseMauiApp<App>().UseMauiCommunityToolkit();
 		builder.ConfigureMauiHandlers(h =>
 		{
 #if IOS
-			h.AddHandler<Shell, Eventos.Platforms.iOS.CustomShellHandler>();
+            h.AddHandler<Shell, Eventos.Platforms.iOS.CustomShellHandler>();
 #endif
 		});
         return builder.Build();

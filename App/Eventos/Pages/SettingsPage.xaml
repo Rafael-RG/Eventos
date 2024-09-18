@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout BackgroundColor="White">
+    <StackLayout BackgroundColor="#DDDDDD">
         <Border
             Padding="20"
             BackgroundColor="#184159"

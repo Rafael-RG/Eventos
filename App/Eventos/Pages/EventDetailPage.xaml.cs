@@ -26,9 +26,9 @@ public partial class EventDetailPage
         base.OnNavigatedTo(args);
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
+    private async void Button_Clicked(object sender, EventArgs e)
     {
-        this.Navigation.PopAsync();
+        await this.Navigation.PopAsync();
     }
 
     private void Button_Clicked_Update(object sender, EventArgs e)

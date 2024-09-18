@@ -3,6 +3,7 @@
     x:Class="Eventos.Pages.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:charts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
     xmlns:extensions="clr-namespace:Eventos.Extensions"
     xmlns:local="clr-namespace:Eventos.Converters"
     xmlns:pages="clr-namespace:Eventos.Common.Pages;assembly=Eventos.Common"
@@ -119,6 +120,52 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="25,25,0,0"
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        MaxLines="1">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontSize="24"
+                                    Text="Metricas"
+                                    TextColor="#184159" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <StackLayout Margin="25,0,25,0" Spacing="5">
+                        <Label Text="Click por dia:" TextColor="#184159" />
+                        <charts:ChartView
+                            Chart="{Binding Charts[0]}"
+                            HeightRequest="300"
+                            VerticalOptions="CenterAndExpand" />
+                        <Label Text="Click ultimo evento" TextColor="#184159" />
+                        <charts:ChartView
+                            Chart="{Binding Charts[1]}"
+                            HeightRequest="300"
+                            VerticalOptions="CenterAndExpand" />
+                        <Label Text="Click por mes:" TextColor="#184159" />
+                        <charts:ChartView
+                            Chart="{Binding Charts[2]}"
+                            HeightRequest="300"
+                            VerticalOptions="CenterAndExpand" />
+                        <Label Text="Click por año" TextColor="#184159" />
+                        <charts:ChartView
+                            Chart="{Binding Charts[3]}"
+                            HeightRequest="300"
+                            VerticalOptions="CenterAndExpand" />
+                        <Label Text="Click totales" TextColor="#184159" />
+                        <charts:ChartView
+                            Chart="{Binding Charts[4]}"
+                            HeightRequest="300"
+                            VerticalOptions="CenterAndExpand" />
+                    </StackLayout>
                 </StackLayout>
             </ScrollView>
         </RefreshView>
