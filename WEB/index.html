@@ -50,6 +50,11 @@
 
                 // Eliminar el enlace del documento
                 document.body.removeChild(link);
+
+                // Cerrar la ventana después de un breve retraso
+                setTimeout(() => {
+                    window.close();
+                }, 2000); // Esperar 1 segundo para asegurar que la descarga se haya iniciado
             })
             .catch(error => {
                 console.error('Error al descargar el archivo:', error);
