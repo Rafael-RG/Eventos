@@ -51,10 +51,13 @@
                 // Eliminar el enlace del documento
                 document.body.removeChild(link);
 
-                // Cerrar la ventana después de un breve retraso
-                setTimeout(() => {
-                    window.close();
-                }, 2000); // Esperar 1 segundo para asegurar que la descarga se haya iniciado
+                // Esperar a que el navegador complete la descarga antes de cerrar la ventana
+                link.addEventListener('click', () => {
+                    window.URL.revokeObjectURL(link.href); // Limpiar la URL creada
+                    setTimeout(() => {
+                        window.close(); // Cerrar la ventana después de la descarga
+                    }, 1000); // Tiempo suficiente para que la descarga comience
+                });
             })
             .catch(error => {
                 console.error('Error al descargar el archivo:', error);
