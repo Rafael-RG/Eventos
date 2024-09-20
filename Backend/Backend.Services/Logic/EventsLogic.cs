@@ -23,6 +23,9 @@ namespace Backend.Service.BusinessLogic
     {
         private string ClientId { get; set; }
         private string ClientSecret { get; set; }
+        private string SoportUserEmail { get; set; }
+        private string SoportPasswordEmail { get; set; }
+        private string SoportHostEmail { get; set; }
 
         /// <summary>
         /// Gets by DI the dependeciees
@@ -32,6 +35,9 @@ namespace Backend.Service.BusinessLogic
         {
             this.ClientId = Environment.GetEnvironmentVariable("HotmartClientId");
             this.ClientSecret = Environment.GetEnvironmentVariable("HotmartClientSecret");
+            this.SoportUserEmail = Environment.GetEnvironmentVariable("SoportUserEmail");
+            this.SoportPasswordEmail = Environment.GetEnvironmentVariable("SoportPasswordEmail");
+            this.SoportHostEmail = Environment.GetEnvironmentVariable("SoportHostEmail");
         }
 
 
@@ -687,13 +693,13 @@ namespace Backend.Service.BusinessLogic
                 }
 
                 SmtpClient smtpClient = new SmtpClient();
-                NetworkCredential smtpCredentials = new NetworkCredential("soporte@recuerdame.app", "R@F@el94006859R@");
+                NetworkCredential smtpCredentials = new NetworkCredential(this.SoportUserEmail, this.SoportPasswordEmail);
 
                 MailMessage message = new MailMessage();
-                MailAddress fromAddress = new MailAddress("soporte@recuerdame.app");
+                MailAddress fromAddress = new MailAddress(this.SoportUserEmail);
                 MailAddress toAddress = new MailAddress(email);
 
-                smtpClient.Host = "host.globalpingames.com";
+                smtpClient.Host = this.SoportHostEmail;
                 smtpClient.Port = 587;
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
