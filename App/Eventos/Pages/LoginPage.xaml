@@ -45,9 +45,9 @@
             <Frame
                 Margin="0,100,0,0"
                 Padding="0"
-                CornerRadius="20">
+                CornerRadius="15">
                 <Entry
-                    Margin="20,0,20,0"
+                    Margin="0,0,0,0"
                     FontSize="16"
                     Placeholder="Correo electronico"
                     PlaceholderColor="#205048"
@@ -58,9 +58,9 @@
             <Frame
                 Margin="0,20,0,0"
                 Padding="0"
-                CornerRadius="20">
+                CornerRadius="15">
                 <Entry
-                    Margin="20,0,20,0"
+                    Margin="0,0,0,0"
                     FontSize="16"
                     IsPassword="True"
                     Placeholder="Contraseña"
@@ -244,7 +244,7 @@
                     Command="{Binding BackViewCommand}"
                     CommandParameter="Login"
                     HorizontalOptions="Start"
-                    Source="back.svg"
+                    Source="back"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
@@ -350,7 +350,7 @@
                     Command="{Binding BackViewCommand}"
                     CommandParameter="Registry"
                     HorizontalOptions="Start"
-                    Source="back.svg"
+                    Source="back"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
@@ -459,7 +459,7 @@
                     Command="{Binding BackViewCommand}"
                     CommandParameter="Login"
                     HorizontalOptions="Start"
-                    Source="back.svg"
+                    Source="back"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
@@ -551,7 +551,7 @@
                     Command="{Binding BackViewCommand}"
                     CommandParameter="Recover"
                     HorizontalOptions="Start"
-                    Source="back.svg"
+                    Source="back"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"
@@ -644,7 +644,7 @@
                     Command="{Binding BackViewCommand}"
                     CommandParameter="ValidateRecoverPassword"
                     HorizontalOptions="Start"
-                    Source="back.svg"
+                    Source="back"
                     VerticalOptions="Center" />
                 <Button
                     Margin="0,0,0,0"

@@ -18,8 +18,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout BackgroundColor="#DDDDDD">
+    <StackLayout BackgroundColor="#184159">
+        <StackLayout BackgroundColor="#DDDDDD">
         <Border
+            Margin="0,-10,0,0"
             Padding="20"
             BackgroundColor="#184159"
             Stroke="#184159"
@@ -27,10 +29,12 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="0,0,30,30" />
             </Border.StrokeShape>
-            <Image Source="recuerdame_white.svg" />
+            <Image Source="recuerdame_white" />
         </Border>
+        </StackLayout>
+        
         <RefreshView Command="{Binding LoadDataCommand}" IsRefreshing="{Binding IsRefreshingList}">
-            <ScrollView VerticalOptions="FillAndExpand">
+            <ScrollView VerticalOptions="FillAndExpand" BackgroundColor="#DDDDDD">
                 <StackLayout HorizontalOptions="FillAndExpand">
                     <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
                     <Label
