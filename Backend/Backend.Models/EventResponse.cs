@@ -25,5 +25,6 @@ namespace Backend.Models
         public string RowKey { get; set; }
         public string EventURl { get; set; }
         public bool IsDelete { get; set; }
+        public List<EventClickedInfo> ClickedInfo { get; set; }
     }
 }

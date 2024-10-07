@@ -4,17 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventos.Models
+namespace Backend.Models
 {
-    public class NewUser
-    {
-        public string FullName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Country { get; set; }
-        public bool RetryValidate { get; set; }
-    }
-
     public class ChangeUserData
     {
         public string Email { get; set; }

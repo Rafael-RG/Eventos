@@ -14,6 +14,8 @@ using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Net.Mail;
 using System.Net;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 
 namespace Backend.Service.BusinessLogic
@@ -91,25 +93,25 @@ namespace Backend.Service.BusinessLogic
                         foreach (var subscription in subscriptionData.Items)
                         {
 
-                            if (plans.Any(p=>p.RowKey == subscription.Plan.Id.ToString()) 
+                            if (plans.Any(p => p.RowKey == subscription.Plan.Id.ToString())
                                 && subscription.Status == "ACTIVE")
                             {
                                 var user = await this.dataAccess.GetUserAsync(userEmail);
-                                if (user.LastPeriod != subscription.Date_Next_Charge) 
+                                if (user.LastPeriod != subscription.Date_Next_Charge)
 
                                 {
                                     user.LastPeriod = subscription.Date_Next_Charge;
                                     user.TotalClicksCurrentPeriod = 0;
                                     await this.dataAccess.SaveNewUserAsync(user);
                                 }
-                                
+
                                 var plan = plans.FirstOrDefault(p => p.RowKey == subscription.Plan.Id.ToString());
 
                                 suscriberUserInfo.IsSubscribed = true;
                                 suscriberUserInfo.Email = userEmail;
                                 suscriberUserInfo.ClickCount = plan.Clicks;
                                 suscriberUserInfo.Plan = subscription.Plan.Name;
-                                suscriberUserInfo.PlanFinishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.Date_Next_Charge/1000);
+                                suscriberUserInfo.PlanFinishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.Date_Next_Charge / 1000);
                             }
                         }
 
@@ -176,7 +178,7 @@ namespace Backend.Service.BusinessLogic
 
 
         /// </inheritdoc/>
-        public async Task<Result<(bool,string)>> SaveEventAsync(EventRequest newEvent)
+        public async Task<Result<(bool, string)>> SaveEventAsync(EventRequest newEvent)
         {
             var response = new Result<(bool, string)>();
 
@@ -184,7 +186,7 @@ namespace Backend.Service.BusinessLogic
             {
                 var eventEntry = new EventEntry();
 
-                if (string.IsNullOrEmpty(newEvent?.RowKey)) 
+                if (string.IsNullOrEmpty(newEvent?.RowKey))
                 {
                     eventEntry.Title = newEvent.Title;
                     eventEntry.Description = newEvent.Description;
@@ -203,14 +205,14 @@ namespace Backend.Service.BusinessLogic
                 else
                 {
                     var getEvent = await this.dataAccess.GetEventAsync(newEvent.RowKey);
-                    
+
                     eventEntry = getEvent;
 
                     if (newEvent.IsDelete)
                     {
                         eventEntry.IsDeleted = true;
                     }
-                    else 
+                    else
                     {
                         eventEntry.Title = newEvent.Title;
                         eventEntry.Description = newEvent.Description;
@@ -231,7 +233,7 @@ namespace Backend.Service.BusinessLogic
                     response.Data = (true, eventEntry.RowKey);
                     response.Success = true;
                 }
-                else 
+                else
                 {
                     response.Data = (false, "Ocurrió un error al crear el recordatorio");
                     response.Success = false;
@@ -253,11 +255,22 @@ namespace Backend.Service.BusinessLogic
         {
             try
             {
+                Result<EventResponse> result = new Result<EventResponse>();
+
+                List<Event> events = new List<Event>();
+
                 var eventEntryList = await this.dataAccess.GetEventsAsync(email);
 
-                var result = new Result<EventResponse>(new EventResponse
+                foreach (var x in eventEntryList)
                 {
-                    Events = eventEntryList.Select(x => new Event
+                    if (x.IsDeleted)
+                    {
+                        continue;
+                    }
+
+                    var info = await this.dataAccess.GetEventsClickedInfoAsync(x.RowKey);
+
+                    var Event = new Event
                     {
                         Title = x.Title,
                         Description = x.Description,
@@ -268,11 +281,24 @@ namespace Backend.Service.BusinessLogic
                         StartTime = x.StartTime,
                         Zone = x.Zone,
                         ZoneId = x.ZoneId,
-                        Count= x.Count,
+                        Count = x.Count,
                         EventURl = x.EventURl,
-                        IsDelete = x.IsDeleted
-                    }).ToList()
-                });
+                        IsDelete = x.IsDeleted,
+                        ClickedInfo = info.Any() ? info.Select(i => new EventClickedInfo
+                        {
+                            ClickedDateTime = i.ClickedDateTime
+                        }).ToList() : new List<EventClickedInfo>()
+                    };
+
+                    events.Add(Event);
+                }
+
+                var response = new EventResponse
+                {
+                    Events = events
+                };
+
+                result.Data = response;
 
                 return result;
             }
@@ -310,6 +336,15 @@ namespace Backend.Service.BusinessLogic
 
                 eventEntry.Count = eventEntry.Count + 1;
                 var result = await this.dataAccess.SaveEntryAsync(eventEntry);
+
+                var eventClickedInfo = new EventClickedInfoEntry
+                {
+                    PartitionKey = eventEntry.RowKey,
+                    RowKey = Guid.NewGuid().ToString(),
+                    ClickedDateTime = DateTimeOffset.UtcNow,
+                };
+
+                await this.dataAccess.SaveEventClickedDateInfoAsync(eventClickedInfo);
 
                 var eventItem = new Event
                 {
@@ -403,7 +438,7 @@ namespace Backend.Service.BusinessLogic
             {
                 var user = await this.dataAccess.GetUserAsync(newUser.Email);
 
-                if (user.PartitionKey != null && user.IsActive) 
+                if (user.PartitionKey != null && user.IsActive)
                 {
                     response.Data = (false, "El usuario ya existe");
                     response.Success = false;
@@ -644,7 +679,7 @@ namespace Backend.Service.BusinessLogic
 
             return response;
         }
-        
+
         public async Task<Result<UserEntry>> GetUserAsync(ValidateSubscriptionRequest data)
         {
             var response = new Result<UserEntry>();
@@ -721,6 +756,38 @@ namespace Backend.Service.BusinessLogic
             }
         }
 
-    }
+        public async Task<Result<string>> ChangeUserDataAsync(ChangeUserData data)
+        {
+            var currentUser = await this.dataAccess.GetUserAsync(data.Email);
 
+            if (currentUser.PartitionKey != null)
+            {
+                currentUser.FullName = data.NewName;
+
+                if (!string.IsNullOrEmpty(data?.Password) && currentUser.Password != data?.Password)
+                {
+                    return await Task.FromResult(new Result<string> { Data = "Contraseña incorrecta", Success = false });
+                }
+                else if (!string.IsNullOrEmpty(data?.Password) && currentUser.Password == data?.Password && !string.IsNullOrEmpty(data.NewPassword))
+                {
+                    currentUser.Password = data.NewPassword;
+                }
+
+                var result = await this.dataAccess.SaveNewUserAsync(currentUser);
+
+                if (result)
+                {
+                    return await Task.FromResult(new Result<string> { Data = "Datos actualizados", Success = true });
+                }
+                else
+                {
+                    return await Task.FromResult(new Result<string> { Data = "Ocurrió un error al actualizar los datos", Success = false });
+                }
+            }
+            else
+            {
+                return await Task.FromResult(new Result<string> { Data = "Usuario no encontrado", Success = false });
+            }
+        }
+    }
 }

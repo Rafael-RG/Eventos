@@ -24,9 +24,29 @@ namespace Eventos.ViewModels
 
         [ObservableProperty]
         private bool isRefreshingList;
+        
+        
+        [ObservableProperty]
+        private bool isVisibleNextEvent;
 
         [ObservableProperty]
-        private ObservableCollection<Chart> charts;
+        private ObservableCollection<Chart> charts = 
+            new ObservableCollection<Chart>() { 
+                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } },
+                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } },
+                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } }};
+
+        [ObservableProperty]
+        private EventItem nextEvent;
+
+        [ObservableProperty]
+        private double progres;
+
+        [ObservableProperty]
+        private ObservableCollection<EventItem> events;
+
+        [ObservableProperty]
+        private EventItem selectedEvent;
 
 
         /// <summary>
@@ -59,81 +79,123 @@ namespace Eventos.ViewModels
         private async void LoadData()
         {
             this.IsRefreshingList = true;
-            if (this.User != null)
+
+            try
             {
-                var datasuscription = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.ValidateSuscription);
-
-                if (datasuscription.Success)
+                if (this.User != null)
                 {
-                    var userInfo = JsonConvert.DeserializeObject<SuscriberUserInfo>(datasuscription.Data.ToString());
+                    var datasuscription = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.ValidateSuscription);
 
-                    this.User.IsSubscribed = userInfo.IsSubscribed;
-
-                    if (this.User.IsSubscribed)
+                    if (datasuscription.Success)
                     {
-                        this.User.Plan = userInfo.Plan;
-                        this.User.PlanFinishDate = userInfo.PlanFinishDate;
+                        var userInfo = JsonConvert.DeserializeObject<SuscriberUserInfo>(datasuscription.Data.ToString());
 
+                        this.User.IsSubscribed = userInfo.IsSubscribed;
+
+                        if (this.User.IsSubscribed)
+                        {
+                            this.User.Plan = userInfo.Plan;
+                            this.User.PlanFinishDate = userInfo.PlanFinishDate;
+
+                        }
+
+                        this.User.ClickCount = userInfo.ClickCount;
                     }
 
-                    this.User.ClickCount = userInfo.ClickCount;
+                    var userData = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.GetUser);
+
+                    if (userData.Success)
+                    {
+                        var userStorage = JsonConvert.DeserializeObject<LoginUser>(userData.Data.ToString());
+
+                        this.User.TotalClicks = userStorage.TotalClicks;
+                        this.User.TotalClicksCurrentPeriod = userStorage.TotalClicksCurrentPeriod;
+                        this.User.LastPeriod = userStorage.LastPeriod;
+                    }
+
+                    if (this.User.ClickCount > 0)
+                    {
+                        this.Progres = (double)this.User.TotalClicksCurrentPeriod / this.User.ClickCount;
+                    }
+                    else
+                    {
+                        this.Progres = 0;
+                    }
+
+                    await this.DataService.InsertOrUpdateItemsAsync(this.User);
                 }
 
-                var userData = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.GetUser);
+                var uri = string.Format(Constants.GetEventsByUserUri, this.User.Email);
 
-                if (userData.Success)
+                var response = await this.HttpService.GetJsonObjectAsync(uri);
+
+                var data = JsonConvert.DeserializeObject<ResponseData>(response.ToString());
+
+                var eventObject = JsonConvert.DeserializeObject<Data>(data.Data.ToString());
+
+                this.Events = new ObservableCollection<EventItem>(eventObject.Events);
+
+
+                this.NextEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
+
+                this.IsVisibleNextEvent = this.NextEvent != null ? true : false;
+
+
+                if (this.NextEvent?.ClickedInfo != null && this.NextEvent.ClickedInfo.Any())
                 {
-                    var userStorage = JsonConvert.DeserializeObject<LoginUser>(userData.Data.ToString());
+                    var clicksGroupByDay = this.NextEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() }).ToList();
 
-                    this.User.TotalClicks = userStorage.TotalClicks;
-                    this.User.TotalClicksCurrentPeriod = userStorage.TotalClicksCurrentPeriod;
-                    this.User.LastPeriod = userStorage.LastPeriod;
+                    var entries = new List<ChartEntry>();
+
+                    foreach (var item in clicksGroupByDay)
+                    {
+                        entries.Add(new ChartEntry(item.Count)
+                        {
+                            Label = item.Day.ToString("dd/MM/yyyy"),
+                            ValueLabel = item.Count.ToString(),
+                            TextColor = SKColor.Parse("#184159"),
+                            Color = SKColor.Parse("#184159"),
+                            ValueLabelColor = SKColor.Parse("#184159"),
+                        });
+                    }
+
+                    this.Charts[0] = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
+
+                    this.SelectedEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
                 }
-
-                await this.DataService.InsertOrUpdateItemsAsync(this.User);
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "No se ha podido cargar la información", "OK");
             }
 
-            var entries = new[]
-            {
-                new ChartEntry(200)
-                {
-                    Label = "January",
-                    ValueLabel = "200",
-                    Color = SKColor.Parse("#184159")
-                },
-                new ChartEntry(400)
-                {
-                    Label = "February",
-                    ValueLabel = "400",
-                    Color = SKColor.Parse("#D2E898")
-                },
-                new ChartEntry(100)
-                {
-                    Label = "March",
-                    ValueLabel = "100",
-                    Color = SKColor.Parse("#184159")
-                },
-                new ChartEntry(300)
-                {
-                    Label = "April",
-                    ValueLabel = "300",
-                    Color = SKColor.Parse("#D2E898")
-                }
-            };
-
-            this.Charts = new ObservableCollection<Chart>
-            {
-                new BarChart { Entries = entries, LabelTextSize = 40 },
-                new LineChart { Entries = entries, LabelTextSize = 40 },
-                new PointChart { Entries = entries, LabelTextSize = 40 },
-                new DonutChart { Entries = entries, LabelTextSize = 40 },
-                new RadialGaugeChart { Entries = entries, LabelTextSize = 40 }
-            };
             this.IsRefreshingList = false;
 
-        }   
+        }
 
+        [RelayCommand]
+        private async void ChangeEventDataAsync()
+        {
+            var clicksGroupByDay = this.SelectedEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() }).ToList();
 
+            var entries = new List<ChartEntry>();
+
+            foreach (var item in clicksGroupByDay)
+            {
+                entries.Add(new ChartEntry(item.Count)
+                {
+                    Label = item.Day.ToString("dd/MM/yyyy"),
+                    ValueLabel = item.Count.ToString(),
+                    TextColor = SKColor.Parse("#184159"),
+                    Color = SKColor.Parse("#184159"),
+                    ValueLabelColor = SKColor.Parse("#184159"),
+                });
+            }
+
+            var line = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
+
+            this.Charts[1] = line;
+        }
 
     }
 }

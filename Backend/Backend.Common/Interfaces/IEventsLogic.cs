@@ -67,6 +67,8 @@ namespace Backend.Common.Interfaces
 
         Task<Result<UserEntry>> GetUserAsync(ValidateSubscriptionRequest data);
 
+        Task<Result<string>> ChangeUserDataAsync(ChangeUserData data);
+
     }
 
 

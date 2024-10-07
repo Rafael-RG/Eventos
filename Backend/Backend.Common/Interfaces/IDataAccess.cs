@@ -59,5 +59,10 @@ namespace Backend.Common.Interfaces
 
         Task<List<PlanSuscribeEntry>> GetPlansAsync();
 
+
+        Task<bool> SaveEventClickedDateInfoAsync(EventClickedInfoEntry eventClickedInfo);
+
+        Task<List<EventClickedInfoEntry>> GetEventsClickedInfoAsync(string partitionKey);
+
     }
 }

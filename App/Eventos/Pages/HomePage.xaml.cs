@@ -35,5 +35,9 @@ public partial class HomePage
         }
     }
 
+    private void Picker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        this.viewModel.ChangeEventDataAsyncCommand.Execute(null);
+    }
 }
 

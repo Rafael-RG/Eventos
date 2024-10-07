@@ -22,7 +22,7 @@
 
     <StackLayout BackgroundColor="#184159">
         <StackLayout BackgroundColor="#DDDDDD">
-        <Border
+            <Border
                 Margin="0,-10,0,0"
                 Padding="20"
                 BackgroundColor="#184159"
@@ -34,112 +34,118 @@
                 <Image Source="recuerdame_white" />
             </Border>
         </StackLayout>
-        
+
 
         <StackLayout
             Margin="0,0,0,0"
             Padding="20,20,20,20"
-            BackgroundColor="#DDDDDD" 
+            BackgroundColor="#DDDDDD"
             HorizontalOptions="FillAndExpand"
             IsVisible="{Binding UpdateView, Converter={StaticResource InvertedBoolConverter}}"
             VerticalOptions="FillAndExpand">
-            <StackLayout
-                Margin="0"
-                Padding="0"
-                Orientation="Horizontal">
-                <Label
-                    Margin="0,0,0,20"
-                    FontSize="24"
-                    Text="Detalles del evento"
-                    TextColor="#ABBA3C" />
-                <ImageButton
-                    Command="{Binding ActiveUpdateEventCommand}"
-                    HeightRequest="50"
-                    HorizontalOptions="EndAndExpand"
-                    Source="pen"
-                    WidthRequest="50" >
-                    <ImageButton.Shadow>
-                        <Shadow
-                            Brush="#000000"
-                            Opacity="0.5"
-                            Radius="4"
-                            Offset="0,3" />
-                    </ImageButton.Shadow>
-                    </ImageButton>
-            </StackLayout>
 
-            <Label
-                FontSize="16"
-                Text="Titulo"
-                TextColor="#184159" />
-            <Label
-                Margin="0,0,0,20"
-                Text="{Binding EventItem.Title}"
-                TextColor="#666666" />
-            <Label
-                FontSize="16"
-                Text="Descripción"
-                TextColor="#184159" />
-            <Label
-                Margin="0,0,0,20"
-                Text="{Binding EventItem.Description}"
-                TextColor="#666666" />
-            <Label
-                FontSize="16"
-                Text="URL"
-                TextColor="#184159" />
-            <Label
-                Margin="0,0,0,20"
-                Text="{Binding EventItem.EventURl}"
-                TextColor="#666666" />
-            <Label
-                FontSize="16"
-                Text="Fecha"
-                TextColor="#184159" />
-            <Label
-                Margin="0,0,0,20"
-                Text="{Binding EventItem.Date, StringFormat='{0:dd/MM/yyyy}'}"
-                TextColor="#666666" />
-            <Label
-                FontSize="16"
-                Text="Zona horaria"
-                TextColor="#184159" />
-            <Label
-                Margin="0,0,0,20"
-                Text="{Binding EventItem.Zone}"
-                TextColor="#666666" />
-            <StackLayout Orientation="Horizontal" Spacing="60">
+            <Frame BackgroundColor="White" CornerRadius="20">
                 <StackLayout>
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Orientation="Horizontal">
+                        <Label
+                            Margin="0,0,0,20"
+                            FontSize="24"
+                            Text="Detalles del evento"
+                            TextColor="#ABBA3C" />
+                        <ImageButton
+                            Command="{Binding ActiveUpdateEventCommand}"
+                            HeightRequest="50"
+                            HorizontalOptions="EndAndExpand"
+                            Source="pen"
+                            WidthRequest="50">
+                            <ImageButton.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.5"
+                                    Radius="4"
+                                    Offset="0,3" />
+                            </ImageButton.Shadow>
+                        </ImageButton>
+                    </StackLayout>
+
                     <Label
                         FontSize="16"
-                        Text="Hora de inicio"
+                        Text="Titulo"
                         TextColor="#184159" />
                     <Label
                         Margin="0,0,0,20"
-                        Text="{Binding EventItem.StartTime, Converter={StaticResource IsoDateToFormattedDateConverter}}"
+                        Text="{Binding EventItem.Title}"
                         TextColor="#666666" />
-                </StackLayout>
-                <StackLayout>
                     <Label
                         FontSize="16"
-                        Text="Hora de fin"
+                        Text="Descripción"
                         TextColor="#184159" />
                     <Label
                         Margin="0,0,0,20"
-                        Text="{Binding EventItem.EndTime, Converter={StaticResource IsoDateToFormattedDateConverter}}"
+                        Text="{Binding EventItem.Description}"
                         TextColor="#666666" />
+                    <Label
+                        FontSize="16"
+                        Text="URL"
+                        TextColor="#184159" />
+                    <Label
+                        Margin="0,0,0,20"
+                        Text="{Binding EventItem.EventURl}"
+                        TextColor="#666666" />
+                    <Label
+                        FontSize="16"
+                        Text="Fecha"
+                        TextColor="#184159" />
+                    <Label
+                        Margin="0,0,0,20"
+                        Text="{Binding EventItem.Date, StringFormat='{0:dd/MM/yyyy}'}"
+                        TextColor="#666666" />
+                    <Label
+                        FontSize="16"
+                        Text="Zona horaria"
+                        TextColor="#184159" />
+                    <Label
+                        Margin="0,0,0,20"
+                        Text="{Binding EventItem.Zone}"
+                        TextColor="#666666" />
+                    <StackLayout Orientation="Horizontal" Spacing="60">
+                        <StackLayout>
+                            <Label
+                                FontSize="16"
+                                Text="Hora de inicio"
+                                TextColor="#184159" />
+                            <Label
+                                Margin="0,0,0,20"
+                                Text="{Binding EventItem.StartTime, Converter={StaticResource IsoDateToFormattedDateConverter}}"
+                                TextColor="#666666" />
+                        </StackLayout>
+                        <StackLayout>
+                            <Label
+                                FontSize="16"
+                                Text="Hora de fin"
+                                TextColor="#184159" />
+                            <Label
+                                Margin="0,0,0,20"
+                                Text="{Binding EventItem.EndTime, Converter={StaticResource IsoDateToFormattedDateConverter}}"
+                                TextColor="#666666" />
+                        </StackLayout>
+
+                    </StackLayout>
+
+                    <Label
+                        FontSize="16"
+                        Text="Cantidad de clicks"
+                        TextColor="#184159" />
+                    <Label
+                        Margin="0,0,0,20"
+                        Text="{Binding EventItem.Count}"
+                        TextColor="#666666" />
+
                 </StackLayout>
-
-            </StackLayout>
-
-            <Label
-                FontSize="16"
-                Text="Cantidad de clicks"
-                TextColor="#184159" />
-            <Label
-                Margin="0,0,0,20"
-                Text="{Binding EventItem.Count}"
-                TextColor="#666666" />
+            </Frame>
             <StackLayout
                 Margin="0,0,0,20"
                 Orientation="Horizontal"
@@ -152,7 +158,7 @@
                     CornerRadius="20"
                     HorizontalOptions="FillAndExpand"
                     Text="Volver"
-                    TextColor="#184159" >
+                    TextColor="#184159">
                     <Button.Shadow>
                         <Shadow
                             Brush="#000000"
@@ -160,13 +166,13 @@
                             Radius="4"
                             Offset="0,3" />
                     </Button.Shadow>
-                    </Button>
+                </Button>
                 <ImageButton
-                    VerticalOptions="CenterAndExpand"
                     Clicked="Button_Clicked_Delete"
                     CommandParameter="delete"
                     HeightRequest="50"
                     Source="trash"
+                    VerticalOptions="CenterAndExpand"
                     WidthRequest="70" />
             </StackLayout>
 
@@ -175,96 +181,100 @@
         <StackLayout
             Margin="0,0,0,0"
             Padding="20,20,20,20"
-            BackgroundColor="#DDDDDD" 
+            BackgroundColor="#DDDDDD"
+            HorizontalOptions="FillAndExpand"
             IsVisible="{Binding UpdateView}"
             Spacing="15"
-            HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand">
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
             <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" VerticalOptions="FillAndExpand">
-
-                <Label
-                    Margin="0,0,0,20"
-                    FontSize="Title"
-                    Text="Detalles del evento"
-                    TextColor="#ABBA3C" />
-
-                <!--  Título del evento  -->
-                <Label
-                    FontSize="Medium"
-                    Text="Título"
-                    TextColor="#184159" />
-                <Entry
-                    Placeholder="Ingrese el título del evento"
-                    PlaceholderColor="#666666"
-                    Text="{Binding UpdatedEventItem.Title, Mode=TwoWay}"
-                    TextColor="#666666" />
-
-                <!--  Descripción del evento  -->
-                <Label
-                    FontSize="Medium"
-                    Text="Descripción"
-                    TextColor="#184159" />
-                <Editor
-                    HeightRequest="60"
-                    Placeholder="Ingrese la descripción del evento"
-                    PlaceholderColor="#666666"
-                    Text="{Binding UpdatedEventItem.Description}"
-                    TextColor="#666666" />
-
-                <Label
-                    FontSize="Medium"
-                    Text="URL"
-                    TextColor="#184159" />
-                <Editor
-                    HeightRequest="60"
-                    Placeholder="Ingrese la URL del evento"
-                    PlaceholderColor="#666666"
-                    Text="{Binding UpdatedEventItem.EventURl}"
-                    TextColor="#666666" />
-
-                <!--  Fecha del evento  -->
-                <Label
-                    FontSize="Medium"
-                    Text="Fecha"
-                    TextColor="#184159" />
-                <DatePicker
-                    Date="{Binding UpdatedEventItem.Date}"
-                    Format="dd/MM/yyyy"
-                    TextColor="#666666" />
-
-                <!--  Zona horaria del evento  -->
-                <Label
-                    FontSize="Medium"
-                    Text="Zona Horaria"
-                    TextColor="#184159" />
-                <Picker
-                    Title="Seleccione una zona horaria"
-                    ItemsSource="{Binding Zones}"
-                    SelectedItem="{Binding SelectedZone, Mode=TwoWay}"
-                    TextColor="#666666"
-                    TitleColor="#666666" />
-                <StackLayout
-                    HorizontalOptions="FillAndExpand"
-                    Orientation="Horizontal"
-                    Spacing="70">
+                <Frame BackgroundColor="White" CornerRadius="20">
                     <StackLayout>
-                        <!--  Hora de inicio del evento  -->
+                        <Label
+                            Margin="0,0,0,20"
+                            FontSize="Title"
+                            Text="Detalles del evento"
+                            TextColor="#ABBA3C" />
+
+                        <!--  Título del evento  -->
                         <Label
                             FontSize="Medium"
-                            Text="Hora de inicio"
+                            Text="Título"
                             TextColor="#184159" />
-                        <TimePicker TextColor="#666666" Time="{Binding StartTime}" />
-                    </StackLayout>
-                    <StackLayout>
-                        <!--  Hora de fin del evento  -->
+                        <Entry
+                            Placeholder="Ingrese el título del evento"
+                            PlaceholderColor="#666666"
+                            Text="{Binding UpdatedEventItem.Title, Mode=TwoWay}"
+                            TextColor="#666666" />
+
+                        <!--  Descripción del evento  -->
                         <Label
                             FontSize="Medium"
-                            Text="Hora de fin"
+                            Text="Descripción"
                             TextColor="#184159" />
-                        <TimePicker TextColor="#666666" Time="{Binding EndTime}" />
+                        <Editor
+                            HeightRequest="60"
+                            Placeholder="Ingrese la descripción del evento"
+                            PlaceholderColor="#666666"
+                            Text="{Binding UpdatedEventItem.Description}"
+                            TextColor="#666666" />
+
+                        <Label
+                            FontSize="Medium"
+                            Text="URL"
+                            TextColor="#184159" />
+                        <Editor
+                            HeightRequest="60"
+                            Placeholder="Ingrese la URL del evento"
+                            PlaceholderColor="#666666"
+                            Text="{Binding UpdatedEventItem.EventURl}"
+                            TextColor="#666666" />
+
+                        <!--  Fecha del evento  -->
+                        <Label
+                            FontSize="Medium"
+                            Text="Fecha"
+                            TextColor="#184159" />
+                        <DatePicker
+                            Date="{Binding UpdatedEventItem.Date}"
+                            Format="dd/MM/yyyy"
+                            TextColor="#666666" />
+
+                        <!--  Zona horaria del evento  -->
+                        <Label
+                            FontSize="Medium"
+                            Text="Zona Horaria"
+                            TextColor="#184159" />
+                        <Picker
+                            Title="Seleccione una zona horaria"
+                            ItemsSource="{Binding Zones}"
+                            SelectedItem="{Binding SelectedZone, Mode=TwoWay}"
+                            TextColor="#666666"
+                            TitleColor="#666666" />
+                        <StackLayout
+                            HorizontalOptions="FillAndExpand"
+                            Orientation="Horizontal"
+                            Spacing="70">
+                            <StackLayout>
+                                <!--  Hora de inicio del evento  -->
+                                <Label
+                                    FontSize="Medium"
+                                    Text="Hora de inicio"
+                                    TextColor="#184159" />
+                                <TimePicker TextColor="#666666" Time="{Binding StartTime}" />
+                            </StackLayout>
+                            <StackLayout>
+                                <!--  Hora de fin del evento  -->
+                                <Label
+                                    FontSize="Medium"
+                                    Text="Hora de fin"
+                                    TextColor="#184159" />
+                                <TimePicker TextColor="#666666" Time="{Binding EndTime}" />
+                            </StackLayout>
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
+                </Frame>
+
 
 
                 <!--  Botón para agregar el evento  -->
@@ -276,7 +286,7 @@
                     CornerRadius="20"
                     Text="Guardar edición"
                     TextColor="White"
-                    VerticalOptions="EndAndExpand" >
+                    VerticalOptions="EndAndExpand">
                     <Button.Shadow>
                         <Shadow
                             Brush="#000000"
@@ -284,14 +294,14 @@
                             Radius="4"
                             Offset="0,3" />
                     </Button.Shadow>
-                    </Button>
+                </Button>
 
                 <Button
                     BackgroundColor="#D2E898"
                     Command="{Binding CancelUpdateViewCommand}"
                     CornerRadius="20"
                     Text="Volver"
-                    TextColor="#205048" >
+                    TextColor="#205048">
                     <Button.Shadow>
                         <Shadow
                             Brush="#000000"
@@ -299,7 +309,7 @@
                             Radius="4"
                             Offset="0,3" />
                     </Button.Shadow>
-                    </Button>
+                </Button>
             </StackLayout>
         </StackLayout>
     </StackLayout>

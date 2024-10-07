@@ -9,10 +9,10 @@
 
         public static string WebApiKeyHeader => "x-functions-key";
 
-        public static string WebApiKey => (IsReleaseEnvironment) ? "WEB_API_KEY_PROPERTY" : "";
+        public static string WebApiKey = "R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
 
         //public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "http://10.0.2.2:7071/api/"; 
-        public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "https://rememberpro.azurewebsites.net/api/";
+        public static string WebApiHost = "https://rememberpro.azurewebsites.net/api/";
 
         public static string EnviromentName => (IsReleaseEnvironment) ? "ENVIRONMENT_NAME_PROPERTY" : "";
        
@@ -31,27 +31,30 @@
 #endif
             }
         }
+        
 
         public static string WebFileUri => "https://ambitious-grass-0f2288a0f.5.azurestaticapps.net/?event={0}";
 
-        public static string GetEventsByUserUri => WebApiHost + "events?user={0}&code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string GetEventsByUserUri => WebApiHost + "events?user={0}&code=" + WebApiKey;
 
-        public static string SaveEvent => WebApiHost + "saveevent?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string SaveEvent => WebApiHost + "saveevent?code=" + WebApiKey;
 
-        public static string CreateUser => WebApiHost + "createuser?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string CreateUser => WebApiHost + "createuser?code=" + WebApiKey;
 
-        public static string ValidateRegistry => WebApiHost + "codevalidateregistry?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string ValidateRegistry => WebApiHost + "codevalidateregistry?code=" + WebApiKey;
     
-        public static string FindUserAndSendCode => WebApiHost + "finduserandsendcode?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string FindUserAndSendCode => WebApiHost + "finduserandsendcode?code=" + WebApiKey;
 
-        public static string ValidateCode => WebApiHost + "validatecode?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string ValidateCode => WebApiHost + "validatecode?code=" + WebApiKey;
 
-        public static string RecoverPassword => WebApiHost + "recoverpassword?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string RecoverPassword => WebApiHost + "recoverpassword?code=" + WebApiKey;
     
-        public static string Login => WebApiHost + "login?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string Login => WebApiHost + "login?code=" + WebApiKey;
 
-        public static string ValidateSuscription => WebApiHost + "validatesubscription?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string ValidateSuscription => WebApiHost + "validatesubscription?code=" + WebApiKey;
         
-        public static string GetUser => WebApiHost + "user?code=R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string GetUser => WebApiHost + "user?code=" + WebApiKey;
+        
+        public static string ChangeUserData => WebApiHost + "changeuserdata?code=" + WebApiKey;
     }
 }

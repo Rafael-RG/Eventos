@@ -61,6 +61,20 @@ namespace Eventos.Models
 
         [JsonProperty("isDelete")]
         public bool IsDelete { get; set; }
+
+        [JsonProperty("clickedInfo")]
+        public List<EventClickedInfo> ClickedInfo { get; set; }
+
+        override public string ToString()
+        {
+            return Title;
+        }
+    }
+
+    public class EventClickedInfo 
+    {
+        [JsonProperty("clickedDateTime")]
+        public DateTimeOffset ClickedDateTime { get; set; }
     }
 
     public class Data

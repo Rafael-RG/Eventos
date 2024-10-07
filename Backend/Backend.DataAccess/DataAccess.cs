@@ -123,6 +123,28 @@ namespace Backend.DataAccess
         /// <summary>
         /// create a new table in the storage account
         /// </summary>
+        public async Task<bool> SaveEventClickedDateInfoAsync(EventClickedInfoEntry eventClickedInfo)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("clickedinfo");
+                await tableClient.CreateIfNotExistsAsync();
+
+                await tableClient.UpsertEntityAsync(eventClickedInfo);
+
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// create a new table in the storage account
+        /// </summary>
         public async Task<bool> SaveNewUserAsync(UserEntry newUser)
         {
             try
@@ -181,6 +203,26 @@ namespace Backend.DataAccess
                     events.Add(item);
                 }
                 return events;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<EventClickedInfoEntry>> GetEventsClickedInfoAsync(string partitionKey)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("clickedinfo");
+                await tableClient.CreateIfNotExistsAsync();
+                var query = tableClient.QueryAsync<EventClickedInfoEntry>(filter: $"PartitionKey eq '{partitionKey}'");
+                var eventClickedInfo = new List<EventClickedInfoEntry>();
+                await foreach (var item in query)
+                {
+                    eventClickedInfo.Add(item);
+                }
+                return eventClickedInfo;
             }
             catch
             {

@@ -197,6 +197,20 @@ namespace Backend.Service.Functions
             }, logger);
         }
 
+
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(ChangeUserDataAsync))]
+        public async Task<HttpResponseData> ChangeUserDataAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "changeuserdata")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.ChangeUserDataAsync, request.DeserializeBody<ChangeUserData>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
     }
 }
 
