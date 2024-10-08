@@ -19,7 +19,7 @@
             }
 
             // Construir la URL con el parámetro 'event' para obtener el archivo .ics
-            const fetchUrl = `https://rememberpro.azurewebsites.net/api/event?event=${eventParam}&code=X6EjI-KK5EDT9cd1enwLvWGUSdrnSHDynGm1tZ7ct9e9AzFu_zDkkA%3D%3D`;
+            const fetchUrl = `https://recuerdame.azurewebsites.net/api/event?event=${eventParam}&code=Qjgv-L55Jc88E6FkBX73MhThSXtZJZLguUj2YtsW0Wb0AzFuoV2pug%3D%3D`;
 
             // Comprobar si el protocolo `webcal` es soportado (Safari u otros)
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -64,7 +64,7 @@
                         window.URL.revokeObjectURL(link.href); // Limpiar la URL creada
                         setTimeout(() => {
                             window.close(); // Cerrar la ventana después de la descarga
-                        }, 1000); // Tiempo suficiente para que la descarga comience
+                        }, 9000); // Tiempo suficiente para que la descarga comience
                     });
                 })
                 .catch(error => {
