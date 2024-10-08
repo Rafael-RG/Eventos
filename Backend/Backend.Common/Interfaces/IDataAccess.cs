@@ -64,5 +64,7 @@ namespace Backend.Common.Interfaces
 
         Task<List<EventClickedInfoEntry>> GetEventsClickedInfoAsync(string partitionKey);
 
+        Task<DevUserEntry> GetDevUserAsync(string email);
+
     }
 }

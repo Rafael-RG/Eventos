@@ -77,54 +77,72 @@ namespace Backend.Service.BusinessLogic
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                    HttpResponseMessage response = await client.GetAsync(hotmartApiUrl);
+                    var devUser = await this.dataAccess.GetDevUserAsync(userEmail);
 
-                    if (response.IsSuccessStatusCode)
+                    if (devUser.PartitionKey != null)
                     {
-                        string responseBody = await response.Content.ReadAsStringAsync();
-                        var subscriptionData = JsonConvert.DeserializeObject<SubscriptionsResponse>(responseBody);
-
-                        var plans = await this.dataAccess.GetPlansAsync();
-
                         var suscriberUserInfo = new SuscriberUserInfo();
-                        suscriberUserInfo.IsSubscribed = false;
-                        suscriberUserInfo.ClickCount = 0;
-
-                        foreach (var subscription in subscriptionData.Items)
-                        {
-
-                            if (plans.Any(p => p.RowKey == subscription.Plan.Id.ToString())
-                                && subscription.Status == "ACTIVE")
-                            {
-                                var user = await this.dataAccess.GetUserAsync(userEmail);
-                                if (user.LastPeriod != subscription.Date_Next_Charge)
-
-                                {
-                                    user.LastPeriod = subscription.Date_Next_Charge;
-                                    user.TotalClicksCurrentPeriod = 0;
-                                    await this.dataAccess.SaveNewUserAsync(user);
-                                }
-
-                                var plan = plans.FirstOrDefault(p => p.RowKey == subscription.Plan.Id.ToString());
-
-                                suscriberUserInfo.IsSubscribed = true;
-                                suscriberUserInfo.Email = userEmail;
-                                suscriberUserInfo.ClickCount = plan.Clicks;
-                                suscriberUserInfo.Plan = subscription.Plan.Name;
-                                suscriberUserInfo.PlanFinishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.Date_Next_Charge / 1000);
-                            }
-                        }
+                        suscriberUserInfo.IsSubscribed = true;
+                        suscriberUserInfo.Email = userEmail;
+                        suscriberUserInfo.ClickCount = 1000;
+                        suscriberUserInfo.Plan = "Plan de prueba";
+                        suscriberUserInfo.PlanFinishDate = DateTimeOffset.UtcNow.AddDays(30);
 
                         res.Success = true;
                         res.Data = suscriberUserInfo;
                         return res;
                     }
-                    else
+                    else 
                     {
-                        res.Success = false;
-                        res.Data = null;
-                        res.Message = "No se pudo obtener la información de la suscripción";
-                        return res;
+                        HttpResponseMessage response = await client.GetAsync(hotmartApiUrl);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string responseBody = await response.Content.ReadAsStringAsync();
+                            var subscriptionData = JsonConvert.DeserializeObject<SubscriptionsResponse>(responseBody);
+
+                            var plans = await this.dataAccess.GetPlansAsync();
+
+                            var suscriberUserInfo = new SuscriberUserInfo();
+                            suscriberUserInfo.IsSubscribed = false;
+                            suscriberUserInfo.ClickCount = 0;
+
+                            foreach (var subscription in subscriptionData.Items)
+                            {
+
+                                if (plans.Any(p => p.RowKey == subscription.Plan.Id.ToString())
+                                    && subscription.Status == "ACTIVE")
+                                {
+                                    var user = await this.dataAccess.GetUserAsync(userEmail);
+                                    if (user.LastPeriod != subscription.Date_Next_Charge)
+
+                                    {
+                                        user.LastPeriod = subscription.Date_Next_Charge;
+                                        user.TotalClicksCurrentPeriod = 0;
+                                        await this.dataAccess.SaveNewUserAsync(user);
+                                    }
+
+                                    var plan = plans.FirstOrDefault(p => p.RowKey == subscription.Plan.Id.ToString());
+
+                                    suscriberUserInfo.IsSubscribed = true;
+                                    suscriberUserInfo.Email = userEmail;
+                                    suscriberUserInfo.ClickCount = plan.Clicks;
+                                    suscriberUserInfo.Plan = subscription.Plan.Name;
+                                    suscriberUserInfo.PlanFinishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.Date_Next_Charge / 1000);
+                                }
+                            }
+
+                            res.Success = true;
+                            res.Data = suscriberUserInfo;
+                            return res;
+                        }
+                        else
+                        {
+                            res.Success = false;
+                            res.Data = null;
+                            res.Message = "No se pudo obtener la información de la suscripción";
+                            return res;
+                        }
                     }
                 }
 

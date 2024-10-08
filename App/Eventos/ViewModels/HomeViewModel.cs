@@ -50,8 +50,8 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private double selectedEventWidth;
 
-        [ObservableProperty]
-        private double totalEventWidth;
+        //[ObservableProperty]
+        //private double totalEventWidth;
 
 
         /// <summary>
@@ -184,38 +184,38 @@ namespace Eventos.ViewModels
                         };
                     }
 
-                    var totalClicksGroupByDay = this.Events.SelectMany(x => x.ClickedInfo).GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
+                    //var totalClicksGroupByDay = this.Events.SelectMany(x => x.ClickedInfo).GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
 
-                    var totalEntries = new List<ChartEntry>();
+                    //var totalEntries = new List<ChartEntry>();
 
-                    if (clicksGroupByDay.Any())
-                    {
-                        foreach (var item in totalClicksGroupByDay)
-                        {
-                            totalEntries.Add(new ChartEntry(item.Count)
-                            {
-                                Label = item.Day.ToString("dd/MM/yyyy"),
-                                ValueLabel = item.Count.ToString(),
-                                TextColor = SKColor.Parse("#184159"),
-                                Color = SKColor.Parse("#61a60e"),
-                                OtherColor = SKColor.Parse("#61a60e"),
-                                ValueLabelColor = SKColor.Parse("#184159"),
-                            });
-                        }
+                    //if (clicksGroupByDay.Any())
+                    //{
+                    //    foreach (var item in totalClicksGroupByDay)
+                    //    {
+                    //        totalEntries.Add(new ChartEntry(item.Count)
+                    //        {
+                    //            Label = item.Day.ToString("dd/MM/yyyy"),
+                    //            ValueLabel = item.Count.ToString(),
+                    //            TextColor = SKColor.Parse("#184159"),
+                    //            Color = SKColor.Parse("#61a60e"),
+                    //            OtherColor = SKColor.Parse("#61a60e"),
+                    //            ValueLabelColor = SKColor.Parse("#184159"),
+                    //        });
+                    //    }
 
-                        var line = new LineChart { Entries = totalEntries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
+                    //    var line = new LineChart { Entries = totalEntries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
 
-                        this.Charts[2] = line;
+                    //    this.Charts[2] = line;
                         
-                        this.TotalEventWidth= ((LineChart)(this.Charts[2])).Entries.Count() > 15 ? ((LineChart)(this.Charts[2])).Entries.Count() * 30 : 400;
-                    }
-                    else
-                    {
-                        this.Charts[2] = new LineChart
-                        {
-                            Entries = new List<ChartEntry>() { new ChartEntry(0) }
-                        };
-                    }
+                    //    this.TotalEventWidth= ((LineChart)(this.Charts[2])).Entries.Count() > 15 ? ((LineChart)(this.Charts[2])).Entries.Count() * 30 : 400;
+                    //}
+                    //else
+                    //{
+                    //    this.Charts[2] = new LineChart
+                    //    {
+                    //        Entries = new List<ChartEntry>() { new ChartEntry(0) }
+                    //    };
+                    //}
 
                     OnPropertyChanged(nameof(this.Charts));
                 }

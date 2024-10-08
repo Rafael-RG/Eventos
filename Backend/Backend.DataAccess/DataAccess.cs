@@ -281,6 +281,27 @@ namespace Backend.DataAccess
             }
         }
 
+        public async Task<DevUserEntry> GetDevUserAsync(string email)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("devuser");
+                await tableClient.CreateIfNotExistsAsync();
+                var query = tableClient.QueryAsync<DevUserEntry>(filter: $"RowKey eq '{email}'");
+                var eventEntity = new DevUserEntry();
 
+                await foreach (var item in query)
+                {
+                    eventEntity = item;
+                    break;
+                }
+
+                return eventEntity;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

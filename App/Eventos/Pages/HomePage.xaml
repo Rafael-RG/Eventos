@@ -225,7 +225,7 @@
                         </Grid>
                     </Frame>
 
-                    <Frame Margin="20,15,20,0">
+                    <Frame Margin="20,15,20,20">
                         <StackLayout>
                             <Label
                                 FontAttributes="Bold"
@@ -285,7 +285,7 @@
                         </StackLayout>
                     </Frame>
 
-                    <Frame Margin="20,20,20,20">
+                    <!--<Frame Margin="20,20,20,20">
                         <StackLayout>
                             <Label
                                 FontAttributes="Bold"
@@ -315,7 +315,7 @@
                                 </ScrollView>
                             </StackLayout>
                         </StackLayout>
-                    </Frame>
+                    </Frame>-->
 
                 </StackLayout>
             </ScrollView>
