@@ -14,7 +14,7 @@
 		<ApplicationTitle>Recuérdame</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.Eventos</ApplicationId>
+		<ApplicationId>com.companyname.recuerdame</ApplicationId>
 		<ApplicationIdGuid>EDCC8458-19F0-41EE-9AA9-339A4EA9E8D7</ApplicationIdGuid>
 
 		<!-- Versions -->

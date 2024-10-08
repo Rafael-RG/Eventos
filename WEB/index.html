@@ -21,15 +21,7 @@
             // Construir la URL con el parámetro 'event' para obtener el archivo .ics
             const fetchUrl = `https://recuerdame.azurewebsites.net/api/event?event=${eventParam}&code=Qjgv-L55Jc88E6FkBX73MhThSXtZJZLguUj2YtsW0Wb0AzFuoV2pug%3D%3D`;
 
-            // Comprobar si el protocolo `webcal` es soportado (Safari u otros)
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            if (isSafari) {
-                // Si es Safari, usar webcal:// para abrir el archivo .ics en el calendario
-                const webcalUrl = fetchUrl.replace('https://', 'webcal://');
-                window.location.href = webcalUrl;
-            } else {
-                // Si no soporta webcal (ej: Chrome), proceder con la descarga del archivo .ics
-                fetch(fetchUrl, {
+            fetch(fetchUrl, {
                     method: 'GET'
                 })
                 .then(response => response.json())
@@ -70,7 +62,6 @@
                 .catch(error => {
                     console.error('Error al descargar el archivo:', error);
                 });
-            }
         }
 
         // Ejecutar la función cuando la página se cargue
