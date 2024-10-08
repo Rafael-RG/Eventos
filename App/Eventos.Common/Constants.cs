@@ -9,10 +9,10 @@
 
         public static string WebApiKeyHeader => "x-functions-key";
 
-        public static string WebApiKey = "R4oyjUREZfYaISSUIEvLVtbbJblNCLtXnkriVd9oV8llAzFuqAjLmw==";
+        public static string WebApiKey = "MhxA7YBAqb9eb5yAW83gzoRu6cXyo7BYu5Qo8T8IbfuMAzFuIeHHGg==";
 
         //public static string WebApiHost => (IsReleaseEnvironment) ? "WEB_API_HOST_PROPERTY" : "http://10.0.2.2:7071/api/"; 
-        public static string WebApiHost = "https://rememberpro.azurewebsites.net/api/";
+        public static string WebApiHost = "https://recuerdame.azurewebsites.net/api/";
 
         public static string EnviromentName => (IsReleaseEnvironment) ? "ENVIRONMENT_NAME_PROPERTY" : "";
        
@@ -33,7 +33,7 @@
         }
         
 
-        public static string WebFileUri => "https://ambitious-grass-0f2288a0f.5.azurestaticapps.net/?event={0}";
+        public static string WebFileUri => "https://recuerdame.app/visit/?event={0}";
 
         public static string GetEventsByUserUri => WebApiHost + "events?user={0}&code=" + WebApiKey;
 
