@@ -1,6 +1,7 @@
 ﻿
 using Eventos.Common.Pages;
 using Eventos.ViewModels;
+using Microcharts;
 
 namespace Eventos.Pages;
 
@@ -38,6 +39,8 @@ public partial class HomePage
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)
     {
         this.viewModel.ChangeEventDataAsyncCommand.Execute(null);
+
+        OnPropertyChanged(nameof(this.viewModel.Charts));
     }
 }
 

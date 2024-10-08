@@ -33,13 +33,16 @@
         </StackLayout>
 
         <StackLayout
-            Margin="0"
+            Margin="0,0,0,0"
             BackgroundColor="#DDDDDD"
             HorizontalOptions="FillAndExpand"
             Spacing="15"
             VerticalOptions="FillAndExpand">
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
-            <StackLayout Margin="20,20,20,20" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+            <StackLayout
+                Margin="20,10,20,10"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                VerticalOptions="FillAndExpand">
                 <Frame BackgroundColor="White" CornerRadius="20">
                     <StackLayout>
                         <Label
@@ -50,113 +53,126 @@
 
                         <!--  Título del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="16"
                             Text="Título"
                             TextColor="#184159" />
                         <Entry
+                            FontSize="12"
                             Placeholder="Ingrese el título del evento"
                             PlaceholderColor="#666666"
                             Text="{Binding Title}" />
 
                         <!--  Descripción del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="16"
                             Text="Descripción"
                             TextColor="#184159" />
                         <Editor
-                            HeightRequest="90"
+                            FontSize="12"
+                            HeightRequest="70"
                             Placeholder="Ingrese la descripción del evento"
                             PlaceholderColor="#666666"
                             Text="{Binding Description}" />
 
                         <!--  Url del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="16"
                             Text="Url"
                             TextColor="#184159" />
                         <Entry
+                            FontSize="12"
                             Placeholder="Ingrese la Url del evento"
                             PlaceholderColor="#666666"
                             Text="{Binding Url}" />
 
                         <!--  Fecha del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="16"
                             Text="Fecha"
                             TextColor="#184159" />
                         <DatePicker
                             Date="{Binding Date}"
+                            FontSize="12"
                             Format="dd/MM/yyyy"
                             TextColor="#666666" />
 
                         <!--  Zona horaria del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="16"
                             Text="Zona Horaria"
                             TextColor="#184159" />
                         <Picker
                             Title="Seleccione una zona horaria"
+                            FontSize="12"
                             ItemsSource="{Binding Zones}"
                             SelectedItem="{Binding SelectedZone}"
                             TitleColor="#666666" />
                         <StackLayout
                             HorizontalOptions="FillAndExpand"
                             Orientation="Horizontal"
-                            Spacing="70">
+                            Spacing="30">
                             <StackLayout>
                                 <!--  Hora de inicio del evento  -->
                                 <Label
-                                    FontSize="Medium"
+                                    FontSize="16"
                                     Text="Hora de inicio"
                                     TextColor="#184159" />
-                                <TimePicker TextColor="#666666" Time="{Binding StartTime}" />
+                                <TimePicker
+                                    FontSize="12"
+                                    TextColor="#666666"
+                                    Time="{Binding StartTime}" />
                             </StackLayout>
                             <StackLayout>
                                 <!--  Hora de fin del evento  -->
                                 <Label
-                                    FontSize="Medium"
+                                    FontSize="16"
                                     Text="Hora de fin"
                                     TextColor="#184159" />
-                                <TimePicker TextColor="#666666" Time="{Binding EndTime}" />
+                                <TimePicker
+                                    FontSize="12"
+                                    TextColor="#666666"
+                                    Time="{Binding EndTime}" />
                             </StackLayout>
                         </StackLayout>
                     </StackLayout>
                 </Frame>
 
-
-
                 <!--  Botón para agregar el evento  -->
+                <StackLayout VerticalOptions="EndAndExpand">
+                    <Button
+                        Margin="0,10,0,10"
+                        BackgroundColor="#419387"
+                        Command="{Binding AddEventCommand}"
+                        CornerRadius="20"
+                        Text="Guardar evento"
+                        TextColor="White"
+                        VerticalOptions="End">
+                        <Button.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.5"
+                                Radius="4"
+                                Offset="0,3" />
+                        </Button.Shadow>
+                    </Button>
 
-                <Button
-                    Margin="0,20,0,15"
-                    BackgroundColor="#419387"
-                    Command="{Binding AddEventCommand}"
-                    CornerRadius="20"
-                    Text="Guardar evento"
-                    TextColor="White">
-                    <Button.Shadow>
-                        <Shadow
-                            Brush="#000000"
-                            Opacity="0.5"
-                            Radius="4"
-                            Offset="0,3" />
-                    </Button.Shadow>
-                </Button>
+                    <Button
+                        BackgroundColor="#D2E898"
+                        Command="{Binding ClearCommand}"
+                        CornerRadius="20"
+                        Text="Cancelar"
+                        TextColor="#205048"
+                        VerticalOptions="EndAndExpand">
+                        <Button.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.5"
+                                Radius="4"
+                                Offset="0,3" />
+                        </Button.Shadow>
+                    </Button>
+                </StackLayout>
 
-                <Button
-                    BackgroundColor="#D2E898"
-                    Command="{Binding ClearCommand}"
-                    CornerRadius="20"
-                    Text="Cancelar"
-                    TextColor="#205048">
-                    <Button.Shadow>
-                        <Shadow
-                            Brush="#000000"
-                            Opacity="0.5"
-                            Radius="4"
-                            Offset="0,3" />
-                    </Button.Shadow>
-                </Button>
             </StackLayout>
         </StackLayout>
     </StackLayout>

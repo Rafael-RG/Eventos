@@ -30,11 +30,7 @@ namespace Eventos.ViewModels
         private bool isVisibleNextEvent;
 
         [ObservableProperty]
-        private ObservableCollection<Chart> charts = 
-            new ObservableCollection<Chart>() { 
-                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } },
-                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } },
-                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } }};
+        private ObservableCollection<Chart> charts;
 
         [ObservableProperty]
         private EventItem nextEvent;
@@ -48,13 +44,26 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private EventItem selectedEvent;
 
+        [ObservableProperty]
+        private double nextEventWidth;
+
+        [ObservableProperty]
+        private double selectedEventWidth;
+
+        [ObservableProperty]
+        private double totalEventWidth;
+
 
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
         public HomeViewModel(IServiceProvider provider) :  base(provider)
         {
-            
+            this.Charts =
+            new ObservableCollection<Chart>() {
+                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } },
+                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } },
+                new LineChart { Entries = new List<ChartEntry>() { new ChartEntry(0) } }};
         }
 
 
@@ -135,7 +144,6 @@ namespace Eventos.ViewModels
 
                 this.Events = new ObservableCollection<EventItem>(eventObject.Events);
 
-
                 this.NextEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
 
                 this.IsVisibleNextEvent = this.NextEvent != null ? true : false;
@@ -143,25 +151,73 @@ namespace Eventos.ViewModels
 
                 if (this.NextEvent?.ClickedInfo != null && this.NextEvent.ClickedInfo.Any())
                 {
-                    var clicksGroupByDay = this.NextEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() }).ToList();
+                    var clicksGroupByDay = this.NextEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
 
-                    var entries = new List<ChartEntry>();
-
-                    foreach (var item in clicksGroupByDay)
+                    if (clicksGroupByDay.Any())
                     {
-                        entries.Add(new ChartEntry(item.Count)
+                        var entries = new List<ChartEntry>();
+
+                        foreach (var item in clicksGroupByDay)
                         {
-                            Label = item.Day.ToString("dd/MM/yyyy"),
-                            ValueLabel = item.Count.ToString(),
-                            TextColor = SKColor.Parse("#184159"),
-                            Color = SKColor.Parse("#184159"),
-                            ValueLabelColor = SKColor.Parse("#184159"),
-                        });
+                            entries.Add(new ChartEntry(item.Count)
+                            {
+                                Label = item.Day.ToString("dd/MM/yyyy"),
+                                ValueLabel = item.Count.ToString(),
+                                TextColor = SKColor.Parse("#184159"),
+                                Color = SKColor.Parse("#61a60e"),
+                                OtherColor = SKColor.Parse("#61a60e"),
+                                ValueLabelColor = SKColor.Parse("#184159"),
+                            });
+                        }
+
+                        this.Charts[0] = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
+
+                        this.SelectedEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
+
+                        this.NextEventWidth = ((LineChart)(this.Charts[1])).Entries.Count()>15 ? ((LineChart)(this.Charts[1])).Entries.Count() * 30 : 400;
+                    }
+                    else
+                    {
+                        this.Charts[0] = new LineChart
+                        {
+                            Entries = new List<ChartEntry>() { new ChartEntry(0) }
+                        };
                     }
 
-                    this.Charts[0] = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
+                    var totalClicksGroupByDay = this.Events.SelectMany(x => x.ClickedInfo).GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
 
-                    this.SelectedEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
+                    var totalEntries = new List<ChartEntry>();
+
+                    if (clicksGroupByDay.Any())
+                    {
+                        foreach (var item in totalClicksGroupByDay)
+                        {
+                            totalEntries.Add(new ChartEntry(item.Count)
+                            {
+                                Label = item.Day.ToString("dd/MM/yyyy"),
+                                ValueLabel = item.Count.ToString(),
+                                TextColor = SKColor.Parse("#184159"),
+                                Color = SKColor.Parse("#61a60e"),
+                                OtherColor = SKColor.Parse("#61a60e"),
+                                ValueLabelColor = SKColor.Parse("#184159"),
+                            });
+                        }
+
+                        var line = new LineChart { Entries = totalEntries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
+
+                        this.Charts[2] = line;
+                        
+                        this.TotalEventWidth= ((LineChart)(this.Charts[2])).Entries.Count() > 15 ? ((LineChart)(this.Charts[2])).Entries.Count() * 30 : 400;
+                    }
+                    else
+                    {
+                        this.Charts[2] = new LineChart
+                        {
+                            Entries = new List<ChartEntry>() { new ChartEntry(0) }
+                        };
+                    }
+
+                    OnPropertyChanged(nameof(this.Charts));
                 }
             }
             catch
@@ -176,25 +232,40 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void ChangeEventDataAsync()
         {
-            var clicksGroupByDay = this.SelectedEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() }).ToList();
+            var clicksGroupByDay = this.SelectedEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
 
             var entries = new List<ChartEntry>();
 
-            foreach (var item in clicksGroupByDay)
+            if (clicksGroupByDay.Any())
             {
-                entries.Add(new ChartEntry(item.Count)
+                foreach (var item in clicksGroupByDay)
                 {
-                    Label = item.Day.ToString("dd/MM/yyyy"),
-                    ValueLabel = item.Count.ToString(),
-                    TextColor = SKColor.Parse("#184159"),
-                    Color = SKColor.Parse("#184159"),
-                    ValueLabelColor = SKColor.Parse("#184159"),
-                });
+                    entries.Add(new ChartEntry(item.Count)
+                    {
+                        Label = item.Day.ToString("dd/MM/yyyy"),
+                        ValueLabel = item.Count.ToString(),
+                        TextColor = SKColor.Parse("#184159"),
+                        Color = SKColor.Parse("#61a60e"),
+                        OtherColor = SKColor.Parse("#61a60e"),
+                        ValueLabelColor = SKColor.Parse("#184159"),
+                    });
+                }
+
+                var line = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
+
+                this.Charts[1] = line;
+
+                this.SelectedEventWidth = ((LineChart)(this.Charts[1])).Entries.Count() > 15 ? ((LineChart)(this.Charts[1])).Entries.Count() * 30 : 400;
+            }
+            else
+            {
+                this.Charts[1] = new LineChart
+                {
+                    Entries = new List<ChartEntry>() { new ChartEntry(0) }
+                };
             }
 
-            var line = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
-
-            this.Charts[1] = line;
+            OnPropertyChanged(nameof(this.Charts));
         }
 
     }
