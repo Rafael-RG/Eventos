@@ -88,6 +88,7 @@
             <Button
                 BackgroundColor="Transparent"
                 BorderColor="#ABBA3C"
+                BorderWidth = "2"
                 Command="{Binding RegistryUserCommand}"
                 CornerRadius="20"
                 FontSize="16"
