@@ -8,6 +8,7 @@ using Microsoft.Maui;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Eventos.ViewModels
 {
@@ -197,7 +198,7 @@ namespace Eventos.ViewModels
 
             var validateCode = new ValidateRegistry
             {
-                Email = this.UserEmail,
+                Email = this.UserEmail.ToLower(),
                 Code = this.ValidateCode
             };
 
@@ -209,7 +210,7 @@ namespace Eventos.ViewModels
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "El código no es correcto", "OK");
             }
         }
 
@@ -225,7 +226,7 @@ namespace Eventos.ViewModels
                 return;
             }
 
-            if (!System.Text.RegularExpressions.Regex.IsMatch(this.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))
+            if (!Regex.IsMatch(this.Password, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
             {
                 await App.Current.MainPage.DisplayAlert("Error", "La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
                 return;
@@ -289,7 +290,7 @@ namespace Eventos.ViewModels
 
             if (!result.Success)
             {
-                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "El código no es correcto", "OK");
             }
         }
 
@@ -321,7 +322,7 @@ namespace Eventos.ViewModels
                 return;
             }
 
-            if (!System.Text.RegularExpressions.Regex.IsMatch(this.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))
+            if (!Regex.IsMatch(this.Password, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
             {
                 await App.Current.MainPage.DisplayAlert("Error", "La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
                 return;
@@ -383,7 +384,7 @@ namespace Eventos.ViewModels
 
             var newUser = new NewUser
             {
-                Email = this.UserEmail,
+                Email = this.UserEmail.ToLower(),
                 RetryValidate = true,
                 Password = this.Password,
                 Country = this.Country,
@@ -421,7 +422,7 @@ namespace Eventos.ViewModels
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "El código no es correcto", "Reintentar");
             }
         }
 

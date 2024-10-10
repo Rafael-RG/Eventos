@@ -128,7 +128,7 @@ namespace Eventos.ViewModels
                 }
                 else if (!string.IsNullOrEmpty(this.NewPassword) && !string.IsNullOrEmpty(this.RepeatNewPassword) && this.NewPassword == this.RepeatNewPassword)
                 {
-                    if(!Regex.IsMatch(this.NewPassword, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))
+                    if(!Regex.IsMatch(this.NewPassword, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "La nueva contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
                         return;

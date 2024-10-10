@@ -283,10 +283,11 @@
 
             <Label
                 Margin="0,0,0,20"
+                TextColor="White"
                 FontAttributes="Bold"
                 Text="Gracias por registrarte." />
 
-            <Label>
+            <Label TextColor="White">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Para completar el proceso, por favor revisa tu correo electrónico e ingresa el " />
@@ -318,9 +319,9 @@
                     TextColor="#184159" />
             </Frame>
 
-            <Label Margin="0,10,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
+            <Label TextColor="White" Margin="0,10,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
 
-            <Label Margin="0,0,0,10" IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
+            <Label TextColor="White" Margin="0,0,0,10" IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Podrás reenviar el código en " />
@@ -389,9 +390,10 @@
             <Label
                 Margin="0,0,0,10"
                 FontAttributes="Bold"
+                TextColor="White"
                 Text="Tu cuenta ha sido activada exitosamente." />
 
-            <Label Margin="0,10,0,0" Text="Vuelve para iniciar sesión." />
+            <Label TextColor="White" Margin="0,10,0,0" Text="Vuelve para iniciar sesión." />
 
             <Button
                 Margin="0,0,0,20"
@@ -495,7 +497,7 @@
                 Text="Valida tu cuenta"
                 TextColor="#ABBA3C" />
 
-            <Label Text="Introduce el código de verificación que hemos enviado a tu correo electrónico para continuar." />
+            <Label TextColor="White" Text="Introduce el código de verificación que hemos enviado a tu correo electrónico para continuar." />
 
             <Frame
                 Margin="0,30,0,30"
@@ -519,9 +521,9 @@
                     TextColor="#184159" />
             </Frame>
 
-            <Label Margin="0,20,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
+            <Label TextColor="White" Margin="0,20,0,20" Text="Si no encuentras el correo, revisa tu carpeta de spam." />
 
-            <Label Margin="0,0,0,10" IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
+            <Label TextColor="White" Margin="0,0,0,10" IsVisible="{Binding IsActiveSendCode, Converter={local:InvertedBoolConverter}}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Podrás reenviar el código en " />
@@ -603,6 +605,7 @@
                 </Frame.Shadow>
                 <Entry
                     Margin="20,0,20,0"
+                    IsPassword="True"
                     Placeholder="Contraseña"
                     PlaceholderColor="White"
                     Text="{Binding Password}"
@@ -625,13 +628,14 @@
                 </Frame.Shadow>
                 <Entry
                     Margin="20,0,20,0"
+                    IsPassword="True"
                     Placeholder="Repetir contraseña"
                     PlaceholderColor="White"
                     Text="{Binding RepeatPassword}"
                     TextColor="White" />
             </Frame>
 
-            <Label Text="La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres." />
+            <Label TextColor="White" Text="La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres." />
 
             <StackLayout
                 Margin="10,0,0,40"
@@ -680,9 +684,9 @@
                 Text="¡Actulización de contraseña!"
                 TextColor="#ABBA3C" />
 
-            <Label Margin="0,0,0,0" Text="Contraseña actulizada correctamente. " />
+            <Label TextColor="White" Margin="0,0,0,0" Text="Contraseña actulizada correctamente. " />
 
-            <Label Margin="0,15,0,0" Text="Vuelve para iniciar sesión." />
+            <Label TextColor="White" Margin="0,15,0,0" Text="Vuelve para iniciar sesión." />
 
             <Button
                 Margin="0,0,0,40"
