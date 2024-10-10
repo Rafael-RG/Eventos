@@ -51,12 +51,15 @@ namespace Eventos.ViewModels
         /// </summary>
         public AddEventViewModel(IServiceProvider provider) : base(provider)
         {
-            this.User = AppShell.User;
+
         }
 
         public override async void OnAppearing()
         {
             IsBusy = true;
+
+            this.User = await this.DataService.LoadUserAsync();
+
             this.SelectedZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
             this.Date = DateTime.Now.ToLocalTime();
             
@@ -103,7 +106,7 @@ namespace Eventos.ViewModels
 
                 var newEvent = new Event
                 {
-                    Email = this.User.Email,
+                    Email = this.User.Email.ToLower(),
                     Title = this.Title,
                     Description = this.Description,
                     StartTime = eventStart,
