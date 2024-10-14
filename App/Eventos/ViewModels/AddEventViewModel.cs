@@ -123,6 +123,8 @@ namespace Eventos.ViewModels
                 if (result.Success) 
                 {
                     await App.Current.MainPage.DisplayAlert("Creado", "Se creo correctamente el evento.", "OK");
+
+                    this.Clear();
                 }
 
             }

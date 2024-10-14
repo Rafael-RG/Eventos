@@ -216,16 +216,26 @@
                                             x:Name="nexteventclicks"
                                             Chart="{Binding Charts[0], Mode=TwoWay}"
                                             HeightRequest="250"
+                                            IsVisible="{Binding IsVisibleGraphic1}"
                                             VerticalOptions="CenterAndExpand"
                                             WidthRequest="{Binding NextEventWidth}" />
+                                        <Label
+                                            FontSize="20"
+                                            HorizontalOptions="Center"
+                                            IsVisible="{Binding IsVisibleGraphic1, Converter={StaticResource InvertedBoolConverter}}"
+                                            Text="Aún no hay interacciones."
+                                            TextColor="#61a60e"
+                                            VerticalOptions="CenterAndExpand" />
                                     </Grid>
                                 </ScrollView>
+
+
                             </StackLayout>
 
                         </Grid>
                     </Frame>
 
-                    <Frame Margin="20,15,20,20">
+                    <Frame Margin="20,15,20,20" IsVisible="{Binding IsVisibleNextEvent}">
                         <StackLayout>
                             <Label
                                 FontAttributes="Bold"
@@ -277,14 +287,29 @@
                                             x:Name="clicksbyevent"
                                             Chart="{Binding Charts[1], Mode=TwoWay}"
                                             HeightRequest="300"
+                                            IsVisible="{Binding IsVisibleGraphic2}"
                                             VerticalOptions="CenterAndExpand"
                                             WidthRequest="{Binding SelectedEventWidth}" />
+                                        <Label
+                                            FontSize="20"
+                                            HorizontalOptions="Center"
+                                            IsVisible="{Binding IsVisibleGraphic2, Converter={StaticResource InvertedBoolConverter}}"
+                                            Text="Aún no hay interacciones."
+                                            TextColor="#61a60e"
+                                            VerticalOptions="CenterAndExpand" />
                                     </Grid>
                                 </ScrollView>
                             </StackLayout>
                         </StackLayout>
                     </Frame>
 
+                    <Label
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsVisibleNextEvent, Converter={StaticResource InvertedBoolConverter}}"
+                        Text="Aún no hay eventos disponibles."
+                        TextColor="#61a60e"
+                        VerticalOptions="CenterAndExpand" />
                     <!--<Frame Margin="20,20,20,20">
                         <StackLayout>
                             <Label

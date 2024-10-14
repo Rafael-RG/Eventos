@@ -300,6 +300,7 @@ namespace Backend.Service.BusinessLogic
                         Zone = x.Zone,
                         ZoneId = x.ZoneId,
                         Count = x.Count,
+                        Timestamp = x.Timestamp,
                         EventURl = x.EventURl,
                         IsDelete = x.IsDeleted,
                         ClickedInfo = info.Any() ? info.Select(i => new EventClickedInfo
@@ -333,6 +334,11 @@ namespace Backend.Service.BusinessLogic
             try
             {
                 var eventEntry = await this.dataAccess.GetEventAsync(rowKey);
+
+                if (eventEntry.Date.Date < DateTimeOffset.UtcNow.Date || (eventEntry.Date.Date == DateTimeOffset.UtcNow.Date && eventEntry.StartTime < DateTimeOffset.UtcNow))
+                {
+                    return null;
+                }
 
                 var suscription = await this.ValidateSubscriptionAsync(new ValidateSubscriptionRequest { UserEmail = eventEntry.Email });
 
@@ -403,42 +409,47 @@ namespace Backend.Service.BusinessLogic
         {
             StringBuilder sb = new StringBuilder();
             string timeZoneId = timeZoneInfo.Id;
-            string timeZoneStart = startDateTime.ToString("yyyyMMddTHHmmss");
-            string timeZoneEnd = endDateTime.ToString("yyyyMMddTHHmmss");
+            string timeZoneStart = startDateTime.UtcDateTime.ToString("yyyyMMddTHHmmssZ");
+            string timeZoneEnd = endDateTime.UtcDateTime.ToString("yyyyMMddTHHmmssZ");
             string uid = Guid.NewGuid().ToString();
             string dtStamp = DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ");
 
             sb.AppendLine("BEGIN:VCALENDAR");
             sb.AppendLine("VERSION:2.0");
-            sb.AppendLine("PRODID:-//YourCompany//YourProduct//EN");
+            sb.AppendLine("PRODID:-//Recuérdame//Eventos//EN");
             sb.AppendLine("CALSCALE:GREGORIAN");
 
-            sb.AppendLine("BEGIN:VTIMEZONE");
-            sb.AppendLine($"TZID:{timeZoneId}");
-            sb.AppendLine("BEGIN:STANDARD");
-            sb.AppendLine($"DTSTART:{timeZoneStart}");
-            sb.AppendLine("TZOFFSETFROM:+0000"); // Ajusta según tu zona horaria
-            sb.AppendLine("TZOFFSETTO:+0000"); // Ajusta según tu zona horaria
-            sb.AppendLine("END:STANDARD");
-            sb.AppendLine("END:VTIMEZONE");
+            //sb.AppendLine("BEGIN:VTIMEZONE");
+            //sb.AppendLine($"TZID:{timeZoneId}");
+            //sb.AppendLine("BEGIN:STANDARD");
+            //sb.AppendLine($"DTSTART:{startDateTime.ToString("yyyyMMddTHHmmss")}");
+            //sb.AppendLine("END:STANDARD");
+            //sb.AppendLine("END:VTIMEZONE");
 
             sb.AppendLine("BEGIN:VEVENT");
             sb.AppendLine($"UID:{uid}");
             sb.AppendLine($"DTSTAMP:{dtStamp}");
             sb.AppendLine($"SUMMARY:{title.Replace(",", "\\,").Replace(";", "\\;")}");
             sb.AppendLine($"DESCRIPTION:{description.Replace(",", "\\,").Replace(";", "\\;")}");
-            sb.AppendLine($"DTSTART;TZID={timeZoneId}:{timeZoneStart}");
-            sb.AppendLine($"DTEND;TZID={timeZoneId}:{timeZoneEnd}");
+            //sb.AppendLine($"DTSTART;TZID={timeZoneId}:{timeZoneStart}");
+            //sb.AppendLine($"DTEND;TZID={timeZoneId}:{timeZoneEnd}");
+            sb.AppendLine($"DTSTART:{timeZoneStart}");
+            sb.AppendLine($"DTEND:{timeZoneEnd}");
             if (!string.IsNullOrEmpty(url))
             {
                 sb.AppendLine($"URL:{url}");
             }
 
-            // Añadir alerta (recordatorio)
             sb.AppendLine("BEGIN:VALARM");
             sb.AppendLine("TRIGGER:-PT15M");
             sb.AppendLine("ACTION:DISPLAY");
             sb.AppendLine($"DESCRIPTION:Reminder for {title}");
+            sb.AppendLine("END:VALARM");
+
+            sb.AppendLine("BEGIN:VALARM");
+            sb.AppendLine("TRIGGER:PT0M");
+            sb.AppendLine("ACTION:DISPLAY");
+            sb.AppendLine($"DESCRIPTION:Event starting now: {title}");
             sb.AppendLine("END:VALARM");
 
             sb.AppendLine("END:VEVENT");

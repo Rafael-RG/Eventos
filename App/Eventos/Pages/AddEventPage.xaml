@@ -38,7 +38,11 @@
             HorizontalOptions="FillAndExpand"
             Spacing="15"
             VerticalOptions="FillAndExpand">
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="CenterAndExpand"
+                Color="#ABBA3C" />
             <StackLayout
                 Margin="20,10,20,10"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"

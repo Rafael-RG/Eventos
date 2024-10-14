@@ -50,6 +50,12 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private double selectedEventWidth;
 
+        [ObservableProperty]
+        private bool isVisibleGraphic1;
+
+        [ObservableProperty]
+        private bool isVisibleGraphic2;
+
         //[ObservableProperty]
         //private double totalEventWidth;
 
@@ -144,6 +150,11 @@ namespace Eventos.ViewModels
 
                 this.Events = new ObservableCollection<EventItem>(eventObject.Events);
 
+                if (this.Events.Any()) 
+                {
+                    this.SelectedEvent= this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
+                }
+
                 this.NextEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
 
                 this.IsVisibleNextEvent = this.NextEvent != null ? true : false;
@@ -151,7 +162,7 @@ namespace Eventos.ViewModels
 
                 if (this.NextEvent?.ClickedInfo != null && this.NextEvent.ClickedInfo.Any())
                 {
-                    var clicksGroupByDay = this.NextEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
+                    var clicksGroupByDay = this.NextEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.LocalDateTime.Date).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
 
                     if (clicksGroupByDay.Any())
                     {
@@ -172,9 +183,11 @@ namespace Eventos.ViewModels
 
                         this.Charts[0] = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
 
+                        this.IsVisibleGraphic1 = true;
+
                         this.SelectedEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
 
-                        this.NextEventWidth = ((LineChart)(this.Charts[1])).Entries.Count()>15 ? ((LineChart)(this.Charts[1])).Entries.Count() * 30 : 400;
+                        this.NextEventWidth = ((LineChart)(this.Charts[1])).Entries.Count() > 15 ? ((LineChart)(this.Charts[1])).Entries.Count() * 30 : 400;
                     }
                     else
                     {
@@ -182,40 +195,9 @@ namespace Eventos.ViewModels
                         {
                             Entries = new List<ChartEntry>() { new ChartEntry(0) }
                         };
+
+                        this.IsVisibleGraphic1 = false;
                     }
-
-                    //var totalClicksGroupByDay = this.Events.SelectMany(x => x.ClickedInfo).GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
-
-                    //var totalEntries = new List<ChartEntry>();
-
-                    //if (clicksGroupByDay.Any())
-                    //{
-                    //    foreach (var item in totalClicksGroupByDay)
-                    //    {
-                    //        totalEntries.Add(new ChartEntry(item.Count)
-                    //        {
-                    //            Label = item.Day.ToString("dd/MM/yyyy"),
-                    //            ValueLabel = item.Count.ToString(),
-                    //            TextColor = SKColor.Parse("#184159"),
-                    //            Color = SKColor.Parse("#61a60e"),
-                    //            OtherColor = SKColor.Parse("#61a60e"),
-                    //            ValueLabelColor = SKColor.Parse("#184159"),
-                    //        });
-                    //    }
-
-                    //    var line = new LineChart { Entries = totalEntries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
-
-                    //    this.Charts[2] = line;
-                        
-                    //    this.TotalEventWidth= ((LineChart)(this.Charts[2])).Entries.Count() > 15 ? ((LineChart)(this.Charts[2])).Entries.Count() * 30 : 400;
-                    //}
-                    //else
-                    //{
-                    //    this.Charts[2] = new LineChart
-                    //    {
-                    //        Entries = new List<ChartEntry>() { new ChartEntry(0) }
-                    //    };
-                    //}
 
                     OnPropertyChanged(nameof(this.Charts));
                 }
@@ -232,7 +214,20 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void ChangeEventDataAsync()
         {
-            var clicksGroupByDay = this.SelectedEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.Second).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
+            if (this.SelectedEvent == null) 
+            {
+                this.Charts[1] = new LineChart
+                {
+                    Entries = new List<ChartEntry>() { new ChartEntry(0) }
+                };
+
+                this.IsVisibleGraphic2 = false;
+                OnPropertyChanged(nameof(this.Charts));
+
+                return;
+            }
+
+            var clicksGroupByDay = this.SelectedEvent.ClickedInfo.GroupBy(x => x.ClickedDateTime.LocalDateTime.Date).Select(x => new { Date = x.Key, Day = x.FirstOrDefault().ClickedDateTime, Count = x.Count() });
 
             var entries = new List<ChartEntry>();
 
@@ -256,6 +251,8 @@ namespace Eventos.ViewModels
                 this.Charts[1] = line;
 
                 this.SelectedEventWidth = ((LineChart)(this.Charts[1])).Entries.Count() > 15 ? ((LineChart)(this.Charts[1])).Entries.Count() * 30 : 400;
+
+                this.IsVisibleGraphic2 = true;
             }
             else
             {
@@ -263,6 +260,8 @@ namespace Eventos.ViewModels
                 {
                     Entries = new List<ChartEntry>() { new ChartEntry(0) }
                 };
+
+                this.IsVisibleGraphic2 = false;
             }
 
             OnPropertyChanged(nameof(this.Charts));

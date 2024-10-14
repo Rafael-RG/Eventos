@@ -71,7 +71,7 @@ namespace Eventos.ViewModels
 
                 var events = JsonConvert.DeserializeObject<Data>(data.Data.ToString());
 
-                var evetsActive = events.Events.Where(x => !x.IsDelete).ToList();
+                var evetsActive = events.Events.Where(x => !x.IsDelete).OrderByDescending(x=>x.Timestamp).ToList();
 
                 foreach (var item in evetsActive)
                 {

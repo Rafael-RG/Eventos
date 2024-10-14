@@ -23,6 +23,11 @@ public partial class HistoryPage
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
+
+        if (BindingContext is HistoryViewModel viewModel)
+        {
+            this.viewModel.RefreshAsyncCommand.Execute(null);
+        }
     }
 
     private async void ImageButton_Clicked(object sender, EventArgs e)

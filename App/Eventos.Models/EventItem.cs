@@ -53,6 +53,9 @@ namespace Eventos.Models
         [JsonProperty("rowKey")]
         public string RowKey { get; set; }
 
+        [JsonProperty("timestamp")]
+        public DateTimeOffset? Timestamp { get; set; }
+
         [JsonProperty("count")]
         public string Count { get; set; }
 
