@@ -335,7 +335,7 @@ namespace Backend.Service.BusinessLogic
             {
                 var eventEntry = await this.dataAccess.GetEventAsync(rowKey);
 
-                if (eventEntry.Date.Date < DateTimeOffset.UtcNow.Date || (eventEntry.Date.Date == DateTimeOffset.UtcNow.Date && eventEntry.StartTime < DateTimeOffset.UtcNow))
+                if (eventEntry.StartTime < DateTimeOffset.UtcNow)
                 {
                     return null;
                 }

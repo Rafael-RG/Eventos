@@ -42,7 +42,19 @@ namespace Eventos.ViewModels
         /// </summary>
         public EventDetailViewModel(IServiceProvider provider, EventItem eventItem) : base(provider)
         {
+            TimeZoneInfo eventTimeZone = TimeZoneInfo.FindSystemTimeZoneById(eventItem.ZoneId);
+
+            DateTime utcStartTime = DateTime.SpecifyKind(DateTime.Parse(eventItem.StartTime), DateTimeKind.Utc);
+            DateTime utcEndTime = DateTime.SpecifyKind(DateTime.Parse(eventItem.EndTime), DateTimeKind.Utc);
+
+            DateTime localStartTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcStartTime, eventTimeZone);
+            DateTime localEndTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcEndTime, eventTimeZone);
+
+
             this.EventItem = eventItem;
+            this.EventItem.StartTime = localStartTimeEvent.ToString("HH:mm");
+            this.EventItem.EndTime = localEndTimeEvent.ToString("HH:mm");
+            this.EventItem.Date = localStartTimeEvent.Date;
             this.UpdatedEventItem = eventItem;
         }
 
@@ -138,7 +150,7 @@ namespace Eventos.ViewModels
                     newEvent.Description = this.UpdatedEventItem.Description;
                     newEvent.StartTime = eventStart;
                     newEvent.EndTime = eventEnd;
-                    newEvent.Date = this.UpdatedEventItem.Date;
+                    newEvent.Date = DateTime.SpecifyKind(this.UpdatedEventItem.Date, DateTimeKind.Utc);
                     newEvent.Zone = this.SelectedZone.DisplayName;
                     newEvent.ZoneId = this.SelectedZone.Id;
                     newEvent.RowKey = this.UpdatedEventItem.RowKey;
