@@ -26,7 +26,8 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private string passwordLogin;
 
-
+        [ObservableProperty]
+        private bool isVisiblePassword;
 
         [ObservableProperty]
         private bool isVisibleRegistry;
@@ -552,6 +553,13 @@ namespace Eventos.ViewModels
             this.UserEmailLogin = string.Empty;
             this.PasswordLogin = string.Empty;
             this.IsActiveSendCode = true;
+            this.IsVisiblePassword = false;
+        }
+
+        [RelayCommand]
+        private void ViewPassword()
+        {
+            this.IsVisiblePassword = !this.IsVisiblePassword;
         }
 
         private void ChangeView(string view)

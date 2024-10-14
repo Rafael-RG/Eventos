@@ -5,6 +5,8 @@ using Eventos.Common.ViewModels;
 using System.Collections.ObjectModel;
 using Eventos.Models;
 using System.Text;
+using Eventos.Common;
+using Newtonsoft.Json;
 
 
 namespace Eventos.ViewModels
@@ -81,52 +83,70 @@ namespace Eventos.ViewModels
         private async void AddEvent()
         {
             this.IsBusy = true;
-            try 
+            try
             {
-                if (this.StartTime == this.EndTime)
+                var isSusbriber = false;
+
+                var datasuscription = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.ValidateSuscription);
+
+                if (datasuscription.Success)
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "La hora de inicio y fin no pueden ser iguales.", "OK");
+                    var userInfo = JsonConvert.DeserializeObject<SuscriberUserInfo>(datasuscription.Data.ToString());
+                    isSusbriber = userInfo.IsSubscribed;
+                }
+
+                if (!isSusbriber)
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "Debes contar con una suscripcion activa para poder crear nuevos eventos.", "OK");
                     this.IsBusy = false;
                     return;
                 }
-
-                if (string.IsNullOrWhiteSpace(this.Title) || string.IsNullOrWhiteSpace(this.Description) || this.SelectedZone == null)
+                else
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "Por favor, complete todos los campos obligatorios.", "OK");
-                    this.IsBusy = false;
-                    return;
+                    if (this.StartTime == this.EndTime)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "La hora de inicio y fin no pueden ser iguales.", "OK");
+                        this.IsBusy = false;
+                        return;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(this.Title) || string.IsNullOrWhiteSpace(this.Description) || this.SelectedZone == null)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "Por favor, complete todos los campos obligatorios.", "OK");
+                        this.IsBusy = false;
+                        return;
+                    }
+
+                    TimeZoneInfo userTimeZone = this.SelectedZone;
+                    DateTime startDateTimeLocal = DateTime.SpecifyKind(this.Date + this.StartTime, DateTimeKind.Unspecified);
+                    DateTime endDateTimeLocal = DateTime.SpecifyKind(this.Date + this.EndTime, DateTimeKind.Unspecified);
+
+                    DateTimeOffset eventStart = TimeZoneInfo.ConvertTimeToUtc(startDateTimeLocal, userTimeZone);
+                    DateTimeOffset eventEnd = TimeZoneInfo.ConvertTimeToUtc(endDateTimeLocal, userTimeZone);
+
+                    var newEvent = new Event
+                    {
+                        Email = this.User.Email.ToLower(),
+                        Title = this.Title,
+                        Description = this.Description,
+                        StartTime = eventStart,
+                        EndTime = eventEnd,
+                        Zone = this.SelectedZone.DisplayName,
+                        ZoneId = this.SelectedZone.Id,
+                        Date = DateTime.SpecifyKind(this.Date, DateTimeKind.Utc),
+                        Count = 0,
+                        EventURl = this.Url
+                    };
+
+                    var result = await this.HttpService.PostAsync<ResponseData>(newEvent, Common.Constants.SaveEvent);
+
+                    if (result.Success)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Creado", "Se creo correctamente el evento.", "OK");
+
+                        this.Clear();
+                    }
                 }
-
-                TimeZoneInfo userTimeZone = this.SelectedZone;
-                DateTime startDateTimeLocal = DateTime.SpecifyKind(this.Date + this.StartTime, DateTimeKind.Unspecified);
-                DateTime endDateTimeLocal = DateTime.SpecifyKind(this.Date + this.EndTime, DateTimeKind.Unspecified);
-
-                DateTimeOffset eventStart = TimeZoneInfo.ConvertTimeToUtc(startDateTimeLocal, userTimeZone);
-                DateTimeOffset eventEnd = TimeZoneInfo.ConvertTimeToUtc(endDateTimeLocal, userTimeZone);
-
-                var newEvent = new Event
-                {
-                    Email = this.User.Email.ToLower(),
-                    Title = this.Title,
-                    Description = this.Description,
-                    StartTime = eventStart,
-                    EndTime = eventEnd,
-                    Zone = this.SelectedZone.DisplayName,
-                    ZoneId= this.SelectedZone.Id,
-                    Date =  DateTime.SpecifyKind(this.Date, DateTimeKind.Utc),
-                    Count = 0,
-                    EventURl = this.Url
-                };
-
-                var result = await this.HttpService.PostAsync<ResponseData>(newEvent, Common.Constants.SaveEvent);
-
-                if (result.Success) 
-                {
-                    await App.Current.MainPage.DisplayAlert("Creado", "Se creo correctamente el evento.", "OK");
-
-                    this.Clear();
-                }
-
             }
             catch(Exception ex)
             {

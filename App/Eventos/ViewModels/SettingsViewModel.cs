@@ -32,6 +32,9 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private bool isEditUserData;
 
+        [ObservableProperty]
+        private bool isVisiblePassword;
+
 
         /// <summary>
         /// Gets by DI the required services
@@ -81,6 +84,8 @@ namespace Eventos.ViewModels
         private void EditUserData()
         {
             this.IsEditUserData = !this.IsEditUserData;
+
+            this.IsVisiblePassword = false;
 
             if (this.IsEditUserData)
             {
@@ -169,6 +174,12 @@ namespace Eventos.ViewModels
             }
 
             this.IsBusy = false;
+        }
+
+        [RelayCommand]
+        private void ViewPassword()
+        {
+            this.IsVisiblePassword = !this.IsVisiblePassword;
         }
     }
 }
