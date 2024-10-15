@@ -30,6 +30,9 @@ namespace Eventos.ViewModels
         private bool isVisibleNextEvent;
 
         [ObservableProperty]
+        private bool isVisibleListEvent;
+
+        [ObservableProperty]
         private ObservableCollection<Chart> charts;
 
         [ObservableProperty]
@@ -91,7 +94,7 @@ namespace Eventos.ViewModels
         }
 
         [RelayCommand]
-        private async void LoadData()
+        private async Task LoadData()
         {
             this.IsRefreshingList = true;
 
@@ -150,12 +153,17 @@ namespace Eventos.ViewModels
 
                 this.Events = new ObservableCollection<EventItem>(eventObject.Events);
 
+                this.IsVisibleListEvent = false;
+
                 if (this.Events.Any()) 
                 {
+                    this.IsVisibleListEvent = true;
                     this.SelectedEvent= this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
+
+                    this.ChangeEventDataAsync();
                 }
 
-                this.NextEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete && DateTime.Parse(x.StartTime) > DateTime.UtcNow);
+                this.NextEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete && DateTimeOffset.Parse(x.StartTime, null, System.Globalization.DateTimeStyles.AssumeUniversal) > DateTime.UtcNow);
 
                 this.IsVisibleNextEvent = this.NextEvent != null ? true : false;
 
@@ -184,8 +192,6 @@ namespace Eventos.ViewModels
                         this.Charts[0] = new LineChart { Entries = entries, LabelTextSize = 30, LineMode = LineMode.Straight, LineSize = 6, ShowYAxisLines = true };
 
                         this.IsVisibleGraphic1 = true;
-
-                        this.SelectedEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
 
                         this.NextEventWidth = ((LineChart)(this.Charts[1])).Entries.Count() > 15 ? ((LineChart)(this.Charts[1])).Entries.Count() * 30 : 400;
                     }
@@ -223,7 +229,7 @@ namespace Eventos.ViewModels
         }
 
         [RelayCommand]
-        private async void ChangeEventDataAsync()
+        private void ChangeEventDataAsync()
         {
             if (this.SelectedEvent == null) 
             {

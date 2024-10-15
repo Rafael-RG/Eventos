@@ -235,7 +235,7 @@
                         </Grid>
                     </Frame>
 
-                    <Frame Margin="20,15,20,20" IsVisible="{Binding IsVisibleNextEvent}">
+                    <Frame Margin="20,15,20,20" IsVisible="{Binding IsVisibleListEvent}">
                         <StackLayout>
                             <Label
                                 FontAttributes="Bold"
@@ -306,7 +306,7 @@
                     <Label
                         FontSize="20"
                         HorizontalOptions="Center"
-                        IsVisible="{Binding IsVisibleNextEvent, Converter={StaticResource InvertedBoolConverter}}"
+                        IsVisible="{Binding IsVisibleListEvent, Converter={StaticResource InvertedBoolConverter}}"
                         Text="Aún no hay eventos disponibles."
                         TextColor="#61a60e"
                         VerticalOptions="CenterAndExpand" />

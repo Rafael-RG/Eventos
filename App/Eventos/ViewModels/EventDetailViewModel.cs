@@ -44,17 +44,16 @@ namespace Eventos.ViewModels
         {
             TimeZoneInfo eventTimeZone = TimeZoneInfo.FindSystemTimeZoneById(eventItem.ZoneId);
 
-            DateTime utcStartTime = DateTime.SpecifyKind(DateTime.Parse(eventItem.StartTime), DateTimeKind.Utc);
-            DateTime utcEndTime = DateTime.SpecifyKind(DateTime.Parse(eventItem.EndTime), DateTimeKind.Utc);
+            DateTimeOffset utcStartTime = DateTimeOffset.Parse(eventItem.StartTime, null, System.Globalization.DateTimeStyles.AssumeUniversal);
+            DateTimeOffset utcEndTime = DateTimeOffset.Parse(eventItem.EndTime, null, System.Globalization.DateTimeStyles.AssumeUniversal);
 
-            DateTimeOffset localStartTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcStartTime, eventTimeZone);
-            DateTimeOffset localEndTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcEndTime, eventTimeZone);
-
+            DateTimeOffset startTime = TimeZoneInfo.ConvertTime(utcStartTime, eventTimeZone);
+            DateTimeOffset endTime = TimeZoneInfo.ConvertTime(utcEndTime, eventTimeZone);
 
             this.EventItem = eventItem;
-            this.EventItem.StartTime = localStartTimeEvent.ToString("HH:mm");
-            this.EventItem.EndTime = localEndTimeEvent.ToString("HH:mm");
-            this.EventItem.Date = localStartTimeEvent.Date;
+            this.EventItem.StartTime = startTime.ToString("HH:mm");
+            this.EventItem.EndTime = endTime.ToString("HH:mm");
+            this.EventItem.Date = utcStartTime.Date;
             this.UpdatedEventItem = eventItem;
         }
 
@@ -88,11 +87,6 @@ namespace Eventos.ViewModels
 
             TimeSpan startTime = dateTimeOffsetStart.TimeOfDay; 
             TimeSpan endTime = dateTimeOffsetEnd.TimeOfDay;
-
-            // Si necesitas los valores originales en UTC
-            //TimeSpan eventStartTimeUTC = eventStart.UtcDateTime.TimeOfDay;
-            //TimeSpan eventEndTimeUTC = eventEnd.UtcDateTime.TimeOfDay;
-
 
             this.StartTime = startTime;
             this.EndTime = endTime;
