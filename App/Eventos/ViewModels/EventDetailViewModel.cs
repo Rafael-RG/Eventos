@@ -47,8 +47,8 @@ namespace Eventos.ViewModels
             DateTime utcStartTime = DateTime.SpecifyKind(DateTime.Parse(eventItem.StartTime), DateTimeKind.Utc);
             DateTime utcEndTime = DateTime.SpecifyKind(DateTime.Parse(eventItem.EndTime), DateTimeKind.Utc);
 
-            DateTime localStartTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcStartTime, eventTimeZone);
-            DateTime localEndTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcEndTime, eventTimeZone);
+            DateTimeOffset localStartTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcStartTime, eventTimeZone);
+            DateTimeOffset localEndTimeEvent = TimeZoneInfo.ConvertTimeFromUtc(utcEndTime, eventTimeZone);
 
 
             this.EventItem = eventItem;

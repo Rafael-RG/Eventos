@@ -155,7 +155,7 @@ namespace Eventos.ViewModels
                     this.SelectedEvent= this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
                 }
 
-                this.NextEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete);
+                this.NextEvent = this.Events.OrderBy(x => x.StartTime).FirstOrDefault(x => !x.IsDelete && DateTime.Parse(x.StartTime) > DateTime.UtcNow);
 
                 this.IsVisibleNextEvent = this.NextEvent != null ? true : false;
 
@@ -201,6 +201,17 @@ namespace Eventos.ViewModels
 
                     OnPropertyChanged(nameof(this.Charts));
                 }
+                else
+                {
+                    this.Charts[0] = new LineChart
+                    {
+                        Entries = new List<ChartEntry>() { new ChartEntry(0) }
+                    };
+
+                    this.IsVisibleGraphic1 = false;
+                }
+
+                OnPropertyChanged(nameof(this.Charts));
             }
             catch
             {
