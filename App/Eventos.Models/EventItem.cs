@@ -135,6 +135,33 @@ namespace Eventos.Models
         {
             return Title;
         }
+
+        public EventItem Clone()
+        {
+            return new EventItem
+            {
+                Email = this.Email,
+                Title = this.Title,
+                Description = this.Description,
+                Date = this.Date,
+                Zone = this.Zone,
+                ZoneId = this.ZoneId,
+                StartTime = this.StartTime,
+                EndTime = this.EndTime,
+                URLFile = this.URLFile,
+                RowKey = this.RowKey,
+                Timestamp = this.Timestamp,
+                Count = this.Count,
+                EventURl = this.EventURl,
+                IsDelete = this.IsDelete,
+                ClickedInfo = this.ClickedInfo != null ? 
+                            new List<EventClickedInfo>(this.ClickedInfo.Select(ci => new EventClickedInfo
+                            {
+                                ClickedDateTime = ci.ClickedDateTime
+                            })) 
+                            : null
+            };
+        }
     }
 
     public class EventClickedInfo 

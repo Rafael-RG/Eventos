@@ -40,21 +40,21 @@ namespace Eventos.ViewModels
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
-        public EventDetailViewModel(IServiceProvider provider, EventItem eventItem) : base(provider)
+        public EventDetailViewModel(IServiceProvider provider, EventItem eventItemParam) : base(provider)
         {
-            TimeZoneInfo eventTimeZone = TimeZoneInfo.FindSystemTimeZoneById(eventItem.ZoneId);
+            TimeZoneInfo eventTimeZone = TimeZoneInfo.FindSystemTimeZoneById(eventItemParam.ZoneId);
 
-            DateTimeOffset utcStartTime = DateTimeOffset.Parse(eventItem.StartTime, null, System.Globalization.DateTimeStyles.AssumeUniversal);
-            DateTimeOffset utcEndTime = DateTimeOffset.Parse(eventItem.EndTime, null, System.Globalization.DateTimeStyles.AssumeUniversal);
+            DateTimeOffset utcStartTime = DateTimeOffset.Parse(eventItemParam.StartTime, null, System.Globalization.DateTimeStyles.AssumeUniversal);
+            DateTimeOffset utcEndTime = DateTimeOffset.Parse(eventItemParam.EndTime, null, System.Globalization.DateTimeStyles.AssumeUniversal);
 
             DateTimeOffset startTime = TimeZoneInfo.ConvertTime(utcStartTime, eventTimeZone);
             DateTimeOffset endTime = TimeZoneInfo.ConvertTime(utcEndTime, eventTimeZone);
 
-            this.EventItem = eventItem;
+            this.EventItem = eventItemParam.Clone();
             this.EventItem.StartTime = startTime.ToString("HH:mm");
             this.EventItem.EndTime = endTime.ToString("HH:mm");
             this.EventItem.Date = utcStartTime.Date;
-            this.UpdatedEventItem = eventItem;
+            this.UpdatedEventItem = eventItemParam.Clone();
         }
 
         public override async void OnAppearing()
@@ -139,6 +139,12 @@ namespace Eventos.ViewModels
                     DateTimeOffset eventStart = TimeZoneInfo.ConvertTimeToUtc(startDateTimeLocal, userTimeZone);
                     DateTimeOffset eventEnd = TimeZoneInfo.ConvertTimeToUtc(endDateTimeLocal, userTimeZone);
 
+                    this.UpdatedEventItem.Zone = this.SelectedZone.DisplayName;
+                    this.UpdatedEventItem.ZoneId = this.SelectedZone.Id;
+                    this.UpdatedEventItem.Date = DateTime.SpecifyKind(this.UpdatedEventItem.Date, DateTimeKind.Utc);
+                    this.UpdatedEventItem.StartTime = startDateTimeLocal.ToString("HH:mm");
+                    this.UpdatedEventItem.EndTime = endDateTimeLocal.ToString("HH:mm");
+                    
                     
                     newEvent.Title = this.UpdatedEventItem.Title;
                     newEvent.Description = this.UpdatedEventItem.Description;
@@ -179,6 +185,17 @@ namespace Eventos.ViewModels
                         await App.Current.MainPage.DisplayAlert("Error", "Hubo un error al actualizar el evento.", "OK");
                     }
                 }
+            }
+            catch
+            {
+                if (updateOrDelete == "delete")
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "Hubo un error al eliminar el evento.", "OK");
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "Hubo un error al actualizar el evento.", "OK");
+                    }
             }
             finally
             {
