@@ -43,8 +43,12 @@
             HorizontalOptions="FillAndExpand"
             IsVisible="{Binding UpdateView, Converter={StaticResource InvertedBoolConverter}}"
             VerticalOptions="FillAndExpand">
-
-            <Frame BackgroundColor="White" CornerRadius="20">
+            <ActivityIndicator
+                            IsRunning="{Binding IsBusy}"
+                            IsVisible="{Binding IsBusy}"
+                            VerticalOptions="CenterAndExpand"
+                            Color="#ABBA3C" />
+            <Frame BackgroundColor="White" CornerRadius="20" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                 <StackLayout>
                     <StackLayout
                         Margin="0"
@@ -147,6 +151,7 @@
                 </StackLayout>
             </Frame>
             <StackLayout
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Margin="0,0,0,0"
                 Orientation="Horizontal"
                 Spacing="20"
@@ -186,9 +191,13 @@
             IsVisible="{Binding UpdateView}"
             Spacing="15"
             VerticalOptions="FillAndExpand">
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
-            <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" VerticalOptions="FillAndExpand">
-                <Frame BackgroundColor="White" CornerRadius="20">
+            <StackLayout VerticalOptions="FillAndExpand">
+                <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="CenterAndExpand"
+                Color="#ABBA3C" />
+                <Frame BackgroundColor="White" CornerRadius="20" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" >
                     <StackLayout>
                         <Label
                             Margin="0,0,0,20"
@@ -280,6 +289,7 @@
                 <!--  Botón para agregar el evento  -->
 
                 <Button
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     Margin="0,40,0,15"
                     BackgroundColor="#419387"
                     Clicked="Button_Clicked_Update"
@@ -297,6 +307,7 @@
                 </Button>
 
                 <Button
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     BackgroundColor="#D2E898"
                     Command="{Binding CancelUpdateViewCommand}"
                     CornerRadius="20"

@@ -34,11 +34,16 @@
             </Border>
         </StackLayout>
 
-        <RefreshView Command="{Binding LoadDataCommand}" IsRefreshing="{Binding IsRefreshingList}">
+        <RefreshView Command="{Binding LoadDataCommand}" IsRefreshing="{Binding IsRefreshingList}" RefreshColor="#ABBA3C">
             <ScrollView BackgroundColor="#DDDDDD" VerticalOptions="FillAndExpand">
                 <StackLayout HorizontalOptions="FillAndExpand">
-                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+                    <ActivityIndicator
+                            IsRunning="{Binding IsBusy}"
+                            IsVisible="{Binding IsBusy}"
+                            VerticalOptions="CenterAndExpand"
+                            Color="#ABBA3C" />
                     <Label
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="20,25,0,0"
@@ -62,7 +67,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Grid Margin="20,0,0,0">
+                    <Grid Margin="20,0,0,0" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
 
                         <!--  Contenedor con un fondo y bordes redondeados  -->
                         <Frame
@@ -97,7 +102,10 @@
                         </Frame>
 
                     </Grid>
+                    
+                    <StackLayout Margin="0,0,0,0" VerticalOptions="FillAndExpand"  IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                     <Label
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                         Margin="25,0,0,0"
                         FontAttributes="Bold"
                         HorizontalOptions="FillAndExpand"
@@ -341,7 +349,7 @@
                             </StackLayout>
                         </StackLayout>
                     </Frame>-->
-
+</StackLayout>
                 </StackLayout>
             </ScrollView>
         </RefreshView>

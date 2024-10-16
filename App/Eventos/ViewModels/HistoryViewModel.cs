@@ -61,6 +61,7 @@ namespace Eventos.ViewModels
         private async void RefreshAsync()
         {
             this.IsRefreshingList = true;
+            IsBusy = true;
             try
             {
                 var uri = string.Format(Common.Constants.GetEventsByUserUri, this.User.Email);
@@ -85,7 +86,7 @@ namespace Eventos.ViewModels
             {
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al cargar los eventos");
             }
-
+            IsBusy = false;
             this.IsRefreshingList = false;
         }
 

@@ -32,6 +32,8 @@ public partial class HistoryPage
 
     private async void ImageButton_Clicked(object sender, EventArgs e)
     {
+
+        this.viewModel.IsBusy = true;
         var eventItem = (EventItem)((ImageButton)sender).BindingContext;
 
         await Navigation.PushAsync(new EventDetailPage(new EventDetailViewModel(provider, eventItem), () => { this.viewModel.RefreshAsyncCommand.Execute(null); }));

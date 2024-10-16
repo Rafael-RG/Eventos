@@ -100,6 +100,8 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void Login()
         {
+            this.IsBusy=true;
+            try{
             if (this.UserEmailLogin == null || this.PasswordLogin == null || this.UserEmailLogin?.Length == 0 || this.PasswordLogin?.Length == 0)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son requeridos", "OK");
@@ -136,10 +138,18 @@ namespace Eventos.ViewModels
                         { "User", loggedUser }
                     });
                 }    
+                this.IsBusy=false;
             }
             else
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", response.Message, "OK");
+            }
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrion un error al iniciar sesion. Vuelva a intentar", "OK");
+                this.IsBusy=false;
             }
         }
 
@@ -159,6 +169,8 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void FindUserRecoverPassword()
         {
+            this.IsBusy=true;
+            try{
             if (this.UserEmail.Length == 0)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "El correo electrónico es requerido", "OK");
@@ -174,14 +186,22 @@ namespace Eventos.ViewModels
 
             if (result.Success) 
             {
+                this.IsBusy=false;
                 this.IsActiveSendCode = true;
                 this.ValidateCode = string.Empty;
                 ChangeView("ValidateRecoverPassword");
             }
             else
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "El correo electrónico no está registrado", "OK");
                 return;
+            }
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrion un error buscando el usuario. Vuelva a intentar", "OK");
+                this.IsBusy=false;
             }
         }
 
@@ -191,9 +211,12 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void ValidateRecoverPassword()
         {
+            this.IsBusy=true;
+            try{
             if (this.ValidateCode.Length < 4)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "El código de validación debe tener 4 dígitos", "OK");
+                this.IsBusy=false;
                 return;
             }
 
@@ -207,11 +230,19 @@ namespace Eventos.ViewModels
 
             if (result.Success)
             {
+                this.IsBusy=false;
                 ChangeView("CreateNewPassword");
             }
             else
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "El código no es correcto", "OK");
+            }
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy=false;
             }
         }
 
@@ -221,6 +252,7 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void CreateNewPassword()
         {
+            try{
             if(this.Password != this.RepeatPassword)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Las contraseñas no coinciden", "OK");
@@ -235,7 +267,7 @@ namespace Eventos.ViewModels
 
             var recoveryPassword = new RecoveryPassword
             {
-                Email = this.UserEmail,
+                Email = this.UserEmail.ToLower(),
                 Password = this.Password
             };
 
@@ -247,13 +279,20 @@ namespace Eventos.ViewModels
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+            }
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy=false;
             }
         }
 
         [RelayCommand]
         private async void ResendCodeRecovery()
         {
+            try{
             this.IsActiveSendCode = false;
 
             // Inicializar el temporizador
@@ -291,7 +330,14 @@ namespace Eventos.ViewModels
 
             if (!result.Success)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "El código no es correcto", "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuelva a intentar", "OK");
+            }
+            this.IsBusy=false;
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy=false;
             }
         }
 
@@ -311,20 +357,25 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void CreateUser()
         {
+            this.IsBusy=true;
+            try{
             if (this.Password != this.RepeatPassword)
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "Las contraseñas no coinciden", "OK");
                 return;
             }
 
             if (this.FullName.Length == 0 || this.Password.Length == 0 || this.UserEmail.Length == 0 || this.Country.Length == 0)
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son requeridos", "OK");
                 return;
             }
 
             if (!Regex.IsMatch(this.Password, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
                 return;
             }
@@ -342,19 +393,28 @@ namespace Eventos.ViewModels
 
             if (result.Success)
             {
+                this.IsBusy=false;
                 this.IsActiveSendCode = true;
                 this.ValidateCode = string.Empty;
                 ChangeView("ActivateAccount");
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                this.IsBusy=false;
+                await App.Current.MainPage.DisplayAlert("Error", "El usuario ya existe", "OK");
+            }
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy=false;
             }
         }
 
         [RelayCommand]
         private async void ResendCode()
         {
+            try{
             this.IsActiveSendCode = false;
 
             // Inicializar el temporizador
@@ -396,15 +456,27 @@ namespace Eventos.ViewModels
 
             if (!result.Success)
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
             }
+            this.IsBusy=false;
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy=false;
+            }
+
         }
 
         [RelayCommand]
         private async void ValidateAccount()
         {
+            this.IsBusy=true;
+            try{
             if (this.ValidateCode.Length < 4)
             {
+                this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "El código de validación debe tener 4 dígitos", "OK");
                 return;
             }
@@ -419,11 +491,18 @@ namespace Eventos.ViewModels
 
             if (result.Success)
             {
+                this.IsBusy=false;
                 ChangeView("RegistrySuccess");
             }
             else
             {
                 await App.Current.MainPage.DisplayAlert("Error", "El código no es correcto", "Reintentar");
+            }
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy=false;
             }
         }
 
@@ -456,6 +535,7 @@ namespace Eventos.ViewModels
         /// </summary>
         public override async void OnAppearing()
         {
+            this.IsBusy=true;
             try
             {
                 var user = await this.DataService.LoadUserAsync();
@@ -463,6 +543,7 @@ namespace Eventos.ViewModels
                 if (user != null)
                 {
                     AppShell.User = user;
+                    this.IsBusy=false;
                     await Shell.Current.GoToAsync("///HomePage", new Dictionary<string, object>
                     {
                         { "User", user }
@@ -471,7 +552,7 @@ namespace Eventos.ViewModels
                 else 
                 {
                     ClearData();
-
+                    this.IsBusy=false;
                     if(this.Countries == null || !this.Countries.Any())
                     {
                         PopulateContries();
@@ -489,57 +570,6 @@ namespace Eventos.ViewModels
                 await LogExceptionAsync(ex);
             }
 
-        }
-
-        public async Task SendEmail()
-        {
-            try
-            {
-                var apiKey = "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";
-                var url = "https://api.brevo.com/v3/emailCampaigns";
-
-                var emailData = new
-                {
-                    sender = new
-                    {
-                        name = "Recuerdame soporte",
-                        email = "recuerdame.soporte@outlook.com"
-                    },
-                    to = new[]
-                    {
-                new { email = "rafargg11@gmail.com.com", name = "Rafael" }
-            },
-                    subject = "Hello world",
-                    htmlContent = "<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Brevo.</p></body></html>"
-                };
-
-
-                using (var client = new HttpClient())
-                {
-                    var headers = new Dictionary<string, string>
-                    {
-                        { "api-key", apiKey },
-                    };
-
-                    var response = await this.HttpService.PostAsync<ResponseData>(emailData, url, headers);
-
-                    if (response.Success)
-                    {
-                        var responseBody = response.Data;
-                        Console.WriteLine("Email sent successfully: " + responseBody);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: " + response.Message);
-                        var responseBody = response.Data;
-                        Console.WriteLine("Details: " + responseBody);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Otro error
-            }
         }
 
         private void ClearData()

@@ -70,9 +70,15 @@ namespace Eventos.ViewModels
         private async void Logout()
         {
             this.IsBusy = true;
-            await this.DataService.DeleteItemAsync(AppShell.User);
+            try{
+            await this.DataService.DeleteItemAsync(this.User);
 
             await Shell.Current.GoToAsync("///LoginPage", false);
+            }
+            catch
+            {
+
+            }
             this.IsBusy = false;
         }
 
@@ -103,7 +109,7 @@ namespace Eventos.ViewModels
         private async void ChangeUserData()
         {
             this.IsBusy = true;
-
+            try{
             var newData = new ChangeUserData();
 
             newData.Email = this.User.Email;
@@ -136,6 +142,7 @@ namespace Eventos.ViewModels
                     if(!Regex.IsMatch(this.NewPassword, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "La nueva contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
+                        this.IsBusy = false;
                         return;
                     }
                     else
@@ -162,18 +169,26 @@ namespace Eventos.ViewModels
 
                 this.User = await this.DataService.LoadUserAsync();
 
+                await this.DataService.DeleteItemAsync(this.User);
+
                 this.User.FullName = this.NewUserName;
 
-                await this.DataService.DeleteItemAsync(AppShell.User);
-
                 var saved = await this.DataService.InsertOrUpdateItemsAsync(this.User);
+                this.IsEditUserData = false;
+                this.IsBusy = false;
+                
             }
             else
             {
+                this.IsBusy = false;
                 await App.Current.MainPage.DisplayAlert("Error", result.Data.ToString(), "OK");
             }
-
-            this.IsBusy = false;
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy=false;
+            }
         }
 
         [RelayCommand]

@@ -97,9 +97,11 @@ namespace Eventos.ViewModels
         private async Task LoadData()
         {
             this.IsRefreshingList = true;
-
+            IsBusy = true;
             try
             {
+                this.User = await this.DataService.LoadUserAsync();
+
                 if (this.User != null)
                 {
                     var datasuscription = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.ValidateSuscription);
@@ -218,9 +220,11 @@ namespace Eventos.ViewModels
                 }
 
                 OnPropertyChanged(nameof(this.Charts));
+                IsBusy = false;
             }
             catch
             {
+                IsBusy = false;
                 await App.Current.MainPage.DisplayAlert("Error", "No se ha podido cargar la información", "OK");
             }
 
