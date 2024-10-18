@@ -84,8 +84,8 @@ namespace Backend.Service.BusinessLogic
                         var suscriberUserInfo = new SuscriberUserInfo();
                         suscriberUserInfo.IsSubscribed = true;
                         suscriberUserInfo.Email = userEmail;
-                        suscriberUserInfo.ClickCount = 1000;
-                        suscriberUserInfo.Plan = "Plan de prueba";
+                        suscriberUserInfo.ClickCount = 1000000;
+                        suscriberUserInfo.Plan = "Plan VIP";
                         suscriberUserInfo.PlanFinishDate = DateTimeOffset.UtcNow.AddDays(30);
 
                         res.Success = true;
@@ -110,8 +110,10 @@ namespace Backend.Service.BusinessLogic
                             foreach (var subscription in subscriptionData.Items)
                             {
 
-                                if (plans.Any(p => p.RowKey == subscription.Plan.Id.ToString())
-                                    && subscription.Status == "ACTIVE")
+                                var finishDate = DateTimeOffset.FromUnixTimeSeconds(subscription.Date_Next_Charge / 1000);
+
+                                if ((plans.Any(p => p.RowKey == subscription.Plan.Id.ToString()) && subscription.Status == "ACTIVE") 
+                                    || (plans.Any(p => p.RowKey == subscription.Plan.Id.ToString()) && finishDate >= DateTimeOffset.Now))
                                 {
                                     var user = await this.dataAccess.GetUserAsync(userEmail);
                                     if (user.LastPeriod != subscription.Date_Next_Charge)
