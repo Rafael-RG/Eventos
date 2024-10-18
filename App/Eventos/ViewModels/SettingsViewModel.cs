@@ -4,6 +4,10 @@ using Eventos.Common;
 using Eventos.Common.Interfaces;
 using Eventos.Common.ViewModels;
 using Eventos.Models;
+using Microcharts;
+using Newtonsoft.Json;
+using SkiaSharp;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 
@@ -35,6 +39,12 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private bool isVisiblePassword;
 
+        [ObservableProperty]
+        private bool isRefreshingList;
+
+        [ObservableProperty]
+        private double progres;
+
 
         /// <summary>
         /// Gets by DI the required services
@@ -50,7 +60,7 @@ namespace Eventos.ViewModels
 
             this.IsEditUserData = false;
 
-            this.User = await this.DataService.LoadUserAsync();
+            Refresh();
 
             if (string.IsNullOrEmpty(this.User?.FullName))
             {
@@ -61,6 +71,68 @@ namespace Eventos.ViewModels
                 AppShell.User = this.User;
             }
             IsBusy = false;
+        }
+
+        [RelayCommand]
+        private async void Refresh() 
+        {
+            this.IsRefreshingList = true;
+            IsBusy = true;
+            try
+            {
+                this.User = await this.DataService.LoadUserAsync();
+
+                if (this.User != null)
+                {
+                    var datasuscription = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.ValidateSuscription);
+
+                    if (datasuscription.Success)
+                    {
+                        var userInfo = JsonConvert.DeserializeObject<SuscriberUserInfo>(datasuscription.Data.ToString());
+
+                        this.User.IsSubscribed = userInfo.IsSubscribed;
+
+                        if (this.User.IsSubscribed)
+                        {
+                            this.User.Plan = userInfo.Plan;
+                            this.User.PlanFinishDate = userInfo.PlanFinishDate;
+
+                        }
+
+                        this.User.ClickCount = userInfo.ClickCount;
+                    }
+
+                    var userData = await this.HttpService.PostAsync<ResponseData>(new ValidateSubscriptionRequest { UserEmail = this.User.Email }, Constants.GetUser);
+
+                    if (userData.Success)
+                    {
+                        var userStorage = JsonConvert.DeserializeObject<LoginUser>(userData.Data.ToString());
+
+                        this.User.TotalClicks = userStorage.TotalClicks;
+                        this.User.TotalClicksCurrentPeriod = userStorage.TotalClicksCurrentPeriod;
+                        this.User.LastPeriod = userStorage.LastPeriod;
+                    }
+
+                    if (this.User.ClickCount > 0)
+                    {
+                        this.Progres = (double)this.User.TotalClicksCurrentPeriod / this.User.ClickCount;
+                    }
+                    else
+                    {
+                        this.Progres = 0;
+                    }
+
+                    await this.DataService.InsertOrUpdateItemsAsync(this.User);
+                }
+                IsBusy = false;
+            }
+            catch
+            {
+                IsBusy = false;
+                await App.Current.MainPage.DisplayAlert("Error", "No se ha podido cargar la información", "OK");
+            }
+
+            this.IsRefreshingList = false;
         }
 
         /// <summary>
@@ -139,7 +211,7 @@ namespace Eventos.ViewModels
                 }
                 else if (!string.IsNullOrEmpty(this.NewPassword) && !string.IsNullOrEmpty(this.RepeatNewPassword) && this.NewPassword == this.RepeatNewPassword)
                 {
-                    if(!Regex.IsMatch(this.NewPassword, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
+                    if(!Regex.IsMatch(this.NewPassword, @"^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@#$%&*!._+-]{8,}$"))
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "La nueva contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
                         this.IsBusy = false;

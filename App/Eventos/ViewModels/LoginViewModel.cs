@@ -100,56 +100,58 @@ namespace Eventos.ViewModels
         [RelayCommand]
         private async void Login()
         {
-            this.IsBusy=true;
-            try{
-            if (this.UserEmailLogin == null || this.PasswordLogin == null || this.UserEmailLogin?.Length == 0 || this.PasswordLogin?.Length == 0)
+            this.IsBusy = true;
+            try
             {
-                await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son requeridos", "OK");
-                return;
-            }
+                if (this.UserEmailLogin == null || this.PasswordLogin == null || this.UserEmailLogin?.Length == 0 || this.PasswordLogin?.Length == 0)
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son requeridos", "OK");
+                    this.IsBusy = false;
+                    return;
+                }
 
-            var user = new RecoveryPassword
-            {
-                Email = this.UserEmailLogin.ToLower(),
-                Password = this.PasswordLogin
-            };
-
-            var response = await this.HttpService.PostAsync<ResponseData>(user, Constants.Login);
-            if (response.Success)
-            {
-                var dataUser = JsonConvert.DeserializeObject<LoginUser>(response.Data.ToString());
-
-                User loggedUser = new User
+                var user = new RecoveryPassword
                 {
                     Email = this.UserEmailLogin.ToLower(),
-                    FullName = dataUser.FullName
+                    Password = this.PasswordLogin
                 };
 
-                //save in local storage
-                var result = await this.DataService.InsertOrUpdateItemsAsync(loggedUser);
-
-                if (result > 0)
+                var response = await this.HttpService.PostAsync<ResponseData>(user, Constants.Login);
+                if (response.Success)
                 {
-                    AppShell.User = loggedUser;
-                    this.UserEmailLogin = string.Empty;
-                    this.PasswordLogin = string.Empty;
-                    await Shell.Current.GoToAsync("///HomePage", new Dictionary<string, object> 
+                    var dataUser = JsonConvert.DeserializeObject<LoginUser>(response.Data.ToString());
+
+                    User loggedUser = new User
+                    {
+                        Email = this.UserEmailLogin.ToLower(),
+                        FullName = dataUser.FullName
+                    };
+
+                    //save in local storage
+                    var result = await this.DataService.InsertOrUpdateItemsAsync(loggedUser);
+
+                    if (result > 0)
+                    {
+                        AppShell.User = loggedUser;
+                        this.UserEmailLogin = string.Empty;
+                        this.PasswordLogin = string.Empty;
+                        await Shell.Current.GoToAsync("///HomePage", new Dictionary<string, object>
                     {
                         { "User", loggedUser }
                     });
-                }    
-                this.IsBusy=false;
-            }
-            else
-            {
-                this.IsBusy=false;
-                await App.Current.MainPage.DisplayAlert("Error", response.Message, "OK");
-            }
+                    }
+                    this.IsBusy = false;
+                }
+                else
+                {
+                    this.IsBusy = false;
+                    await App.Current.MainPage.DisplayAlert("Error", response.Message, "OK");
+                }
             }
             catch
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Ocurrion un error al iniciar sesion. Vuelva a intentar", "OK");
-                this.IsBusy=false;
+                this.IsBusy = false;
             }
         }
 
@@ -259,7 +261,7 @@ namespace Eventos.ViewModels
                 return;
             }
 
-            if (!Regex.IsMatch(this.Password, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
+            if (!Regex.IsMatch(this.Password, @"^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@#$%&*!._+-]{8,}$"))
             {
                 await App.Current.MainPage.DisplayAlert("Error", "La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
                 return;
@@ -373,7 +375,7 @@ namespace Eventos.ViewModels
                 return;
             }
 
-            if (!Regex.IsMatch(this.Password, @"^[a-zA-Z](?=.*[A-Z])(?=.*\d).{7,}$"))
+            if (!Regex.IsMatch(this.Password, @"^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@#$%&*!._+-]{8,}$"))
             {
                 this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "La contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");

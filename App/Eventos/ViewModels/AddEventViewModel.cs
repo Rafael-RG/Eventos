@@ -103,7 +103,7 @@ namespace Eventos.ViewModels
                 }
                 else
                 {
-                    if (this.StartTime == this.EndTime)
+                    if (this.StartTime >= this.EndTime)
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "La hora de inicio y fin no pueden ser iguales.", "OK");
                         this.IsBusy = false;

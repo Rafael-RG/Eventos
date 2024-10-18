@@ -31,65 +31,226 @@
                 <Image Source="recuerdame_white" />
             </Border>
         </StackLayout>
-
-        <StackLayout
-            Padding="30,0"
-            BackgroundColor="#DDDDDD"
+        <RefreshView
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshingList}"
             IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}"
-            Spacing="25"
-            VerticalOptions="FillAndExpand">
-            <ActivityIndicator
-                            IsRunning="{Binding IsBusy}"
-                            IsVisible="{Binding IsBusy}"
-                            VerticalOptions="CenterAndExpand"
-                            Color="#ABBA3C" />
-            <Frame
-                IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}"
-                Margin="0,50,0,0"
-                BackgroundColor="White"
-                CornerRadius="20">
-                <Label
-                    FontSize="20"
-                    Text="{Binding User.FullName}"
-                    TextColor="#ABBA3C" />
+            RefreshColor="#ABBA3C">
+            <ScrollView BackgroundColor="#DDDDDD" VerticalOptions="FillAndExpand">
+                <StackLayout
+                    Padding="30,0"
+                    BackgroundColor="#DDDDDD"
+                    VerticalOptions="FillAndExpand">
+                    <ActivityIndicator
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        VerticalOptions="CenterAndExpand"
+                        Color="#ABBA3C" />
+                    <StackLayout
+                        IsVisible="{Binding IsRefreshingList, Converter={StaticResource InvertedBoolConverter}}"
+                        Spacing="15"
+                        VerticalOptions="FillAndExpand">
+                        <Frame
+                            Margin="0,20,0,0"
+                            Padding="20,10,20,10"
+                            BackgroundColor="White"
+                            CornerRadius="20"
+                            IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}">
+                            <Label
+                                FontSize="18"
+                                Text="{Binding User.FullName}"
+                                TextColor="#ABBA3C" />
 
-            </Frame>
-            <Frame
-                IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}"
-                Margin="0,10,0,0"
-                BackgroundColor="White"
-                CornerRadius="20">
-                <StackLayout>
-                    <Label
-                        Margin="0,0,0,0"
-                        FontAttributes="Bold"
-                        FontSize="20"
-                        Text="Correo electronico"
-                        TextColor="#184159" />
-
-
-                    <Label
-                        Margin="0,0,0,0"
-                        HorizontalOptions="FillAndExpand"
-                        MaxLines="1">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span
+                        </Frame>
+                        <Frame
+                            Margin="0,0,0,0"
+                            BackgroundColor="White"
+                            CornerRadius="20"
+                            IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}">
+                            <StackLayout>
+                                <Label
+                                    Margin="0,0,0,0"
+                                    FontAttributes="Bold"
                                     FontSize="16"
-                                    Text="{Binding User.Email}"
-                                    TextColor="#666666" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout>
-                            <Label
-                                Margin="0,20,0,0"
-                                FontAttributes="Bold"
-                                FontSize="20"
-                                Text="Estado"
-                                TextColor="#184159" />
+                                    Text="Correo electronico"
+                                    TextColor="#184159" />
 
+
+                                <Label
+                                    Margin="0,0,0,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="12"
+                                                Text="{Binding User.Email}"
+                                                TextColor="#666666" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout>
+                                        <Label
+                                            Margin="0,20,0,0"
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            Text="Estado"
+                                            TextColor="#184159" />
+
+                                        <Label
+                                            Margin="0,0,0,0"
+                                            HorizontalOptions="FillAndExpand"
+                                            MaxLines="1">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span
+                                                        FontSize="12"
+                                                        Text="{Binding User.State}"
+                                                        TextColor="#666666" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                    <StackLayout Margin="50,0,0,0">
+
+                                        <Label
+                                            Margin="0,20,0,0"
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            Text="Valido hasta"
+                                            TextColor="#184159" />
+
+                                        <Label
+                                            Margin="0,0,0,0"
+                                            HorizontalOptions="FillAndExpand"
+                                            MaxLines="1">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span
+                                                        FontSize="12"
+                                                        Text="{Binding User.PlanInfo}"
+                                                        TextColor="#666666" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                </StackLayout>
+
+                                <Label
+                                    Margin="0,20,0,0"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="Plan"
+                                    TextColor="#184159" />
+                                <Label
+                                    Margin="0,0,0,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="12"
+                                                Text="{Binding User.Plan}"
+                                                TextColor="#666666" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+
+                        </Frame>
+
+                        <Frame
+                            Margin="0,0,0,0"
+                            BackgroundColor="White"
+                            CornerRadius="20"
+                            IsVisible="{Binding User.IsSubscribed}">
+                            <Grid RowDefinitions="*,*,*,*">
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,3"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="16"
+                                                Text="Clicks del plan: "
+                                                TextColor="#184159" />
+                                            <Span
+                                                FontSize="16"
+                                                Text="{Binding User.ClickCount}"
+                                                TextColor="#666666" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,3,0,3"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="16"
+                                                Text="Clicks en uso: "
+                                                TextColor="#184159" />
+                                            <Span
+                                                FontSize="16"
+                                                Text="{Binding User.TotalClicksCurrentPeriod}"
+                                                TextColor="#666666" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label
+                                    Grid.Row="2"
+                                    Margin="0,3,0,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="16"
+                                                Text="Historial de clicks: "
+                                                TextColor="#184159" />
+                                            <Span
+                                                FontSize="16"
+                                                Text="{Binding User.TotalClicks}"
+                                                TextColor="#666666" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Frame
+                                    Grid.Row="4"
+                                    Margin="0,10,20,0"
+                                    Padding="5"
+                                    BackgroundColor="#184159"
+                                    BorderColor="#D2E898"
+                                    CornerRadius="15"
+                                    HasShadow="False"
+                                    HeightRequest="12"
+                                    HorizontalOptions="FillAndExpand">
+
+                                    <ProgressBar
+                                        BackgroundColor="#184159"
+                                        HeightRequest="12"
+                                        HorizontalOptions="FillAndExpand"
+                                        Progress="{Binding Progres}"
+                                        ProgressColor="#D2E898"
+                                        VerticalOptions="Center" />
+
+                                </Frame>
+                            </Grid>
+                        </Frame>
+
+                        <Frame
+                            Margin="0,0,0,0"
+                            BackgroundColor="White"
+                            CornerRadius="20"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                             <Label
                                 Margin="0,0,0,0"
                                 HorizontalOptions="FillAndExpand"
@@ -98,124 +259,59 @@
                                     <FormattedString>
                                         <Span
                                             FontSize="16"
-                                            Text="{Binding User.State}"
-                                            TextColor="#666666" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
-                        <StackLayout Margin="50,0,0,0">
-
-                            <Label
-                                Margin="0,20,0,0"
-                                FontAttributes="Bold"
-                                FontSize="20"
-                                Text="Valido hasta"
-                                TextColor="#184159" />
-
-                            <Label
-                                Margin="0,0,0,0"
-                                HorizontalOptions="FillAndExpand"
-                                MaxLines="1">
-                                <Label.FormattedText>
-                                    <FormattedString>
+                                            Text="Version "
+                                            TextColor="#184159" />
                                         <Span
                                             FontSize="16"
-                                            Text="{Binding User.PlanInfo}"
-                                            TextColor="#666666" />
+                                            Text="{Binding Version}"
+                                            TextColor="#184159" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                        </StackLayout>
+                        </Frame>
+
+
+                        <Button
+                            Margin="0,10,0,0"
+                            BackgroundColor="#DDDDDD"
+                            BorderColor="#ABBA3C"
+                            BorderWidth="2"
+                            Command="{Binding EditUserDataCommand}"
+                            CornerRadius="20"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            Text="Editar datos"
+                            TextColor="#ABBA3C"
+                            VerticalOptions="EndAndExpand">
+                            <Button.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.6"
+                                    Radius="4"
+                                    Offset="0,3" />
+                            </Button.Shadow>
+                        </Button>
+
+                        <Button
+                            Margin="0,0,0,40"
+                            BackgroundColor="#419387"
+                            Command="{Binding LogoutCommand}"
+                            CornerRadius="20"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            Text="Cerrar sesion"
+                            TextColor="White"
+                            VerticalOptions="End">
+                            <Button.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.6"
+                                    Radius="4"
+                                    Offset="0,3" />
+                            </Button.Shadow>
+                        </Button>
                     </StackLayout>
-
-                    <Label
-                        Margin="0,20,0,0"
-                        FontAttributes="Bold"
-                        FontSize="20"
-                        Text="Plan"
-                        TextColor="#184159" />
-                    <Label
-                        Margin="0,0,0,0"
-                        HorizontalOptions="FillAndExpand"
-                        MaxLines="1">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span
-                                    FontSize="16"
-                                    Text="{Binding User.Plan}"
-                                    TextColor="#666666" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
                 </StackLayout>
-
-            </Frame>
-
-            <Frame
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                Margin="0,30,0,0"
-                BackgroundColor="White"
-                CornerRadius="20">
-                <Label
-                    Margin="0,0,0,0"
-                    HorizontalOptions="FillAndExpand"
-                    MaxLines="1">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span
-                                FontSize="16"
-                                Text="Version "
-                                TextColor="#184159" />
-                            <Span
-                                FontSize="16"
-                                Text="{Binding Version}"
-                                TextColor="#184159" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </Frame>
-
-
-            <Button
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                Margin="0,10,0,0"
-                BackgroundColor="#DDDDDD"
-                BorderColor="#ABBA3C"
-                BorderWidth="2"
-                Command="{Binding EditUserDataCommand}"
-                CornerRadius="20"
-                Text="Editar datos"
-                TextColor="#ABBA3C"
-                VerticalOptions="EndAndExpand">
-                <Button.Shadow>
-                    <Shadow
-                        Brush="#000000"
-                        Opacity="0.6"
-                        Radius="4"
-                        Offset="0,3" />
-                </Button.Shadow>
-            </Button>
-
-            <Button
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                Margin="0,0,0,40"
-                BackgroundColor="#419387"
-                Command="{Binding LogoutCommand}"
-                CornerRadius="20"
-                Text="Cerrar sesion"
-                TextColor="White"
-                VerticalOptions="End">
-                <Button.Shadow>
-                    <Shadow
-                        Brush="#000000"
-                        Opacity="0.6"
-                        Radius="4"
-                        Offset="0,3" />
-                </Button.Shadow>
-            </Button>
-
-        </StackLayout>
+            </ScrollView>
+        </RefreshView>
         <StackLayout
             Padding="30,0"
             BackgroundColor="#DDDDDD"
@@ -223,15 +319,15 @@
             Spacing="25"
             VerticalOptions="FillAndExpand">
             <ActivityIndicator
-                            IsRunning="{Binding IsBusy}"
-                            IsVisible="{Binding IsBusy}"
-                            VerticalOptions="CenterAndExpand"
-                            Color="#ABBA3C" />
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="CenterAndExpand"
+                Color="#ABBA3C" />
             <Frame
                 Margin="0,30,0,0"
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 BackgroundColor="White"
-                CornerRadius="20">
+                CornerRadius="20"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                 <StackLayout>
                     <Frame BorderColor="Transparent">
                         <Entry
@@ -302,13 +398,13 @@
 
             </Frame>
             <Button
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Margin="0,10,0,0"
                 BackgroundColor="Transparent"
                 BorderColor="#419387"
                 BorderWidth="2"
                 Command="{Binding EditUserDataCommand}"
                 CornerRadius="20"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Text="Volver"
                 TextColor="#419387"
                 VerticalOptions="EndAndExpand">
@@ -322,11 +418,11 @@
             </Button>
 
             <Button
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Margin="0,0,0,40"
                 BackgroundColor="#ABBA3C"
                 Command="{Binding ChangeUserDataCommand}"
                 CornerRadius="20"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Text="Guardar cambios"
                 TextColor="#205048"
                 VerticalOptions="End">

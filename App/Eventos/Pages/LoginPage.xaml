@@ -30,12 +30,15 @@
             VerticalOptions="Start" />
 
         <ActivityIndicator
-                            IsRunning="{Binding IsBusy}"
-                            IsVisible="{Binding IsBusy}"
-                            VerticalOptions="CenterAndExpand"
-                            Color="#ABBA3C" />
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="CenterAndExpand"
+            Color="#ABBA3C" />
 
-        <StackLayout VerticalOptions="FillAndExpand" Margin="0,0,0,0" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" >
+        <StackLayout
+            Margin="0,0,0,0"
+            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+            VerticalOptions="FillAndExpand">
 
             <!--#region Login-->
 
@@ -135,7 +138,7 @@
                     Padding="0"
                     BackgroundColor="#184159"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -145,7 +148,7 @@
                             Offset="-4,4" />
                     </Frame.Shadow>
                     <Entry
-                        Margin="20,0,20,0"
+                        Margin="0,0,0,0"
                         Placeholder="Nombre"
                         PlaceholderColor="White"
                         Text="{Binding FullName}"
@@ -157,7 +160,7 @@
                     Padding="0"
                     BackgroundColor="#184159"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -167,7 +170,7 @@
                             Offset="-4,4" />
                     </Frame.Shadow>
                     <Entry
-                        Margin="20,0,20,0"
+                        Margin="0,0,0,0"
                         Placeholder="Correo electronico"
                         PlaceholderColor="White"
                         Text="{Binding UserEmail}"
@@ -179,7 +182,7 @@
                     Padding="0"
                     BackgroundColor="#184159"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -190,7 +193,7 @@
                     </Frame.Shadow>
                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                         <Entry
-                            Margin="20,0,-27,0"
+                            Margin="0,0,-27,0"
                             HorizontalOptions="FillAndExpand"
                             IsPassword="{Binding IsVisiblePassword, Converter={StaticResource InvertedBoolConverter}}"
                             Placeholder="Contraseña"
@@ -210,7 +213,7 @@
                     Padding="0"
                     BackgroundColor="#184159"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -221,7 +224,7 @@
                     </Frame.Shadow>
                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                         <Entry
-                            Margin="20,0,-27,0"
+                            Margin="0,0,-27,0"
                             HorizontalOptions="FillAndExpand"
                             IsPassword="{Binding IsVisiblePassword, Converter={StaticResource InvertedBoolConverter}}"
                             Placeholder="Repetir contraseña"
@@ -241,7 +244,7 @@
                     Padding="0"
                     BackgroundColor="#184159"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -253,7 +256,7 @@
 
                     <Picker
                         Title="Seleccione su país"
-                        Margin="20,0,20,0"
+                        Margin="0,0,0,0"
                         ItemsSource="{Binding Countries}"
                         SelectedItem="{Binding Country}"
                         TextColor="White"
@@ -329,7 +332,7 @@
                     Padding="0"
                     BackgroundColor="White"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -339,7 +342,7 @@
                             Offset="-4,4" />
                     </Frame.Shadow>
                     <Entry
-                        Margin="20,0,20,0"
+                        Margin="0,0,0,0"
                         Placeholder="Código de activación"
                         PlaceholderColor="#184159"
                         Text="{Binding ValidateCode}"
@@ -468,7 +471,7 @@
                     Padding="0"
                     BackgroundColor="White"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -478,7 +481,7 @@
                             Offset="-4,4" />
                     </Frame.Shadow>
                     <Entry
-                        Margin="20,0,20,0"
+                        Margin="0,0,0,0"
                         Placeholder="Correo electronico"
                         PlaceholderColor="#184159"
                         Text="{Binding UserEmail}"
@@ -540,7 +543,7 @@
                     Padding="0"
                     BackgroundColor="White"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -550,7 +553,7 @@
                             Offset="-4,4" />
                     </Frame.Shadow>
                     <Entry
-                        Margin="20,0,20,0"
+                        Margin="0,0,0,0"
                         Placeholder="Código"
                         PlaceholderColor="#184159"
                         Text="{Binding ValidateCode}"
@@ -636,7 +639,7 @@
                     Padding="0"
                     BackgroundColor="#184159"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -647,7 +650,7 @@
                     </Frame.Shadow>
                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                         <Entry
-                            Margin="20,0,-27,0"
+                            Margin="0,0,-27,0"
                             HorizontalOptions="FillAndExpand"
                             IsPassword="{Binding IsVisiblePassword, Converter={StaticResource InvertedBoolConverter}}"
                             Placeholder="Contraseña"
@@ -667,7 +670,7 @@
                     Padding="0"
                     BackgroundColor="#184159"
                     BorderColor="Transparent"
-                    CornerRadius="20"
+                    CornerRadius="15"
                     HasShadow="True">
                     <Frame.Shadow>
                         <Shadow
@@ -678,7 +681,7 @@
                     </Frame.Shadow>
                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                         <Entry
-                            Margin="20,0,-27,0"
+                            Margin="0,0,-27,0"
                             HorizontalOptions="FillAndExpand"
                             IsPassword="{Binding IsVisiblePassword, Converter={StaticResource InvertedBoolConverter}}"
                             Placeholder="Repetir contraseña"
