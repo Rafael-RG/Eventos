@@ -34,21 +34,24 @@
             </Border>
         </StackLayout>
 
-        <RefreshView Command="{Binding LoadDataCommand}" IsRefreshing="{Binding IsRefreshingList}" RefreshColor="#ABBA3C">
+        <RefreshView
+            Command="{Binding LoadDataCommand}"
+            IsRefreshing="{Binding IsRefreshingList}"
+            RefreshColor="#ABBA3C">
             <ScrollView BackgroundColor="#DDDDDD" VerticalOptions="FillAndExpand">
                 <StackLayout HorizontalOptions="FillAndExpand">
                     <ActivityIndicator
-                            IsRunning="{Binding IsBusy}"
-                            IsVisible="{Binding IsBusy}"
-                            VerticalOptions="CenterAndExpand"
-                            Color="#ABBA3C" />
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        VerticalOptions="CenterAndExpand"
+                        Color="#ABBA3C" />
                     <Label
-                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="20,25,0,0"
                         FontAttributes="Bold"
                         HorizontalOptions="FillAndExpand"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                         MaxLines="1">
                         <Label.FormattedText>
                             <FormattedString>
@@ -81,233 +84,236 @@
                             HorizontalOptions="FillAndExpand">
 
                             <ProgressBar
-                                    BackgroundColor="#184159"
-                                    HeightRequest="12"
-                                    HorizontalOptions="FillAndExpand"
-                                    Progress="{Binding Progres}"
-                                    ProgressColor="#D2E898"
-                                    VerticalOptions="Center"/>
+                                BackgroundColor="#184159"
+                                HeightRequest="12"
+                                HorizontalOptions="FillAndExpand"
+                                Progress="{Binding Progres}"
+                                ProgressColor="#D2E898"
+                                VerticalOptions="Center" />
 
                         </Frame>
 
                     </Grid>
-                    
-                    <StackLayout Margin="0,0,0,0" VerticalOptions="FillAndExpand"  IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
-                    <Label
+
+                    <StackLayout
+                        Margin="0,0,0,0"
                         IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                        Margin="25,0,0,0"
-                        FontAttributes="Bold"
-                        HorizontalOptions="FillAndExpand"
-                        MaxLines="1">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span
-                                    FontSize="16"
-                                    Text="Clicks: "
-                                    TextColor="#61a60e" />
-                                <Span
-                                    FontSize="16"
-                                    Text="{Binding User.TotalClicksCurrentPeriod}"
-                                    TextColor="#61a60e" />
-                                <Span
-                                    FontSize="16"
-                                    Text="/"
-                                    TextColor="#61a60e" />
-                                <Span
-                                    FontSize="16"
-                                    Text="{Binding User.ClickCount}"
-                                    TextColor="#61a60e" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-
-                    <Frame
-                        Margin="20,15,20,15"
-                        BorderColor="Transparent"
-                        IsVisible="{Binding IsVisibleNextEvent}">
-                        <Frame.Shadow>
-                            <Shadow
-                                Brush="#000000"
-                                Opacity="0.5"
-                                Radius="15"
-                                Offset="-4,4" />
-                        </Frame.Shadow>
-                        <Grid
-                            ColumnDefinitions="*"
+                        VerticalOptions="FillAndExpand">
+                        <Label
+                            Margin="25,0,0,0"
+                            FontAttributes="Bold"
                             HorizontalOptions="FillAndExpand"
-                            RowDefinitions="auto,auto,auto,auto"
-                            RowSpacing="3"
-                            VerticalOptions="Start">
+                            IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            MaxLines="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span
+                                        FontSize="16"
+                                        Text="Clicks: "
+                                        TextColor="#61a60e" />
+                                    <Span
+                                        FontSize="16"
+                                        Text="{Binding User.TotalClicksCurrentPeriod}"
+                                        TextColor="#61a60e" />
+                                    <Span
+                                        FontSize="16"
+                                        Text="/"
+                                        TextColor="#61a60e" />
+                                    <Span
+                                        FontSize="16"
+                                        Text="{Binding User.ClickCount}"
+                                        TextColor="#61a60e" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
 
-                            <Label
-                                FontAttributes="Bold"
+                        <Frame
+                            Margin="20,15,20,15"
+                            BorderColor="Transparent"
+                            IsVisible="{Binding IsVisibleNextEvent}">
+                            <Frame.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.5"
+                                    Radius="15"
+                                    Offset="-4,4" />
+                            </Frame.Shadow>
+                            <Grid
+                                ColumnDefinitions="*"
                                 HorizontalOptions="FillAndExpand"
-                                MaxLines="1"
-                                TextColor="#61a60e">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span
-                                            FontSize="22"
-                                            Text="Proximo evento"
-                                            TextColor="#61a60e" />
-                                        <Span
-                                            FontSize="22"
-                                            Text=": "
-                                            TextColor="#61a60e" />
-                                        <Span
-                                            FontSize="22"
-                                            Text="{Binding NextEvent.Date, StringFormat='{0:dd/MM/yyyy}'}"
-                                            TextColor="#61a60e" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                                RowDefinitions="auto,auto,auto,auto"
+                                RowSpacing="3"
+                                VerticalOptions="Start">
 
-                            <Label
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                FontAttributes="Bold"
-                                HorizontalOptions="FillAndExpand"
-                                MaxLines="1"
-                                TextColor="#61a60e">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span
-                                            FontSize="22"
-                                            Text="{Binding NextEvent.Title}"
-                                            TextColor="#184159" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-
-                            <StackLayout
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                Orientation="Vertical">
                                 <Label
-                                    Margin="0,0,0,5"
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="FillAndExpand"
                                     MaxLines="1"
-                                    Text="{Binding NextEvent.Description}"
-                                    TextColor="#184159"
-                                    VerticalOptions="Start" />
+                                    TextColor="#61a60e">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="22"
+                                                Text="Proximo evento"
+                                                TextColor="#61a60e" />
+                                            <Span
+                                                FontSize="22"
+                                                Text=": "
+                                                TextColor="#61a60e" />
+                                            <Span
+                                                FontSize="22"
+                                                Text="{Binding NextEvent.Date, StringFormat='{0:dd/MM/yyyy}'}"
+                                                TextColor="#61a60e" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
                                 <Label
-                                    Margin="0,0,6,0"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1"
+                                    TextColor="#61a60e">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="22"
+                                                Text="{Binding NextEvent.Title}"
+                                                TextColor="#184159" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <StackLayout
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Margin="0,0,0,5"
+                                        MaxLines="1"
+                                        Text="{Binding NextEvent.Description}"
+                                        TextColor="#184159"
+                                        VerticalOptions="Start" />
+                                    <Label
+                                        Margin="0,0,6,0"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        TextColor="#184159">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding NextEvent.Count}" />
+                                                <Span Text=" clicks " />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Margin="0,10,0,0"
+                                    Spacing="5">
+                                    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                                        <Grid>
+                                            <charts:ChartView
+                                                x:Name="nexteventclicks"
+                                                Chart="{Binding Charts[0], Mode=TwoWay}"
+                                                HeightRequest="250"
+                                                IsVisible="{Binding IsVisibleGraphic1}"
+                                                VerticalOptions="CenterAndExpand"
+                                                WidthRequest="{Binding NextEventWidth}" />
+                                            <Label
+                                                FontSize="20"
+                                                HorizontalOptions="Center"
+                                                IsVisible="{Binding IsVisibleGraphic1, Converter={StaticResource InvertedBoolConverter}}"
+                                                Text="Aún no hay interacciones."
+                                                TextColor="#61a60e"
+                                                VerticalOptions="CenterAndExpand" />
+                                        </Grid>
+                                    </ScrollView>
+
+
+                                </StackLayout>
+
+                            </Grid>
+                        </Frame>
+
+                        <Frame Margin="20,15,20,20" IsVisible="{Binding IsVisibleListEvent}">
+                            <StackLayout>
+                                <Label
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="24"
+                                                Text="Clicks por evento:"
+                                                TextColor="#61a60e" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label
+                                    Margin="3,10,0,0"
                                     FontAttributes="Bold"
                                     FontSize="14"
                                     TextColor="#184159">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding NextEvent.Count}" />
-                                            <Span Text=" clicks " />
+                                            <Span Text="Seleccionar evento:" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                            </StackLayout>
-                            <StackLayout
-                                Grid.Row="3"
-                                Grid.Column="0"
-                                Margin="0,10,0,0"
-                                Spacing="5">
-                                <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
-                                    <Grid>
-                                        <charts:ChartView
-                                            x:Name="nexteventclicks"
-                                            Chart="{Binding Charts[0], Mode=TwoWay}"
-                                            HeightRequest="250"
-                                            IsVisible="{Binding IsVisibleGraphic1}"
-                                            VerticalOptions="CenterAndExpand"
-                                            WidthRequest="{Binding NextEventWidth}" />
-                                        <Label
-                                            FontSize="20"
-                                            HorizontalOptions="Center"
-                                            IsVisible="{Binding IsVisibleGraphic1, Converter={StaticResource InvertedBoolConverter}}"
-                                            Text="Aún no hay interacciones."
-                                            TextColor="#61a60e"
-                                            VerticalOptions="CenterAndExpand" />
-                                    </Grid>
-                                </ScrollView>
 
-
-                            </StackLayout>
-
-                        </Grid>
-                    </Frame>
-
-                    <Frame Margin="20,15,20,20" IsVisible="{Binding IsVisibleListEvent}">
-                        <StackLayout>
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalOptions="FillAndExpand"
-                                MaxLines="1">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span
-                                            FontSize="24"
-                                            Text="Clicks por evento:"
-                                            TextColor="#61a60e" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-
-                            <Label
-                                Margin="3,10,0,0"
-                                FontAttributes="Bold"
-                                FontSize="14"
-                                TextColor="#184159">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="Seleccionar evento:" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-
-                            <Frame
-                                Margin="0,0,0,20"
-                                Padding="0"
-                                BackgroundColor="#DDDDDD"
-                                BorderColor="Transparent">
-                                <Picker
-                                    Title="{Binding SelectedEvent.Title}"
+                                <Frame
+                                    Margin="0,0,0,20"
+                                    Padding="0"
                                     BackgroundColor="#DDDDDD"
-                                    ItemsSource="{Binding Events}"
-                                    SelectedIndexChanged="Picker_SelectedIndexChanged"
-                                    SelectedItem="{Binding SelectedEvent}"
-                                    TextColor="#184159"
-                                    TitleColor="#184159" />
-                            </Frame>
+                                    BorderColor="Transparent">
+                                    <Picker
+                                        Title="{Binding SelectedEvent.Title}"
+                                        BackgroundColor="#DDDDDD"
+                                        ItemsSource="{Binding Events}"
+                                        SelectedIndexChanged="Picker_SelectedIndexChanged"
+                                        SelectedItem="{Binding SelectedEvent}"
+                                        TextColor="#184159"
+                                        TitleColor="#184159" />
+                                </Frame>
 
 
-                            <StackLayout Spacing="5">
+                                <StackLayout Spacing="5">
 
-                                <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
-                                    <Grid>
-                                        <charts:ChartView
-                                            x:Name="clicksbyevent"
-                                            Chart="{Binding Charts[1], Mode=TwoWay}"
-                                            HeightRequest="300"
-                                            IsVisible="{Binding IsVisibleGraphic2}"
-                                            VerticalOptions="CenterAndExpand"
-                                            WidthRequest="{Binding SelectedEventWidth}" />
-                                        <Label
-                                            FontSize="20"
-                                            HorizontalOptions="Center"
-                                            IsVisible="{Binding IsVisibleGraphic2, Converter={StaticResource InvertedBoolConverter}}"
-                                            Text="Aún no hay interacciones."
-                                            TextColor="#61a60e"
-                                            VerticalOptions="CenterAndExpand" />
-                                    </Grid>
-                                </ScrollView>
+                                    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                                        <Grid>
+                                            <charts:ChartView
+                                                x:Name="clicksbyevent"
+                                                Chart="{Binding Charts[1], Mode=TwoWay}"
+                                                HeightRequest="300"
+                                                IsVisible="{Binding IsVisibleGraphic2}"
+                                                VerticalOptions="CenterAndExpand"
+                                                WidthRequest="{Binding SelectedEventWidth}" />
+                                            <Label
+                                                FontSize="20"
+                                                HorizontalOptions="Center"
+                                                IsVisible="{Binding IsVisibleGraphic2, Converter={StaticResource InvertedBoolConverter}}"
+                                                Text="Aún no hay interacciones."
+                                                TextColor="#61a60e"
+                                                VerticalOptions="CenterAndExpand" />
+                                        </Grid>
+                                    </ScrollView>
+                                </StackLayout>
                             </StackLayout>
-                        </StackLayout>
-                    </Frame>
+                        </Frame>
 
-                    <Label
-                        FontSize="20"
-                        HorizontalOptions="Center"
-                        IsVisible="{Binding IsVisibleListEvent, Converter={StaticResource InvertedBoolConverter}}"
-                        Text="Aún no hay eventos disponibles."
-                        TextColor="#61a60e"
-                        VerticalOptions="CenterAndExpand" />
-                    <!--<Frame Margin="20,20,20,20">
+                        <Label
+                            FontSize="20"
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding IsVisibleListEvent, Converter={StaticResource InvertedBoolConverter}}"
+                            Text="Aún no hay eventos disponibles."
+                            TextColor="#61a60e"
+                            VerticalOptions="CenterAndExpand" />
+                        <!--<Frame Margin="20,20,20,20">
                         <StackLayout>
                             <Label
                                 FontAttributes="Bold"
@@ -338,7 +344,7 @@
                             </StackLayout>
                         </StackLayout>
                     </Frame>-->
-</StackLayout>
+                    </StackLayout>
                 </StackLayout>
             </ScrollView>
         </RefreshView>

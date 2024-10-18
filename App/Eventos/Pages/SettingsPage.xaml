@@ -157,17 +157,20 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <StackLayout Orientation="Horizontal" IsVisible="{Binding User.IsSubscribed, Converter={StaticResource InvertedBoolConverter}}">
-                                    <Label Text="Suscribete " FontSize="12" TextColor="#666666"/>
+                                <StackLayout IsVisible="{Binding User.IsSubscribed, Converter={StaticResource InvertedBoolConverter}}" Orientation="Horizontal">
+                                    <Label
+                                        FontSize="12"
+                                        Text="Suscribete "
+                                        TextColor="#666666" />
                                     <Button
                                         Margin="0,0,0,0"
                                         Padding="0,0,0,0"
                                         BackgroundColor="Transparent"
                                         BorderColor="Transparent"
                                         Command="{Binding SuscribeCommand}"
+                                        FontSize="12"
                                         HorizontalOptions="Start"
                                         Text="aquí"
-                                        FontSize="12"
                                         TextColor="#ABBA3C"
                                         VerticalOptions="Start" />
                                 </StackLayout>

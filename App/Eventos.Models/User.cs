@@ -74,6 +74,8 @@ namespace Eventos.Models
             {
                 this.isSubscribed = value;
                 OnPropertyChanged(nameof(IsSubscribed));
+                OnPropertyChanged(nameof(State));
+                OnPropertyChanged(nameof(PlanInfo));
             }
 
         }
