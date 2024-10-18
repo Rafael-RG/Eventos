@@ -74,6 +74,13 @@ namespace Eventos.ViewModels
         }
 
         [RelayCommand]
+        private async void Suscribe()
+        {
+            //open link 
+            await Launcher.OpenAsync("https://www.recuerdame.app/");
+        }
+
+        [RelayCommand]
         private async void Refresh() 
         {
             this.IsRefreshingList = true;

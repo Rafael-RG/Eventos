@@ -146,6 +146,7 @@
                                 <Label
                                     Margin="0,0,0,0"
                                     HorizontalOptions="FillAndExpand"
+                                    IsVisible="{Binding User.IsSubscribed}"
                                     MaxLines="1">
                                     <Label.FormattedText>
                                         <FormattedString>
@@ -156,6 +157,18 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                <Button
+                                    IsVisible="{Binding User.IsSubscribed, Converter={StaticResource InvertedBoolConverter}}"
+                                    Margin="0,10,0,0"
+                                    CornerRadius="15"
+                                    BackgroundColor="#184159"
+                                    BorderColor="Transparent"
+                                    Command="{Binding SuscribeCommand}"
+                                    FontSize="16"
+                                    HorizontalOptions="Start"
+                                    Text="Suscríbete"
+                                    TextColor="#ABBA3C"
+                                    VerticalOptions="Start" />
                             </StackLayout>
 
                         </Frame>
