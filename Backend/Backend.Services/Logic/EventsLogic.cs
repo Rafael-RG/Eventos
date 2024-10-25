@@ -16,6 +16,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 
 
 namespace Backend.Service.BusinessLogic
@@ -331,7 +332,7 @@ namespace Backend.Service.BusinessLogic
         }
 
         /// </inheritdoc/>
-        public async Task<FileContentResult> GetEventAsync(string rowKey)
+        public async Task<string> GetEventAsync(string rowKey)
         {
             try
             {
@@ -393,12 +394,11 @@ namespace Backend.Service.BusinessLogic
 
                 var byteArray = Encoding.UTF8.GetBytes(icsContent);
 
-                var fileName = $"{eventItem.Title}.ics";
+                var fileName = $"{rowKey}_{eventItem.Title}.ics".ToLower();
 
-                return new FileContentResult(byteArray, "text/calendar")
-                {
-                    FileDownloadName = fileName,
-                };
+                var blobUri = await this.dataAccess.CreateBlobAsync(new MemoryStream(byteArray), fileName, "eventos");
+
+                return blobUri.AbsoluteUri;
             }
             catch
             {

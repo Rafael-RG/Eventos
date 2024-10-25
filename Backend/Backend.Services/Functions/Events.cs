@@ -96,7 +96,7 @@ namespace Backend.Service.Functions
         /// Validate a subscription
         /// </summary>       
         [Function(nameof(GetEventAsync))]
-        public async Task<IActionResult> GetEventAsync(
+        public async Task<string> GetEventAsync(
          [HttpTrigger(AuthorizationLevel.Function, "get", Route = "event")] HttpRequestData request)
         {
             var queryParameters = System.Web.HttpUtility.ParseQueryString(request.Url.Query);

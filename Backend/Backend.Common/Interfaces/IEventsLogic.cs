@@ -34,7 +34,7 @@ namespace Backend.Common.Interfaces
         /// Get event
         /// </summary>
         /// <returns></returns>
-        Task<FileContentResult> GetEventAsync(string rowKey);
+        Task<string> GetEventAsync(string rowKey);
 
         /// <summary>
         /// Gets all the documents
