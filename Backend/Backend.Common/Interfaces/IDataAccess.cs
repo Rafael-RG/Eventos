@@ -33,6 +33,11 @@ namespace Backend.Common.Interfaces
         Task<Uri> CreateBlobAsync(Stream content, string filenanem, string containerName);
 
         /// <summary>
+        /// Delete a blob
+        /// </summary>
+        Task<bool> DeleteBlobAsync(string filenanem, string containerName);
+
+        /// <summary>
         /// Create a new item
         /// </summary>
         Task<bool> SaveEntryAsync(EventEntry newEvent);

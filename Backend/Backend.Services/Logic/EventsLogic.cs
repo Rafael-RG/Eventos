@@ -229,6 +229,8 @@ namespace Backend.Service.BusinessLogic
 
                     eventEntry = getEvent;
 
+                    await this.dataAccess.DeleteBlobAsync($"{eventEntry.RowKey}_{eventEntry.Title}.ics".ToLower(), "eventos");
+
                     if (newEvent.IsDelete)
                     {
                         eventEntry.IsDeleted = true;
@@ -340,6 +342,7 @@ namespace Backend.Service.BusinessLogic
 
                 if (eventEntry.StartTime < DateTimeOffset.UtcNow)
                 {
+                    await this.dataAccess.DeleteBlobAsync($"{rowKey}_{eventEntry.Title}.ics".ToLower(), "eventos");
                     return null;
                 }
 
@@ -347,6 +350,7 @@ namespace Backend.Service.BusinessLogic
 
                 if (!suscription.Data.IsSubscribed)
                 {
+                    await this.dataAccess.DeleteBlobAsync($"{rowKey}_{eventEntry.Title}.ics".ToLower(), "eventos");
                     return null;
                 }
 
@@ -354,6 +358,7 @@ namespace Backend.Service.BusinessLogic
 
                 if (user.TotalClicksCurrentPeriod >= suscription.Data.ClickCount)
                 {
+                    await this.dataAccess.DeleteBlobAsync($"{rowKey}_{eventEntry.Title}.ics".ToLower(), "eventos");
                     return null;
                 }
 

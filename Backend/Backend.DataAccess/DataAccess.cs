@@ -82,6 +82,11 @@ namespace Backend.DataAccess
                 var containerClient = this.blobServiceClient.GetBlobContainerClient(containerName);
                 var blobClient = containerClient.GetBlobClient(filenanem);
 
+                if (await blobClient.ExistsAsync())
+                {
+                    return blobClient.Uri;
+                }
+
                 using (var stream = new MemoryStream())
                 {
                     content.CopyTo(stream);
@@ -89,7 +94,7 @@ namespace Backend.DataAccess
                     await blobClient.UploadAsync(stream, true);
                 }
 
-                // Devuelve el URI del blob
+
                 return blobClient.Uri;
             }
             catch
@@ -97,6 +102,23 @@ namespace Backend.DataAccess
                 return null;
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<bool> DeleteBlobAsync(string filenanem, string containerName)
+        {
+            try
+            {
+                var containerClient = this.blobServiceClient.GetBlobContainerClient(containerName);
+                var blobClient = containerClient.GetBlobClient(filenanem);
+                await blobClient.DeleteIfExistsAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// create a new table in the storage account
