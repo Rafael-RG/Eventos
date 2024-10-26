@@ -297,11 +297,11 @@
                                 <StackLayout Spacing="5" Grid.Row="3">
 
                                     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
-                                        <Grid>
+                                        <Grid HeightRequest="{Binding SelectedEventHeight}">
                                             <charts:ChartView
                                                 x:Name="clicksbyevent"
                                                 Chart="{Binding Charts[1], Mode=TwoWay}"
-                                                HeightRequest="300"
+                                                HeightRequest="{Binding SelectedEventHeight}"
                                                 IsVisible="{Binding IsVisibleGraphic2}"
                                                 VerticalOptions="CenterAndExpand"
                                                 WidthRequest="{Binding SelectedEventWidth}" />

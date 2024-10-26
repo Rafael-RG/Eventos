@@ -68,6 +68,7 @@
 
                         <!--  Descripción del evento  -->
                         <Label
+                            Margin="0,10,0,0"
                             FontSize="16"
                             Text="Descripción/URL"
                             TextColor="#184159" />
@@ -102,6 +103,7 @@
 
                         <!--  Zona horaria del evento  -->
                         <Label
+                            Margin="0,10,0,0"
                             FontSize="16"
                             Text="Zona Horaria"
                             TextColor="#184159" />
@@ -112,6 +114,7 @@
                             SelectedItem="{Binding SelectedZone}"
                             TitleColor="#666666" />
                         <StackLayout
+                            Margin="0,10,0,0"
                             HorizontalOptions="FillAndExpand"
                             Orientation="Horizontal"
                             Spacing="30">

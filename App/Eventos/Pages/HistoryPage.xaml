@@ -142,12 +142,14 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.EmptyView>
-                        <Label
-                            FontSize="20"
-                            HorizontalOptions="Center"
-                            Text="No hay eventos"
-                            TextColor="#61a60e"
-                            VerticalOptions="CenterAndExpand" />
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="No hay eventos"
+                                TextColor="#61a60e"
+                                VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
                     </CollectionView.EmptyView>
                 </CollectionView>
             </StackLayout>

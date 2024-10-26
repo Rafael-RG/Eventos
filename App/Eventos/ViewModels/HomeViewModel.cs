@@ -54,6 +54,9 @@ namespace Eventos.ViewModels
         private double selectedEventWidth;
 
         [ObservableProperty]
+        private double selectedEventHeight;
+
+        [ObservableProperty]
         private bool isVisibleGraphic1;
 
         [ObservableProperty]
@@ -244,7 +247,7 @@ namespace Eventos.ViewModels
 
                 this.IsVisibleGraphic2 = false;
                 OnPropertyChanged(nameof(this.Charts));
-
+                this.SelectedEventHeight = 60;
                 return;
             }
 
@@ -272,6 +275,7 @@ namespace Eventos.ViewModels
                 this.Charts[1] = line;
 
                 this.SelectedEventWidth = ((LineChart)(this.Charts[1])).Entries.Count() > 15 ? ((LineChart)(this.Charts[1])).Entries.Count() * 30 : 400;
+                this.SelectedEventHeight = 300;
 
                 this.IsVisibleGraphic2 = true;
             }
@@ -281,7 +285,7 @@ namespace Eventos.ViewModels
                 {
                     Entries = new List<ChartEntry>() { new ChartEntry(0) }
                 };
-
+                this.SelectedEventHeight = 60;
                 this.IsVisibleGraphic2 = false;
             }
 
