@@ -69,7 +69,7 @@
                         <!--  Descripción del evento  -->
                         <Label
                             FontSize="16"
-                            Text="Descripción"
+                            Text="Descripción/URL"
                             TextColor="#184159" />
                         <Editor
                             FontSize="12"
@@ -79,7 +79,7 @@
                             Text="{Binding Description}" />
 
                         <!--  Url del evento  -->
-                        <Label
+                        <!--<Label
                             FontSize="16"
                             Text="Url"
                             TextColor="#184159" />
@@ -87,7 +87,7 @@
                             FontSize="12"
                             Placeholder="Ingrese la Url del evento"
                             PlaceholderColor="#666666"
-                            Text="{Binding Url}" />
+                            Text="{Binding Url}" />-->
 
                         <!--  Fecha del evento  -->
                         <Label

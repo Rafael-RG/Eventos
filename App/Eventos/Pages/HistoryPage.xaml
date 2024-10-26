@@ -33,17 +33,20 @@
             </Border>
         </StackLayout>
 
-        <RefreshView Command="{Binding RefreshAsyncCommand}" IsRefreshing="{Binding IsRefreshingList}" RefreshColor="#ABBA3C">
+        <RefreshView
+            Command="{Binding RefreshAsyncCommand}"
+            IsRefreshing="{Binding IsRefreshingList}"
+            RefreshColor="#ABBA3C">
             <StackLayout
                 Padding="0,0,0,0"
                 BackgroundColor="#DDDDDD"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand">
                 <ActivityIndicator
-                            IsRunning="{Binding IsBusy}"
-                            IsVisible="{Binding IsBusy}"
-                            VerticalOptions="CenterAndExpand"
-                            Color="#ABBA3C" />
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    VerticalOptions="CenterAndExpand"
+                    Color="#ABBA3C" />
                 <CollectionView
                     Margin="20,0,20,0"
                     BackgroundColor="#DDDDDD"
