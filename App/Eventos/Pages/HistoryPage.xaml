@@ -98,7 +98,7 @@
                                         <Label
                                             Margin="0,0,0,5"
                                             MaxLines="1"
-                                            Text="{Binding Description}"
+                                            Text="{Binding EventURl}"
                                             TextColor="#184159"
                                             VerticalOptions="Start" />
                                         <Label
@@ -142,7 +142,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.EmptyView>
-                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <Label
                                 FontSize="20"
                                 HorizontalOptions="Center"

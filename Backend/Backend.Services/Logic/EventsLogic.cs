@@ -210,7 +210,8 @@ namespace Backend.Service.BusinessLogic
                 if (string.IsNullOrEmpty(newEvent?.RowKey))
                 {
                     eventEntry.Title = newEvent.Title;
-                    eventEntry.Description = newEvent.Description;
+                    eventEntry.Alarm_1 = newEvent.Alarm_1;
+                    eventEntry.Alarm_2 = newEvent.Alarm_2;
                     eventEntry.Date = newEvent.Date;
                     eventEntry.Email = newEvent.Email;
                     eventEntry.EndTime = newEvent.EndTime;
@@ -238,7 +239,8 @@ namespace Backend.Service.BusinessLogic
                     else
                     {
                         eventEntry.Title = newEvent.Title;
-                        eventEntry.Description = newEvent.Description;
+                        eventEntry.Alarm_1 = newEvent.Alarm_1;
+                        eventEntry.Alarm_2 = newEvent.Alarm_2;
                         eventEntry.Date = newEvent.Date;
                         eventEntry.StartTime = newEvent.StartTime;
                         eventEntry.EndTime = newEvent.EndTime;
@@ -296,7 +298,8 @@ namespace Backend.Service.BusinessLogic
                     var Event = new Event
                     {
                         Title = x.Title,
-                        Description = x.Description,
+                        Alarm_1 = x.Alarm_1,
+                        Alarm_2 = x.Alarm_2,
                         Date = x.Date,
                         Email = x.Email,
                         RowKey = x.RowKey,
@@ -381,7 +384,8 @@ namespace Backend.Service.BusinessLogic
                 var eventItem = new Event
                 {
                     Title = eventEntry.Title,
-                    Description = eventEntry.Description,
+                    Alarm_1 = eventEntry.Alarm_1,
+                    Alarm_2 = eventEntry.Alarm_2,
                     Date = eventEntry.Date,
                     Email = eventEntry.Email,
                     RowKey = eventEntry.RowKey,
@@ -395,7 +399,7 @@ namespace Backend.Service.BusinessLogic
 
                 TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(eventItem.ZoneId);
 
-                var icsContent = GenerateICSContent(eventItem.Title, eventItem.Description, eventItem.StartTime, eventItem.EndTime, timeZoneInfo, eventEntry.EventURl);
+                var icsContent = GenerateICSContent(eventItem.Title, eventItem.Alarm_1, eventItem.Alarm_2, eventItem.StartTime, eventItem.EndTime, timeZoneInfo, eventEntry.EventURl);
 
                 var byteArray = Encoding.UTF8.GetBytes(icsContent);
 
@@ -412,7 +416,7 @@ namespace Backend.Service.BusinessLogic
 
         }
 
-        private string GenerateICSContent(string title, string description, DateTimeOffset startDateTime, DateTimeOffset endDateTime, TimeZoneInfo timeZoneInfo, string url)
+        private string GenerateICSContent(string title, string alarm1, string alarm2, DateTimeOffset startDateTime, DateTimeOffset endDateTime, TimeZoneInfo timeZoneInfo, string url)
         {
             StringBuilder sb = new StringBuilder();
             string timeZoneId = timeZoneInfo.Id;
@@ -437,24 +441,20 @@ namespace Backend.Service.BusinessLogic
             sb.AppendLine($"UID:{uid}");
             sb.AppendLine($"DTSTAMP:{dtStamp}");
             sb.AppendLine($"SUMMARY:{title.Replace(",", "\\,").Replace(";", "\\;")}");
-            sb.AppendLine($"DESCRIPTION:{description.Replace(",", "\\,").Replace(";", "\\;")}");
+            sb.AppendLine($"DESCRIPTION:{url}");
             //sb.AppendLine($"DTSTART;TZID={timeZoneId}:{timeZoneStart}");
             //sb.AppendLine($"DTEND;TZID={timeZoneId}:{timeZoneEnd}");
             sb.AppendLine($"DTSTART:{timeZoneStart}");
             sb.AppendLine($"DTEND:{timeZoneEnd}");
-            if (!string.IsNullOrEmpty(url))
-            {
-                sb.AppendLine($"URL:{url}");
-            }
 
             sb.AppendLine("BEGIN:VALARM");
-            sb.AppendLine("TRIGGER:-PT15M");
+            sb.AppendLine($"TRIGGER:-PT{alarm1}M");
             sb.AppendLine("ACTION:DISPLAY");
             sb.AppendLine($"DESCRIPTION:Reminder for {title}");
             sb.AppendLine("END:VALARM");
 
             sb.AppendLine("BEGIN:VALARM");
-            sb.AppendLine("TRIGGER:PT0M");
+            sb.AppendLine($"TRIGGER:PT{alarm2}M");
             sb.AppendLine("ACTION:DISPLAY");
             sb.AppendLine($"DESCRIPTION:Event starting now: {title}");
             sb.AppendLine("END:VALARM");

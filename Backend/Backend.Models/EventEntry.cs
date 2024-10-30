@@ -12,7 +12,8 @@ namespace Backend.Models
     {
         public string Email { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string Alarm_1 { get; set; }
+        public string Alarm_2 { get; set; }
         public DateTime Date { get; set; }
         public string Zone { get; set; }
         public string ZoneId { get; set; }

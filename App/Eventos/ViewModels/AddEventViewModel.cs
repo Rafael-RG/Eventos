@@ -23,7 +23,13 @@ namespace Eventos.ViewModels
         private string title;
 
         [ObservableProperty]
-        private string description;
+        private Alarm selectedFirstAlarm;
+
+        [ObservableProperty]
+        private Alarm selectedSecondAlarm;
+
+        [ObservableProperty]
+        private ObservableCollection<Alarm> alarms;
 
         [ObservableProperty]
         private DateTime date;
@@ -53,7 +59,12 @@ namespace Eventos.ViewModels
         /// </summary>
         public AddEventViewModel(IServiceProvider provider) : base(provider)
         {
-
+            this.Alarms = new ObservableCollection<Alarm> {
+                new Alarm { Title = "A la hora del evento", Value = "0" },
+                new Alarm { Title = "5 minutos antes", Value = "5" },
+                new Alarm { Title = "15 minutos antes", Value = "15" },
+                new Alarm { Title = "30 minutos antes", Value = "30" },
+            };
         }
 
         public override async void OnAppearing()
@@ -64,7 +75,10 @@ namespace Eventos.ViewModels
 
             this.SelectedZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
             this.Date = DateTime.Now.ToLocalTime();
-            
+
+            this.SelectedFirstAlarm = this.Alarms[0];
+            this.SelectedSecondAlarm = this.Alarms[1];
+
             var time = new DateTime(DateTime.Now.Ticks, DateTimeKind.Local);
             this.StartTime = time.TimeOfDay;
             this.EndTime = time.AddHours(1).TimeOfDay;
@@ -103,16 +117,31 @@ namespace Eventos.ViewModels
                 }
                 else
                 {
-                    if (this.StartTime >= this.EndTime)
+                    if (this.StartTime > this.EndTime)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "La hora de inicio no puede ser mayor a la hora de fin.", "OK");
+                        this.IsBusy = false;
+                        return;
+                    }
+
+                    if (this.StartTime == this.EndTime)
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "La hora de inicio y fin no pueden ser iguales.", "OK");
                         this.IsBusy = false;
                         return;
                     }
 
-                    if (string.IsNullOrWhiteSpace(this.Title) || string.IsNullOrWhiteSpace(this.Description) || this.SelectedZone == null)
+                    if (string.IsNullOrWhiteSpace(this.Title) || string.IsNullOrWhiteSpace(this.Url) || this.SelectedZone == null)
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "Por favor, complete todos los campos obligatorios.", "OK");
+                        this.IsBusy = false;
+                        return;
+                    }
+
+                    if (Uri.TryCreate(this.Url, UriKind.Absolute, out Uri uriResult)
+                            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
                         this.IsBusy = false;
                         return;
                     }
@@ -128,7 +157,8 @@ namespace Eventos.ViewModels
                     {
                         Email = this.User.Email.ToLower(),
                         Title = this.Title,
-                        Description = this.Description,
+                        Alarm_1 = this.SelectedFirstAlarm.Value,
+                        Alarm_2 = this.SelectedSecondAlarm.Value,
                         StartTime = eventStart,
                         EndTime = eventEnd,
                         Zone = this.SelectedZone.DisplayName,
@@ -161,7 +191,8 @@ namespace Eventos.ViewModels
         private void Clear()
         {
             this.Title = string.Empty;
-            this.Description = string.Empty;
+            this.SelectedFirstAlarm = this.Alarms[0];
+            this.SelectedSecondAlarm = this.Alarms[1];
             this.Date = DateTime.Now;
             this.StartTime = DateTime.Now.TimeOfDay;
             this.EndTime = DateTime.Now.AddHours(1).TimeOfDay;

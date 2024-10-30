@@ -44,11 +44,14 @@
             IsVisible="{Binding UpdateView, Converter={StaticResource InvertedBoolConverter}}"
             VerticalOptions="FillAndExpand">
             <ActivityIndicator
-                            IsRunning="{Binding IsBusy}"
-                            IsVisible="{Binding IsBusy}"
-                            VerticalOptions="CenterAndExpand"
-                            Color="#ABBA3C" />
-            <Frame BackgroundColor="White" CornerRadius="20" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="CenterAndExpand"
+                Color="#ABBA3C" />
+            <Frame
+                BackgroundColor="White"
+                CornerRadius="20"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                 <StackLayout>
                     <StackLayout
                         Margin="0"
@@ -85,19 +88,27 @@
                         TextColor="#666666" />
                     <Label
                         FontSize="16"
-                        Text="Descripción"
-                        TextColor="#184159" />
-                    <Label
-                        Margin="0,0,0,20"
-                        Text="{Binding EventItem.Description}"
-                        TextColor="#666666" />
-                    <Label
-                        FontSize="16"
                         Text="URL"
                         TextColor="#184159" />
                     <Label
                         Margin="0,0,0,20"
                         Text="{Binding EventItem.EventURl}"
+                        TextColor="#666666" />
+                    <Label
+                        FontSize="16"
+                        Text="Primer alarma"
+                        TextColor="#184159" />
+                    <Label
+                        Margin="0,0,0,20"
+                        Text="{Binding SelectedFirstAlarm.Title}"
+                        TextColor="#666666" />
+                    <Label
+                        FontSize="16"
+                        Text="Segunda alarma"
+                        TextColor="#184159" />
+                    <Label
+                        Margin="0,0,0,20"
+                        Text="{Binding SelectedSecondAlarm.Title}"
                         TextColor="#666666" />
                     <Label
                         FontSize="16"
@@ -151,8 +162,8 @@
                 </StackLayout>
             </Frame>
             <StackLayout
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Margin="0,0,0,0"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Orientation="Horizontal"
                 Spacing="20"
                 VerticalOptions="EndAndExpand">
@@ -193,11 +204,14 @@
             VerticalOptions="FillAndExpand">
             <StackLayout VerticalOptions="FillAndExpand">
                 <ActivityIndicator
-                IsRunning="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}"
-                VerticalOptions="CenterAndExpand"
-                Color="#ABBA3C" />
-                <Frame BackgroundColor="White" CornerRadius="20" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" >
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    VerticalOptions="CenterAndExpand"
+                    Color="#ABBA3C" />
+                <Frame
+                    BackgroundColor="White"
+                    CornerRadius="20"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                     <StackLayout>
                         <Label
                             Margin="0,0,0,20"
@@ -216,18 +230,6 @@
                             Text="{Binding UpdatedEventItem.Title, Mode=TwoWay}"
                             TextColor="#666666" />
 
-                        <!--  Descripción del evento  -->
-                        <Label
-                            FontSize="Medium"
-                            Text="Descripción"
-                            TextColor="#184159" />
-                        <Editor
-                            HeightRequest="60"
-                            Placeholder="Ingrese la descripción del evento"
-                            PlaceholderColor="#666666"
-                            Text="{Binding UpdatedEventItem.Description}"
-                            TextColor="#666666" />
-
                         <Label
                             FontSize="Medium"
                             Text="URL"
@@ -238,6 +240,29 @@
                             PlaceholderColor="#666666"
                             Text="{Binding UpdatedEventItem.EventURl}"
                             TextColor="#666666" />
+                        <Label
+                            FontSize="Medium"
+                            Text="Alarma 1"
+                            TextColor="#184159" />
+                        <Picker
+                            Title="Seleccione una alarma"
+                            ItemsSource="{Binding Alarms}"
+                            SelectedItem="{Binding SelectedFirstAlarm, Mode=TwoWay}"
+                            TextColor="#666666"
+                            TitleColor="#666666" />
+
+                        <!--  Zona horaria del evento  -->
+                        <Label
+                            FontSize="Medium"
+                            Text="Alarma 2"
+                            TextColor="#184159" />
+                        <Picker
+                            Title="Seleccione una alarma"
+                            ItemsSource="{Binding Alarms}"
+                            SelectedItem="{Binding SelectedSecondAlarm, Mode=TwoWay}"
+                            TextColor="#666666"
+                            TitleColor="#666666" />
+
 
                         <!--  Fecha del evento  -->
                         <Label
@@ -289,11 +314,11 @@
                 <!--  Botón para agregar el evento  -->
 
                 <Button
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     Margin="0,40,0,15"
                     BackgroundColor="#419387"
                     Clicked="Button_Clicked_Update"
                     CornerRadius="20"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     Text="Guardar edición"
                     TextColor="White"
                     VerticalOptions="EndAndExpand">
@@ -307,10 +332,10 @@
                 </Button>
 
                 <Button
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     BackgroundColor="#D2E898"
                     Command="{Binding CancelUpdateViewCommand}"
                     CornerRadius="20"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                     Text="Volver"
                     TextColor="#205048">
                     <Button.Shadow>

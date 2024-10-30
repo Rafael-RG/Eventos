@@ -37,11 +37,28 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private TimeSpan endTime;
 
+        [ObservableProperty]
+        private Alarm selectedFirstAlarm;
+
+        [ObservableProperty]
+        private Alarm selectedSecondAlarm;
+
+        [ObservableProperty]
+        private ObservableCollection<Alarm> alarms;
+
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
         public EventDetailViewModel(IServiceProvider provider, EventItem eventItemParam) : base(provider)
         {
+
+            this.Alarms = new ObservableCollection<Alarm> {
+                new Alarm { Title = "A la hora del evento", Value = "0" },
+                new Alarm { Title = "5 minutos antes", Value = "5" },
+                new Alarm { Title = "15 minutos antes", Value = "15" },
+                new Alarm { Title = "30 minutos antes", Value = "30" },
+            };
+
             TimeZoneInfo eventTimeZone = TimeZoneInfo.FindSystemTimeZoneById(eventItemParam.ZoneId);
 
             DateTimeOffset utcStartTime = DateTimeOffset.Parse(eventItemParam.StartTime, null, System.Globalization.DateTimeStyles.AssumeUniversal);
@@ -51,6 +68,8 @@ namespace Eventos.ViewModels
             DateTimeOffset endTime = TimeZoneInfo.ConvertTime(utcEndTime, eventTimeZone);
 
             this.EventItem = eventItemParam.Clone();
+            this.SelectedFirstAlarm = this.Alarms.FirstOrDefault(selectedSecondAlarm => selectedSecondAlarm.Value == this.EventItem.Alarm_1);
+            this.SelectedSecondAlarm = this.Alarms.FirstOrDefault(selectedSecondAlarm => selectedSecondAlarm.Value == this.EventItem.Alarm_2);
             this.EventItem.StartTime = startTime.ToString("HH:mm");
             this.EventItem.EndTime = endTime.ToString("HH:mm");
             this.EventItem.Date = utcStartTime.Date;
@@ -125,9 +144,24 @@ namespace Eventos.ViewModels
                         return;
                     }
 
-                    if (string.IsNullOrWhiteSpace(this.UpdatedEventItem.Title) || string.IsNullOrWhiteSpace(this.UpdatedEventItem.Description) || this.SelectedZone == null)
+                    if (DateTime.Parse(this.UpdatedEventItem.StartTime) > DateTime.Parse(this.UpdatedEventItem.EndTime))
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "La hora de inicio no puede ser mayor a la hora de fin.", "OK");
+                        this.IsBusy = false;
+                        return;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(this.UpdatedEventItem.Title) || string.IsNullOrWhiteSpace(this.UpdatedEventItem.EventURl) || this.SelectedZone == null)
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "Por favor, complete todos los campos obligatorios.", "OK");
+                        this.IsBusy = false;
+                        return;
+                    }
+
+                    if (Uri.TryCreate(this.UpdatedEventItem.EventURl, UriKind.Absolute, out Uri uriResult)
+                            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
                         this.IsBusy = false;
                         return;
                     }
@@ -144,10 +178,13 @@ namespace Eventos.ViewModels
                     this.UpdatedEventItem.Date = DateTime.SpecifyKind(this.UpdatedEventItem.Date, DateTimeKind.Utc);
                     this.UpdatedEventItem.StartTime = startDateTimeLocal.ToString("HH:mm");
                     this.UpdatedEventItem.EndTime = endDateTimeLocal.ToString("HH:mm");
-                    
-                    
+                    this.UpdatedEventItem.Alarm_1 = this.SelectedFirstAlarm.Value;
+                    this.UpdatedEventItem.Alarm_2 = this.SelectedSecondAlarm.Value;
+
+
                     newEvent.Title = this.UpdatedEventItem.Title;
-                    newEvent.Description = this.UpdatedEventItem.Description;
+                    newEvent.Alarm_1 = this.UpdatedEventItem.Alarm_1;
+                    newEvent.Alarm_2 = this.UpdatedEventItem.Alarm_2;
                     newEvent.StartTime = eventStart;
                     newEvent.EndTime = eventEnd;
                     newEvent.Date = DateTime.SpecifyKind(this.UpdatedEventItem.Date, DateTimeKind.Utc);

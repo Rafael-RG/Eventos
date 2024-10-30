@@ -192,7 +192,7 @@
                                     <Label
                                         Margin="0,0,0,5"
                                         MaxLines="1"
-                                        Text="{Binding NextEvent.Description}"
+                                        Text="{Binding NextEvent.StartTime}"
                                         TextColor="#184159"
                                         VerticalOptions="Start" />
                                     <Label
@@ -294,7 +294,7 @@
                                 </Frame>
 
 
-                                <StackLayout Spacing="5" Grid.Row="3">
+                                <StackLayout Grid.Row="3" Spacing="5">
 
                                     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
                                         <Grid HeightRequest="{Binding SelectedEventHeight}">

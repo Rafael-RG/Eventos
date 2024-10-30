@@ -5,7 +5,8 @@ namespace Eventos.Models
     public class EventItem : Bindableitem
     {
         private string title;
-        private string description;
+        private string alarm_1;
+        private string alarm_2;
         private DateTime date;
         private string zone;
         private string startTime;
@@ -28,14 +29,25 @@ namespace Eventos.Models
             }
         }
 
-        [JsonProperty("description")]
-        public string Description
+        [JsonProperty("alarm_1")]
+        public string Alarm_1
         {
-            get => this.description;
+            get => this.alarm_1;
             set
             {
-                this.description = value;
-                OnPropertyChanged(nameof(Description));
+                this.alarm_1 = value;
+                OnPropertyChanged(nameof(Alarm_1));
+            }
+        }
+
+        [JsonProperty("alarm_2")]
+        public string Alarm_2
+        {
+            get => this.alarm_2;
+            set
+            {
+                this.alarm_2 = value;
+                OnPropertyChanged(nameof(Alarm_2));
             }
         }
 
@@ -142,7 +154,8 @@ namespace Eventos.Models
             {
                 Email = this.Email,
                 Title = this.Title,
-                Description = this.Description,
+                Alarm_1 = this.Alarm_1,
+                Alarm_2 = this.Alarm_2,
                 Date = this.Date,
                 Zone = this.Zone,
                 ZoneId = this.ZoneId,
