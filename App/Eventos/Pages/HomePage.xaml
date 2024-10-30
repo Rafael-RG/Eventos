@@ -192,7 +192,7 @@
                                     <Label
                                         Margin="0,0,0,5"
                                         MaxLines="1"
-                                        Text="{Binding NextEvent.StartTime}"
+                                        Text="{Binding NextEvent.EventURl}"
                                         TextColor="#184159"
                                         VerticalOptions="Start" />
                                     <Label

@@ -38,7 +38,7 @@
 
         <StackLayout
             Margin="0,0,0,0"
-            Padding="20,20,20,20"
+            Padding="20,10,20,10"
             BackgroundColor="#DDDDDD"
             HorizontalOptions="FillAndExpand"
             IsVisible="{Binding UpdateView, Converter={StaticResource InvertedBoolConverter}}"
@@ -83,7 +83,7 @@
                         Text="Titulo"
                         TextColor="#184159" />
                     <Label
-                        Margin="0,0,0,20"
+                        Margin="0,0,0,15"
                         Text="{Binding EventItem.Title}"
                         TextColor="#666666" />
                     <Label
@@ -91,7 +91,7 @@
                         Text="URL"
                         TextColor="#184159" />
                     <Label
-                        Margin="0,0,0,20"
+                        Margin="0,0,0,15"
                         Text="{Binding EventItem.EventURl}"
                         TextColor="#666666" />
                     <Label
@@ -99,7 +99,7 @@
                         Text="Primer alarma"
                         TextColor="#184159" />
                     <Label
-                        Margin="0,0,0,20"
+                        Margin="0,0,0,15"
                         Text="{Binding SelectedFirstAlarm.Title}"
                         TextColor="#666666" />
                     <Label
@@ -107,7 +107,7 @@
                         Text="Segunda alarma"
                         TextColor="#184159" />
                     <Label
-                        Margin="0,0,0,20"
+                        Margin="0,0,0,15"
                         Text="{Binding SelectedSecondAlarm.Title}"
                         TextColor="#666666" />
                     <Label
@@ -115,7 +115,7 @@
                         Text="Fecha"
                         TextColor="#184159" />
                     <Label
-                        Margin="0,0,0,20"
+                        Margin="0,0,0,15"
                         Text="{Binding EventItem.Date, StringFormat='{0:dd/MM/yyyy}'}"
                         TextColor="#666666" />
                     <Label
@@ -123,7 +123,7 @@
                         Text="Zona horaria"
                         TextColor="#184159" />
                     <Label
-                        Margin="0,0,0,20"
+                        Margin="0,0,0,15"
                         Text="{Binding EventItem.Zone}"
                         TextColor="#666666" />
                     <StackLayout Orientation="Horizontal" Spacing="60">
@@ -143,7 +143,7 @@
                                 Text="Hora de fin"
                                 TextColor="#184159" />
                             <Label
-                                Margin="0,0,0,20"
+                                Margin="0,0,0,15"
                                 Text="{Binding EventItem.EndTime, Converter={StaticResource IsoDateToFormattedDateConverter}}"
                                 TextColor="#666666" />
                         </StackLayout>
@@ -155,7 +155,7 @@
                         Text="Cantidad de clicks"
                         TextColor="#184159" />
                     <Label
-                        Margin="0,0,0,20"
+                        Margin="0,0,0,5"
                         Text="{Binding EventItem.Count}"
                         TextColor="#666666" />
 
@@ -196,7 +196,7 @@
 
         <StackLayout
             Margin="0,0,0,0"
-            Padding="20,20,20,20"
+            Padding="20,10,20,10"
             BackgroundColor="#DDDDDD"
             HorizontalOptions="FillAndExpand"
             IsVisible="{Binding UpdateView}"
@@ -214,7 +214,7 @@
                     IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                     <StackLayout>
                         <Label
-                            Margin="0,0,0,20"
+                            Margin="0,0,0,15"
                             FontSize="Title"
                             Text="Detalles del evento"
                             TextColor="#ABBA3C" />
@@ -225,6 +225,7 @@
                             Text="Título"
                             TextColor="#184159" />
                         <Entry
+                            Margin="0,0,0,10"
                             Placeholder="Ingrese el título del evento"
                             PlaceholderColor="#666666"
                             Text="{Binding UpdatedEventItem.Title, Mode=TwoWay}"
@@ -234,8 +235,8 @@
                             FontSize="Medium"
                             Text="URL"
                             TextColor="#184159" />
-                        <Editor
-                            HeightRequest="60"
+                            <Entry
+                                Margin="0,0,0,10"
                             Placeholder="Ingrese la URL del evento"
                             PlaceholderColor="#666666"
                             Text="{Binding UpdatedEventItem.EventURl}"
@@ -245,6 +246,7 @@
                             Text="Alarma 1"
                             TextColor="#184159" />
                         <Picker
+                            Margin="0,0,0,10"
                             Title="Seleccione una alarma"
                             ItemsSource="{Binding Alarms}"
                             SelectedItem="{Binding SelectedFirstAlarm, Mode=TwoWay}"
@@ -257,6 +259,7 @@
                             Text="Alarma 2"
                             TextColor="#184159" />
                         <Picker
+                            Margin="0,0,0,10"
                             Title="Seleccione una alarma"
                             ItemsSource="{Binding Alarms}"
                             SelectedItem="{Binding SelectedSecondAlarm, Mode=TwoWay}"
@@ -270,6 +273,7 @@
                             Text="Fecha"
                             TextColor="#184159" />
                         <DatePicker
+                            Margin="0,0,0,10"
                             Date="{Binding UpdatedEventItem.Date}"
                             Format="dd/MM/yyyy"
                             TextColor="#666666" />
@@ -280,6 +284,7 @@
                             Text="Zona Horaria"
                             TextColor="#184159" />
                         <Picker
+                            Margin="0,0,0,10"
                             Title="Seleccione una zona horaria"
                             ItemsSource="{Binding Zones}"
                             SelectedItem="{Binding SelectedZone, Mode=TwoWay}"
