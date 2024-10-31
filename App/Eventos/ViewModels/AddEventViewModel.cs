@@ -7,6 +7,7 @@ using Eventos.Models;
 using System.Text;
 using Eventos.Common;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 
 namespace Eventos.ViewModels
@@ -139,7 +140,8 @@ namespace Eventos.ViewModels
                     }
 
                     if (Uri.TryCreate(this.Url, UriKind.Absolute, out Uri uriResult)
-                            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)
+                            && Regex.IsMatch(this.Url, @"^(http|https)://([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$"))
                     {
                         await App.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
                         this.IsBusy = false;

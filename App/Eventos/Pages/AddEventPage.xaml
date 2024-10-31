@@ -34,6 +34,7 @@
 
         <StackLayout
             Margin="0,0,0,0"
+            Padding="20,10,20,10"
             BackgroundColor="#DDDDDD"
             HorizontalOptions="FillAndExpand"
             Spacing="15"
@@ -43,114 +44,107 @@
                 IsVisible="{Binding IsBusy}"
                 VerticalOptions="CenterAndExpand"
                 Color="#ABBA3C" />
-            <StackLayout
-                Margin="20,10,20,10"
-                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                VerticalOptions="FillAndExpand">
+            <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" VerticalOptions="FillAndExpand">
                 <Frame BackgroundColor="White" CornerRadius="20">
                     <StackLayout>
                         <Label
-                            Margin="0,0,0,20"
+                            Margin="0,0,0,9"
                             FontSize="Title"
                             Text="Crear nuevo evento"
                             TextColor="#ABBA3C" />
 
                         <!--  Título del evento  -->
                         <Label
-                            FontSize="16"
+                            FontSize="12"
                             Text="Título"
                             TextColor="#184159" />
                         <Entry
-                            FontSize="12"
+                            Margin="0,0,0,9"
                             Placeholder="Ingrese el título del evento"
                             PlaceholderColor="#666666"
-                            Text="{Binding Title}" />
+                            Text="{Binding Title}"
+                            TextColor="#666666" />
 
                         <!--  URL del evento  -->
                         <Label
-                            Margin="0,10,0,0"
-                            FontSize="16"
-                            Text="URL"
+                            FontSize="12"
+                            Text="URL del evento"
                             TextColor="#184159" />
                         <Entry
-                            FontSize="12"
+                            Margin="0,0,0,9"
                             Placeholder="Ingrese el url del evento"
                             PlaceholderColor="#666666"
-                            Text="{Binding Url}" />
+                            Text="{Binding Url}"
+                            TextColor="#666666" />
 
                         <!--  Primer alarma del evento  -->
                         <Label
-                            FontSize="16"
+                            Margin="0,0,0,9"
+                            FontSize="12"
                             Text="Alarma 1"
                             TextColor="#184159" />
                         <Picker
                             Title="Seleccione una alarma"
-                            FontSize="12"
                             ItemsSource="{Binding Alarms}"
                             SelectedItem="{Binding SelectedFirstAlarm}"
+                            TextColor="#666666"
                             TitleColor="#666666" />
 
                         <!--  Segunda alarma del evento  -->
                         <Label
-                            FontSize="16"
+                            FontSize="12"
                             Text="Alarma 2"
                             TextColor="#184159" />
                         <Picker
                             Title="Seleccione una alarma"
-                            FontSize="12"
+                            Margin="0,0,0,9"
                             ItemsSource="{Binding Alarms}"
                             SelectedItem="{Binding SelectedSecondAlarm}"
+                            TextColor="#666666"
                             TitleColor="#666666" />
 
                         <!--  Fecha del evento  -->
                         <Label
-                            FontSize="16"
+                            FontSize="12"
                             Text="Fecha"
                             TextColor="#184159" />
                         <DatePicker
+                            Margin="0,0,0,9"
                             Date="{Binding Date}"
-                            FontSize="12"
                             Format="dd/MM/yyyy"
                             TextColor="#666666" />
 
                         <!--  Zona horaria del evento  -->
                         <Label
-                            Margin="0,10,0,0"
-                            FontSize="16"
+                            FontSize="12"
                             Text="Zona Horaria"
                             TextColor="#184159" />
                         <Picker
                             Title="Seleccione una zona horaria"
-                            FontSize="12"
+                            Margin="0,0,0,9"
                             ItemsSource="{Binding Zones}"
                             SelectedItem="{Binding SelectedZone}"
+                            TextColor="#666666"
                             TitleColor="#666666" />
                         <StackLayout
-                            Margin="0,10,0,0"
                             HorizontalOptions="FillAndExpand"
                             Orientation="Horizontal"
-                            Spacing="30">
+                            Spacing="70">
                             <StackLayout>
                                 <!--  Hora de inicio del evento  -->
                                 <Label
-                                    FontSize="16"
+                                    FontSize="12"
                                     Text="Hora de inicio"
                                     TextColor="#184159" />
-                                <TimePicker
-                                    FontSize="12"
-                                    TextColor="#666666"
-                                    Time="{Binding StartTime}" />
+                                <TimePicker TextColor="#666666" Time="{Binding StartTime}" />
                             </StackLayout>
                             <StackLayout>
                                 <!--  Hora de fin del evento  -->
                                 <Label
-                                    FontSize="16"
+                                    FontSize="12"
                                     Text="Hora de fin"
                                     TextColor="#184159" />
-                                <TimePicker
-                                    FontSize="12"
-                                    TextColor="#666666"
-                                    Time="{Binding EndTime}" />
+                                <TimePicker TextColor="#666666" Time="{Binding EndTime}" />
                             </StackLayout>
                         </StackLayout>
                     </StackLayout>
@@ -159,13 +153,13 @@
                 <!--  Botón para agregar el evento  -->
                 <StackLayout VerticalOptions="EndAndExpand">
                     <Button
-                        Margin="0,10,0,10"
+                        Margin="0,20,0,9"
                         BackgroundColor="#419387"
                         Command="{Binding AddEventCommand}"
                         CornerRadius="20"
                         Text="Guardar evento"
                         TextColor="White"
-                        VerticalOptions="End">
+                        VerticalOptions="EndAndExpand">
                         <Button.Shadow>
                             <Shadow
                                 Brush="#000000"
@@ -180,8 +174,7 @@
                         Command="{Binding ClearCommand}"
                         CornerRadius="20"
                         Text="Cancelar"
-                        TextColor="#205048"
-                        VerticalOptions="EndAndExpand">
+                        TextColor="#205048">
                         <Button.Shadow>
                             <Shadow
                                 Brush="#000000"

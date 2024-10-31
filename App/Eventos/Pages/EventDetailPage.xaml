@@ -214,40 +214,40 @@
                     IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                     <StackLayout>
                         <Label
-                            Margin="0,0,0,15"
+                            Margin="0,0,0,9"
                             FontSize="Title"
                             Text="Detalles del evento"
                             TextColor="#ABBA3C" />
 
                         <!--  Título del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="12"
                             Text="Título"
                             TextColor="#184159" />
                         <Entry
-                            Margin="0,0,0,10"
+                            Margin="0,0,0,9"
                             Placeholder="Ingrese el título del evento"
                             PlaceholderColor="#666666"
                             Text="{Binding UpdatedEventItem.Title, Mode=TwoWay}"
                             TextColor="#666666" />
 
                         <Label
-                            FontSize="Medium"
-                            Text="URL"
+                            FontSize="12"
+                            Text="URL del evento"
                             TextColor="#184159" />
-                            <Entry
-                                Margin="0,0,0,10"
+                        <Entry
+                            Margin="0,0,0,9"
                             Placeholder="Ingrese la URL del evento"
                             PlaceholderColor="#666666"
                             Text="{Binding UpdatedEventItem.EventURl}"
                             TextColor="#666666" />
                         <Label
-                            FontSize="Medium"
+                            FontSize="12"
                             Text="Alarma 1"
                             TextColor="#184159" />
                         <Picker
-                            Margin="0,0,0,10"
                             Title="Seleccione una alarma"
+                            Margin="0,0,0,9"
                             ItemsSource="{Binding Alarms}"
                             SelectedItem="{Binding SelectedFirstAlarm, Mode=TwoWay}"
                             TextColor="#666666"
@@ -255,12 +255,12 @@
 
                         <!--  Zona horaria del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="12"
                             Text="Alarma 2"
                             TextColor="#184159" />
                         <Picker
-                            Margin="0,0,0,10"
                             Title="Seleccione una alarma"
+                            Margin="0,0,0,9"
                             ItemsSource="{Binding Alarms}"
                             SelectedItem="{Binding SelectedSecondAlarm, Mode=TwoWay}"
                             TextColor="#666666"
@@ -269,23 +269,23 @@
 
                         <!--  Fecha del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="12"
                             Text="Fecha"
                             TextColor="#184159" />
                         <DatePicker
-                            Margin="0,0,0,10"
+                            Margin="0,0,0,9"
                             Date="{Binding UpdatedEventItem.Date}"
                             Format="dd/MM/yyyy"
                             TextColor="#666666" />
 
                         <!--  Zona horaria del evento  -->
                         <Label
-                            FontSize="Medium"
+                            FontSize="12"
                             Text="Zona Horaria"
                             TextColor="#184159" />
                         <Picker
-                            Margin="0,0,0,10"
                             Title="Seleccione una zona horaria"
+                            Margin="0,0,0,9"
                             ItemsSource="{Binding Zones}"
                             SelectedItem="{Binding SelectedZone, Mode=TwoWay}"
                             TextColor="#666666"
@@ -297,7 +297,7 @@
                             <StackLayout>
                                 <!--  Hora de inicio del evento  -->
                                 <Label
-                                    FontSize="Medium"
+                                    FontSize="12"
                                     Text="Hora de inicio"
                                     TextColor="#184159" />
                                 <TimePicker TextColor="#666666" Time="{Binding StartTime}" />
@@ -305,7 +305,7 @@
                             <StackLayout>
                                 <!--  Hora de fin del evento  -->
                                 <Label
-                                    FontSize="Medium"
+                                    FontSize="12"
                                     Text="Hora de fin"
                                     TextColor="#184159" />
                                 <TimePicker TextColor="#666666" Time="{Binding EndTime}" />
@@ -317,40 +317,41 @@
 
 
                 <!--  Botón para agregar el evento  -->
+                <StackLayout VerticalOptions="EndAndExpand">
+                    <Button
+                        Margin="0,20,0,9"
+                        BackgroundColor="#419387"
+                        Clicked="Button_Clicked_Update"
+                        CornerRadius="20"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                        Text="Guardar edición"
+                        TextColor="White"
+                        VerticalOptions="EndAndExpand">
+                        <Button.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.5"
+                                Radius="4"
+                                Offset="0,3" />
+                        </Button.Shadow>
+                    </Button>
 
-                <Button
-                    Margin="0,40,0,15"
-                    BackgroundColor="#419387"
-                    Clicked="Button_Clicked_Update"
-                    CornerRadius="20"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                    Text="Guardar edición"
-                    TextColor="White"
-                    VerticalOptions="EndAndExpand">
-                    <Button.Shadow>
-                        <Shadow
-                            Brush="#000000"
-                            Opacity="0.5"
-                            Radius="4"
-                            Offset="0,3" />
-                    </Button.Shadow>
-                </Button>
-
-                <Button
-                    BackgroundColor="#D2E898"
-                    Command="{Binding CancelUpdateViewCommand}"
-                    CornerRadius="20"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                    Text="Volver"
-                    TextColor="#205048">
-                    <Button.Shadow>
-                        <Shadow
-                            Brush="#000000"
-                            Opacity="0.5"
-                            Radius="4"
-                            Offset="0,3" />
-                    </Button.Shadow>
-                </Button>
+                    <Button
+                        BackgroundColor="#D2E898"
+                        Command="{Binding CancelUpdateViewCommand}"
+                        CornerRadius="20"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                        Text="Volver"
+                        TextColor="#205048">
+                        <Button.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.5"
+                                Radius="4"
+                                Offset="0,3" />
+                        </Button.Shadow>
+                    </Button>
+                </StackLayout>
             </StackLayout>
         </StackLayout>
     </StackLayout>

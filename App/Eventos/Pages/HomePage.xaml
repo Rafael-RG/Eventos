@@ -78,7 +78,7 @@
                             Padding="5"
                             BackgroundColor="#184159"
                             BorderColor="#D2E898"
-                            CornerRadius="15"
+                            CornerRadius="20"
                             HasShadow="False"
                             HeightRequest="12"
                             HorizontalOptions="FillAndExpand">
@@ -130,12 +130,13 @@
                         <Frame
                             Margin="20,15,20,15"
                             BorderColor="Transparent"
+                            CornerRadius="20"
                             IsVisible="{Binding IsVisibleNextEvent}">
                             <Frame.Shadow>
                                 <Shadow
                                     Brush="#000000"
                                     Opacity="0.5"
-                                    Radius="15"
+                                    Radius="20"
                                     Offset="-4,4" />
                             </Frame.Shadow>
                             <Grid
@@ -241,6 +242,7 @@
                         <Frame
                             Margin="20,15,20,20"
                             BorderColor="Transparent"
+                            CornerRadius="20"
                             IsVisible="{Binding IsVisibleListEvent}">
                             <Frame.Shadow>
                                 <Shadow
