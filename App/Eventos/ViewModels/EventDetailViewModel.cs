@@ -159,14 +159,6 @@ namespace Eventos.ViewModels
                         return;
                     }
 
-                    if (Uri.TryCreate(this.UpdatedEventItem.EventURl, UriKind.Absolute, out Uri uriResult)
-                            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)
-                            && Regex.IsMatch(this.UpdatedEventItem.EventURl, @"^(http|https)://([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$"))
-                    {
-                        await App.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
-                        this.IsBusy = false;
-                        return;
-                    }
 
                     TimeZoneInfo userTimeZone = this.SelectedZone;
                     DateTime startDateTimeLocal = DateTime.SpecifyKind(this.UpdatedEventItem.Date + this.StartTime, DateTimeKind.Unspecified);

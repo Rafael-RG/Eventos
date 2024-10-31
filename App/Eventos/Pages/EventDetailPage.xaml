@@ -88,7 +88,7 @@
                         TextColor="#666666" />
                     <Label
                         FontSize="16"
-                        Text="URL"
+                        Text="URL del evento"
                         TextColor="#184159" />
                     <Label
                         Margin="0,0,0,15"
