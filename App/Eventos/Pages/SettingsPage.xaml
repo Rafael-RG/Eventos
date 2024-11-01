@@ -321,7 +321,6 @@
                         <Button
                             Margin="0,0,0,0"
                             BackgroundColor="#419387"
-                            BorderWidth="2"
                             Command="{Binding EditUserDataCommand}"
                             CornerRadius="20"
                             IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
@@ -470,7 +469,6 @@
             <Button
                 Margin="0,10,0,10"
                 BackgroundColor="#D2E898"
-                BorderWidth="2"
                 Command="{Binding EditUserDataCommand}"
                 CornerRadius="20"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
