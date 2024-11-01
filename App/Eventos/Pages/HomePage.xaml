@@ -57,16 +57,9 @@
                             <FormattedString>
                                 <Span
                                     FontSize="22"
-                                    Text="Bienvenido "
+                                    Text="Resumen de actividad"
                                     TextColor="#61a60e" />
-                                <Span
-                                    FontSize="22"
-                                    Text="{Binding User.FullName}"
-                                    TextColor="#61a60e" />
-                                <Span
-                                    FontSize="22"
-                                    Text="!"
-                                    TextColor="#61a60e" />
+                                
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
