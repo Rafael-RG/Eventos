@@ -136,8 +136,8 @@
                                 <Shadow
                                     Brush="#000000"
                                     Opacity="0.5"
-                                    Radius="20"
-                                    Offset="-4,4" />
+                                    Radius="4"
+                                    Offset="0,3" />
                             </Frame.Shadow>
                             <Grid
                                 ColumnDefinitions="*"
@@ -248,8 +248,8 @@
                                 <Shadow
                                     Brush="#000000"
                                     Opacity="0.5"
-                                    Radius="15"
-                                    Offset="-4,4" />
+                                    Radius="4"
+                                    Offset="0,3" />
                             </Frame.Shadow>
                             <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,auto,auto">
                                 <Label
@@ -284,10 +284,10 @@
                                     Margin="0,0,0,20"
                                     Padding="0"
                                     BackgroundColor="#DDDDDD"
-                                    BorderColor="Transparent">
+                                    BorderColor="White">
                                     <Picker
                                         Title="{Binding SelectedEvent.Title}"
-                                        BackgroundColor="#DDDDDD"
+                                        BackgroundColor="White"
                                         ItemsSource="{Binding Events}"
                                         SelectedIndexChanged="Picker_SelectedIndexChanged"
                                         SelectedItem="{Binding SelectedEvent}"

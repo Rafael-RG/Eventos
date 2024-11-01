@@ -52,6 +52,13 @@
                 BackgroundColor="White"
                 CornerRadius="20"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="4"
+                        Offset="0,3" />
+                </Frame.Shadow>
                 <StackLayout>
                     <StackLayout
                         Margin="0"
@@ -168,7 +175,7 @@
                 Spacing="20"
                 VerticalOptions="EndAndExpand">
                 <Button
-                    Margin="0,10,0,10"
+                    Margin="0,10,0,0"
                     BackgroundColor="#D2E898"
                     Clicked="Button_Clicked"
                     CornerRadius="20"
@@ -183,13 +190,23 @@
                             Offset="0,3" />
                     </Button.Shadow>
                 </Button>
-                <ImageButton
+                <Button
+                    Margin="0,10,0,0"
+                    BackgroundColor="#D2E898"
                     Clicked="Button_Clicked_Delete"
                     CommandParameter="delete"
-                    HeightRequest="50"
-                    Source="trash"
-                    VerticalOptions="CenterAndExpand"
-                    WidthRequest="70" />
+                    CornerRadius="20"
+                    WidthRequest="70"
+                    ImageSource="trash"
+                    VerticalOptions="CenterAndExpand">
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="4"
+                            Offset="0,3" />
+                    </Button.Shadow>
+                </Button>
             </StackLayout>
 
         </StackLayout>
@@ -212,6 +229,13 @@
                     BackgroundColor="White"
                     CornerRadius="20"
                     IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="4"
+                            Offset="0,3" />
+                    </Frame.Shadow>
                     <StackLayout>
                         <Label
                             Margin="0,0,0,9"
@@ -337,6 +361,7 @@
                     </Button>
 
                     <Button
+                        Margin="0,0,0,0"
                         BackgroundColor="#D2E898"
                         Command="{Binding CancelUpdateViewCommand}"
                         CornerRadius="20"

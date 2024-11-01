@@ -46,6 +46,13 @@
                 Color="#ABBA3C" />
             <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" VerticalOptions="FillAndExpand">
                 <Frame BackgroundColor="White" CornerRadius="20">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="#000000"
+                            Opacity="0.5"
+                            Radius="4"
+                            Offset="0,3" />
+                    </Frame.Shadow>
                     <StackLayout>
                         <Label
                             Margin="0,0,0,9"

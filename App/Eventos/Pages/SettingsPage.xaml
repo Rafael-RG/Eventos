@@ -38,7 +38,7 @@
             RefreshColor="#ABBA3C">
             <ScrollView BackgroundColor="#DDDDDD" VerticalOptions="FillAndExpand">
                 <StackLayout
-                    Padding="30,0"
+                    Padding="20,0,20,0"
                     BackgroundColor="#DDDDDD"
                     VerticalOptions="FillAndExpand">
                     <ActivityIndicator
@@ -48,14 +48,21 @@
                         Color="#ABBA3C" />
                     <StackLayout
                         IsVisible="{Binding IsRefreshingList, Converter={StaticResource InvertedBoolConverter}}"
-                        Spacing="15"
+                        Spacing="10"
                         VerticalOptions="FillAndExpand">
                         <Frame
-                            Margin="0,20,0,0"
+                            Margin="0,10,0,0"
                             Padding="20,10,20,10"
                             BackgroundColor="White"
                             CornerRadius="20"
                             IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}">
+                            <Frame.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.5"
+                                    Radius="4"
+                                    Offset="0,3" />
+                            </Frame.Shadow>
                             <Label
                                 FontSize="18"
                                 Text="{Binding User.FullName}"
@@ -67,6 +74,13 @@
                             BackgroundColor="White"
                             CornerRadius="20"
                             IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}">
+                            <Frame.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.5"
+                                    Radius="4"
+                                    Offset="0,3" />
+                            </Frame.Shadow>
                             <StackLayout>
                                 <Label
                                     Margin="0,0,0,0"
@@ -184,6 +198,13 @@
                             BackgroundColor="White"
                             CornerRadius="20"
                             IsVisible="{Binding User.IsSubscribed}">
+                            <Frame.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.5"
+                                    Radius="4"
+                                    Offset="0,3" />
+                            </Frame.Shadow>
                             <Grid RowDefinitions="*,*,*,*">
                                 <Label
                                     Grid.Row="0"
@@ -270,6 +291,13 @@
                             BackgroundColor="White"
                             CornerRadius="20"
                             IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+                            <Frame.Shadow>
+                                <Shadow
+                                    Brush="#000000"
+                                    Opacity="0.5"
+                                    Radius="4"
+                                    Offset="0,3" />
+                            </Frame.Shadow>
                             <Label
                                 Margin="0,0,0,0"
                                 HorizontalOptions="FillAndExpand"
@@ -291,15 +319,14 @@
 
 
                         <Button
-                            Margin="0,10,0,0"
-                            BackgroundColor="#DDDDDD"
-                            BorderColor="#ABBA3C"
+                            Margin="0,0,0,0"
+                            BackgroundColor="#419387"
                             BorderWidth="2"
                             Command="{Binding EditUserDataCommand}"
                             CornerRadius="20"
                             IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                            Text="Editar datos"
-                            TextColor="#ABBA3C"
+                            Text="Editar perfil"
+                            TextColor="White"
                             VerticalOptions="EndAndExpand">
                             <Button.Shadow>
                                 <Shadow
@@ -311,13 +338,13 @@
                         </Button>
 
                         <Button
-                            Margin="0,0,0,40"
-                            BackgroundColor="#419387"
+                            Margin="0,0,0,10"
+                            BackgroundColor="#D2E898"
                             Command="{Binding LogoutCommand}"
                             CornerRadius="20"
                             IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                             Text="Cerrar sesion"
-                            TextColor="White"
+                            TextColor="#205048"
                             VerticalOptions="End">
                             <Button.Shadow>
                                 <Shadow
@@ -332,10 +359,10 @@
             </ScrollView>
         </RefreshView>
         <StackLayout
-            Padding="30,0"
+            Padding="20,0,20,0"
             BackgroundColor="#DDDDDD"
             IsVisible="{Binding IsEditUserData}"
-            Spacing="25"
+            Spacing="0"
             VerticalOptions="FillAndExpand">
             <ActivityIndicator
                 IsRunning="{Binding IsBusy}"
@@ -343,10 +370,17 @@
                 VerticalOptions="CenterAndExpand"
                 Color="#ABBA3C" />
             <Frame
-                Margin="0,30,0,0"
+                Margin="0,10,0,0"
                 BackgroundColor="White"
                 CornerRadius="20"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="4"
+                        Offset="0,3" />
+                </Frame.Shadow>
                 <StackLayout>
                     <Frame BorderColor="Transparent" CornerRadius="20">
                         <Entry
@@ -417,15 +451,13 @@
 
             </Frame>
             <Button
-                Margin="0,10,0,0"
-                BackgroundColor="Transparent"
-                BorderColor="#419387"
-                BorderWidth="2"
-                Command="{Binding EditUserDataCommand}"
+                Margin="0,0,0,0"
+                BackgroundColor="#419387"
+                Command="{Binding ChangeUserDataCommand}"
                 CornerRadius="20"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                Text="Volver"
-                TextColor="#419387"
+                Text="Guardar cambios"
+                TextColor="White"
                 VerticalOptions="EndAndExpand">
                 <Button.Shadow>
                     <Shadow
@@ -435,14 +467,14 @@
                         Offset="0,3" />
                 </Button.Shadow>
             </Button>
-
             <Button
-                Margin="0,0,0,40"
-                BackgroundColor="#ABBA3C"
-                Command="{Binding ChangeUserDataCommand}"
+                Margin="0,10,0,10"
+                BackgroundColor="#D2E898"
+                BorderWidth="2"
+                Command="{Binding EditUserDataCommand}"
                 CornerRadius="20"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                Text="Guardar cambios"
+                Text="Volver"
                 TextColor="#205048"
                 VerticalOptions="End">
                 <Button.Shadow>
@@ -453,6 +485,8 @@
                         Offset="0,3" />
                 </Button.Shadow>
             </Button>
+
+
 
         </StackLayout>
     </StackLayout>
