@@ -59,7 +59,7 @@
                                     FontSize="22"
                                     Text="Resumen de actividad"
                                     TextColor="#61a60e" />
-                                
+
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

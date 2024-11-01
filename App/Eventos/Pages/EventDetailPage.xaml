@@ -196,9 +196,9 @@
                     Clicked="Button_Clicked_Delete"
                     CommandParameter="delete"
                     CornerRadius="20"
-                    WidthRequest="70"
                     ImageSource="trash"
-                    VerticalOptions="CenterAndExpand">
+                    VerticalOptions="CenterAndExpand"
+                    WidthRequest="70">
                     <Button.Shadow>
                         <Shadow
                             Brush="#000000"

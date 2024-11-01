@@ -119,6 +119,21 @@ namespace Eventos.ViewModels
             this.UpdateView = false;
         }
 
+        [RelayCommand]
+        private async Task<bool> DeleteEvent()
+        {
+            var result = false;
+
+            if(await App.Current.MainPage.DisplayAlert("Eliminar", "¿Está seguro que desea eliminar el evento?", "Si", "No"))
+            {
+                UpdateEvent("delete");
+
+                result = true;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Update Event
         /// </summary>

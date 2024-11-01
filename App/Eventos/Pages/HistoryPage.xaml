@@ -86,9 +86,7 @@
                                         TextColor="#61a60e">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span
-                                                    FontSize="22"
-                                                    Text="{Binding Title}"/>
+                                                <Span FontSize="22" Text="{Binding Title}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

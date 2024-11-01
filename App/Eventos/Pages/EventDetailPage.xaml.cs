@@ -38,9 +38,15 @@ public partial class EventDetailPage
 
     private async void Button_Clicked_Delete(object sender, EventArgs e)
     {
-        this.ViewModel.UpdateEventCommand.Execute("delete");
-        await Task.Delay(2000);
-        await this.Navigation.PopAsync();
+        var command = this.ViewModel.DeleteEventCommand;
+        var delete = "delete";
+        var result = await (Task<bool>)command.ExecuteAsync(delete.ToString());
+
+        if (result)
+        {
+            await Task.Delay(2000);
+            await this.Navigation.PopAsync();
+        }
     }
 
     protected override async void OnDisappearing()
