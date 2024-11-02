@@ -187,6 +187,7 @@ namespace Eventos.ViewModels
             this.Title = string.Empty;
             this.SelectedFirstAlarm = this.Alarms[0];
             this.SelectedSecondAlarm = this.Alarms[1];
+            this.Date = new DateTime();
             this.Date = DateTime.Now.ToLocalTime();
             var time = new DateTime(DateTime.Now.Ticks, DateTimeKind.Local);
             this.StartTime = time.TimeOfDay;
