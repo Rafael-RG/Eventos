@@ -74,7 +74,7 @@ namespace Eventos.ViewModels
 
             this.User = await this.DataService.LoadUserAsync();
 
-            this.SelectedZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
+            this.SelectedZone = null;
             this.Date = DateTime.Now.ToLocalTime();
 
             this.SelectedFirstAlarm = this.Alarms[0];
@@ -191,7 +191,7 @@ namespace Eventos.ViewModels
             var time = new DateTime(DateTime.Now.Ticks, DateTimeKind.Local);
             this.StartTime = time.TimeOfDay;
             this.EndTime = time.AddHours(1).TimeOfDay;
-            this.SelectedZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
+            this.SelectedZone = null;
             this.Url = string.Empty;
         }
 
