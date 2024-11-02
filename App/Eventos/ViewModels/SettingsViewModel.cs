@@ -4,7 +4,6 @@ using Eventos.Common;
 using Eventos.Common.Interfaces;
 using Eventos.Common.ViewModels;
 using Eventos.Models;
-using Java.Time.Temporal;
 using Microcharts;
 using Newtonsoft.Json;
 using SkiaSharp;
