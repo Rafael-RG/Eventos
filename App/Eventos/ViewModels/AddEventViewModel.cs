@@ -187,9 +187,10 @@ namespace Eventos.ViewModels
             this.Title = string.Empty;
             this.SelectedFirstAlarm = this.Alarms[0];
             this.SelectedSecondAlarm = this.Alarms[1];
-            this.Date = DateTime.Now;
-            this.StartTime = DateTime.Now.TimeOfDay;
-            this.EndTime = DateTime.Now.AddHours(1).TimeOfDay;
+            this.Date = DateTime.Now.ToLocalTime();
+            var time = new DateTime(DateTime.Now.Ticks, DateTimeKind.Local);
+            this.StartTime = time.TimeOfDay;
+            this.EndTime = time.AddHours(1).TimeOfDay;
             this.SelectedZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
             this.Url = string.Empty;
         }
