@@ -211,6 +211,19 @@ namespace Backend.Service.Functions
             }, logger);
         }
 
+        /// <summary>
+        /// Save event
+        /// </summary>       
+        [Function(nameof(SendFeedbackAsync))]
+        public async Task<HttpResponseData> SendFeedbackAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "feedback")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.SendFeedbackAsync, request.DeserializeBody<Feedback>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
     }
 }
 

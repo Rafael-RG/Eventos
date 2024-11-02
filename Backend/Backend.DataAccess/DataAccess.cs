@@ -325,5 +325,26 @@ namespace Backend.DataAccess
                 return null;
             }
         }
+
+        /// <summary>
+        /// create a new table in the storage account
+        /// </summary>
+        public async Task<bool> SaveFeedbackAsync(FeedbackEntry feedbackEntry)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("feedback");
+                await tableClient.CreateIfNotExistsAsync();
+
+                await tableClient.UpsertEntityAsync(feedbackEntry);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
     }
 }

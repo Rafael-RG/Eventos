@@ -825,5 +825,36 @@ namespace Backend.Service.BusinessLogic
                 return await Task.FromResult(new Result<string> { Data = "Usuario no encontrado", Success = false });
             }
         }
+
+        public async Task<Result<bool>> SendFeedbackAsync(Feedback feedback) 
+        {
+            try 
+            {
+                var feedbackEntry = new FeedbackEntry
+                {
+                    PartitionKey = feedback.Email,
+                    RowKey = feedback.Id,
+                    Email = feedback.Email,
+                    Message = feedback.Message,
+                    Created = DateTimeOffset.UtcNow,
+                    IsResolve = false
+                };
+
+                var result = await this.dataAccess.SaveFeedbackAsync(feedbackEntry);
+
+                if (result)
+                {
+                    return await Task.FromResult(new Result<bool> { Data = true, Success = true });
+                }
+                else
+                {
+                    return await Task.FromResult(new Result<bool> { Data = false, Success = false });
+                }
+            }
+            catch
+            {
+                return await Task.FromResult(new Result<bool> { Data = false, Success = false });
+            }
+        }
     }
 }

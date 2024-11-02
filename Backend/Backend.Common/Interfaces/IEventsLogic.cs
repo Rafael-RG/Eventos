@@ -69,6 +69,8 @@ namespace Backend.Common.Interfaces
 
         Task<Result<string>> ChangeUserDataAsync(ChangeUserData data);
 
+        Task<Result<bool>> SendFeedbackAsync(Feedback feedback);
+
     }
 
 

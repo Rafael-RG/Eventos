@@ -71,5 +71,7 @@ namespace Backend.Common.Interfaces
 
         Task<DevUserEntry> GetDevUserAsync(string email);
 
+        Task<bool> SaveFeedbackAsync(FeedbackEntry feedbackEntry);
+
     }
 }
