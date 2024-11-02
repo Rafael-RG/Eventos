@@ -34,7 +34,7 @@
         <RefreshView
             Command="{Binding RefreshCommand}"
             IsRefreshing="{Binding IsRefreshingList}"
-            IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}"
+            IsVisible="{Binding IsVisibleSettings}"
             RefreshColor="#ABBA3C">
             <ScrollView BackgroundColor="#DDDDDD" VerticalOptions="FillAndExpand">
                 <StackLayout
@@ -55,7 +55,7 @@
                             Padding="20,10,20,10"
                             BackgroundColor="White"
                             CornerRadius="20"
-                            IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}">
+                            IsVisible="{Binding IsVisibleSettings}">
                             <Frame.Shadow>
                                 <Shadow
                                     Brush="#000000"
@@ -73,7 +73,7 @@
                             Margin="0,0,0,0"
                             BackgroundColor="White"
                             CornerRadius="20"
-                            IsVisible="{Binding IsEditUserData, Converter={StaticResource InvertedBoolConverter}}">
+                            IsVisible="{Binding IsVisibleSettings}">
                             <Frame.Shadow>
                                 <Shadow
                                     Brush="#000000"
@@ -298,25 +298,37 @@
                                     Radius="4"
                                     Offset="0,3" />
                             </Frame.Shadow>
-                            <Label
-                                Margin="0,0,0,0"
-                                HorizontalOptions="FillAndExpand"
-                                MaxLines="1">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span
-                                            FontSize="16"
-                                            Text="Version "
-                                            TextColor="#184159" />
-                                        <Span
-                                            FontSize="16"
-                                            Text="{Binding Version}"
-                                            TextColor="#184159" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                            <StackLayout>
+                                <Button
+                                    Margin="0,0,0,10"
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding OpenFeedbackCommand}"
+                                    FontSize="16"
+                                    HorizontalOptions="Start"
+                                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                                    Text="Ayúdanos a Mejorar"
+                                    TextColor="#184159"
+                                    VerticalOptions="EndAndExpand" />
+                                <Label
+                                    Margin="0,0,0,0"
+                                    HorizontalOptions="FillAndExpand"
+                                    MaxLines="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontSize="16"
+                                                Text="Version "
+                                                TextColor="#184159" />
+                                            <Span
+                                                FontSize="16"
+                                                Text="{Binding Version}"
+                                                TextColor="#184159" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
                         </Frame>
-
 
                         <Button
                             Margin="0,0,0,0"
@@ -470,6 +482,104 @@
                 Margin="0,10,0,10"
                 BackgroundColor="#D2E898"
                 Command="{Binding EditUserDataCommand}"
+                CornerRadius="20"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                Text="Volver"
+                TextColor="#205048"
+                VerticalOptions="End">
+                <Button.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.6"
+                        Radius="4"
+                        Offset="0,3" />
+                </Button.Shadow>
+            </Button>
+
+
+
+        </StackLayout>
+        <StackLayout
+            Padding="20,0,20,0"
+            BackgroundColor="#DDDDDD"
+            IsVisible="{Binding IsFeedback}"
+            Spacing="0"
+            VerticalOptions="FillAndExpand">
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="CenterAndExpand"
+                Color="#ABBA3C" />
+            <Frame
+                Margin="0,10,0,0"
+                BackgroundColor="White"
+                CornerRadius="20"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.5"
+                        Radius="4"
+                        Offset="0,3" />
+                </Frame.Shadow>
+                <StackLayout>
+                    <Label
+                        Margin="0,0,0,20"
+                        FontSize="18"
+                        Text="¡Tu opinión es muy importante para nosotros!"
+                        TextColor="#ABBA3C" />
+                    <Label
+                        Margin="0,0,0,10"
+                        FontSize="12"
+                        Text="En Recuérdame, nos esforzamos cada día para ofrecerte el mejor servicio posible. Tus comentarios nos ayudan a mejorar y a adaptarnos a tus necesidades."
+                        TextColor="#205048" />
+                    <Label
+                        Margin="0,0,0,10"
+                        FontSize="12"
+                        Text="Por favor, comparte tus comentarios, sugerencias o problemas que hayas encontrado en la aplicación"
+                        TextColor="#205048" />
+
+                    <Label
+                        Margin="0,0,0,10"
+                        FontSize="12"
+                        Text="¡Estamos aquí para ayudarte!"
+                        TextColor="#205048" />
+
+                    <Frame BorderColor="Transparent" CornerRadius="20" Padding="0">
+                        <Editor
+                            BackgroundColor="Transparent"
+                            FontSize="12"
+                            HeightRequest="120"
+                            Placeholder="Escribe aquí tu feedback"
+                            Text="{Binding Feedback}"
+                            TextColor="#184159" />
+
+                    </Frame>
+
+                </StackLayout>
+
+            </Frame>
+            <Button
+                Margin="0,0,0,0"
+                BackgroundColor="#419387"
+                Command="{Binding SendFeedbackAsyncCommand}"
+                CornerRadius="20"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                Text="Enviar"
+                TextColor="White"
+                VerticalOptions="EndAndExpand">
+                <Button.Shadow>
+                    <Shadow
+                        Brush="#000000"
+                        Opacity="0.6"
+                        Radius="4"
+                        Offset="0,3" />
+                </Button.Shadow>
+            </Button>
+            <Button
+                Margin="0,10,0,10"
+                BackgroundColor="#D2E898"
+                Command="{Binding CloseFeedbackCommand}"
                 CornerRadius="20"
                 IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 Text="Volver"

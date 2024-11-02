@@ -4,6 +4,7 @@ using Eventos.Common;
 using Eventos.Common.Interfaces;
 using Eventos.Common.ViewModels;
 using Eventos.Models;
+using Java.Time.Temporal;
 using Microcharts;
 using Newtonsoft.Json;
 using SkiaSharp;
@@ -37,6 +38,9 @@ namespace Eventos.ViewModels
         private bool isEditUserData;
 
         [ObservableProperty]
+        private bool isVisibleSettings;
+
+        [ObservableProperty]
         private bool isVisiblePassword;
 
         [ObservableProperty]
@@ -45,13 +49,19 @@ namespace Eventos.ViewModels
         [ObservableProperty]
         private double progres;
 
+        [ObservableProperty]
+        private bool isFeedback;
+
+        [ObservableProperty]
+        private string feedback;
+
 
         /// <summary>
         /// Gets by DI the required services
         /// </summary>
         public SettingsViewModel(IServiceProvider provider) : base(provider)
         {
-            
+
         }
 
         public override async void OnAppearing()
@@ -59,6 +69,7 @@ namespace Eventos.ViewModels
             IsBusy = true;
 
             this.IsEditUserData = false;
+            this.IsVisibleSettings = true;
 
             Refresh();
 
@@ -81,7 +92,7 @@ namespace Eventos.ViewModels
         }
 
         [RelayCommand]
-        private async void Refresh() 
+        private async void Refresh()
         {
             this.IsRefreshingList = true;
             IsBusy = true;
@@ -149,10 +160,11 @@ namespace Eventos.ViewModels
         private async void Logout()
         {
             this.IsBusy = true;
-            try{
-            await this.DataService.DeleteItemAsync(this.User);
+            try
+            {
+                await this.DataService.DeleteItemAsync(this.User);
 
-            await Shell.Current.GoToAsync("///LoginPage", false);
+                await Shell.Current.GoToAsync("///LoginPage", false);
             }
             catch
             {
@@ -169,6 +181,10 @@ namespace Eventos.ViewModels
         private void EditUserData()
         {
             this.IsEditUserData = !this.IsEditUserData;
+
+            this.IsVisibleSettings = !this.IsEditUserData;
+
+            this.IsFeedback = false;
 
             this.IsVisiblePassword = false;
 
@@ -188,85 +204,87 @@ namespace Eventos.ViewModels
         private async void ChangeUserData()
         {
             this.IsBusy = true;
-            try{
-            var newData = new ChangeUserData();
-
-            newData.Email = this.User.Email;
-            newData.NewName = this.NewUserName;
-
-            var message = string.Empty;
-
-            if (string.IsNullOrEmpty(this.NewUserName))
+            try
             {
-                await App.Current.MainPage.DisplayAlert("Error", "Nombre de usuario invalido", "OK");
-                this.IsBusy = false;
-                return;
-            }
+                var newData = new ChangeUserData();
 
-            if (this.User.FullName != this.NewUserName)
-            {
-                message = $"Datos Actualizado!";
-            }
+                newData.Email = this.User.Email;
+                newData.NewName = this.NewUserName;
 
-            if (!string.IsNullOrEmpty(this.Password))
-            {
-                if (!string.IsNullOrEmpty(this.NewPassword) && !string.IsNullOrEmpty(this.RepeatNewPassword) && this.NewPassword != this.RepeatNewPassword)
+                var message = string.Empty;
+
+                if (string.IsNullOrEmpty(this.NewUserName))
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "Las contraseñas no coinciden", "OK");
+                    await App.Current.MainPage.DisplayAlert("Error", "Nombre de usuario invalido", "OK");
                     this.IsBusy = false;
                     return;
                 }
-                else if (!string.IsNullOrEmpty(this.NewPassword) && !string.IsNullOrEmpty(this.RepeatNewPassword) && this.NewPassword == this.RepeatNewPassword)
+
+                if (this.User.FullName != this.NewUserName)
                 {
-                    if(!Regex.IsMatch(this.NewPassword, @"^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@#$%&*!._+-]{8,}$"))
+                    message = $"Datos Actualizado!";
+                }
+
+                if (!string.IsNullOrEmpty(this.Password))
+                {
+                    if (!string.IsNullOrEmpty(this.NewPassword) && !string.IsNullOrEmpty(this.RepeatNewPassword) && this.NewPassword != this.RepeatNewPassword)
                     {
-                        await App.Current.MainPage.DisplayAlert("Error", "La nueva contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
+                        await App.Current.MainPage.DisplayAlert("Error", "Las contraseñas no coinciden", "OK");
                         this.IsBusy = false;
                         return;
                     }
-                    else
+                    else if (!string.IsNullOrEmpty(this.NewPassword) && !string.IsNullOrEmpty(this.RepeatNewPassword) && this.NewPassword == this.RepeatNewPassword)
                     {
-                        newData.NewPassword = this.NewPassword;
-                        newData.Password = this.Password;
-                        message = $"Datos actualizados!";
+                        if (!Regex.IsMatch(this.NewPassword, @"^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@#$%&*!._+-]{8,}$"))
+                        {
+                            await App.Current.MainPage.DisplayAlert("Error", "La nueva contraseña debe comenzar por una letra, contener mayúsculas, números y tener al menos 8 caracteres.", "OK");
+                            this.IsBusy = false;
+                            return;
+                        }
+                        else
+                        {
+                            newData.NewPassword = this.NewPassword;
+                            newData.Password = this.Password;
+                            message = $"Datos actualizados!";
+                        }
                     }
                 }
-            }
 
-            if (string.IsNullOrEmpty(message))
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "No se ha realizado ningún cambio", "OK");
-                this.IsBusy = false;
-                return;
-            }
+                if (string.IsNullOrEmpty(message))
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "No se ha realizado ningún cambio", "OK");
+                    this.IsBusy = false;
+                    return;
+                }
 
-            var result = await this.HttpService.PostAsync<ResponseData>(newData, Constants.ChangeUserData);
+                var result = await this.HttpService.PostAsync<ResponseData>(newData, Constants.ChangeUserData);
 
-            if (result.Success)
-            {
-                await App.Current.MainPage.DisplayAlert("Exito", message, "OK");
+                if (result.Success)
+                {
+                    await App.Current.MainPage.DisplayAlert("Exito", message, "OK");
 
-                this.User = await this.DataService.LoadUserAsync();
+                    this.User = await this.DataService.LoadUserAsync();
 
-                await this.DataService.DeleteItemAsync(this.User);
+                    await this.DataService.DeleteItemAsync(this.User);
 
-                this.User.FullName = this.NewUserName;
+                    this.User.FullName = this.NewUserName;
 
-                var saved = await this.DataService.InsertOrUpdateItemsAsync(this.User);
-                this.IsEditUserData = false;
-                this.IsBusy = false;
-                
-            }
-            else
-            {
-                this.IsBusy = false;
-                await App.Current.MainPage.DisplayAlert("Error", result.Data.ToString(), "OK");
-            }
+                    var saved = await this.DataService.InsertOrUpdateItemsAsync(this.User);
+                    this.IsEditUserData = false;
+                    this.IsVisibleSettings = true;
+                    this.IsBusy = false;
+
+                }
+                else
+                {
+                    this.IsBusy = false;
+                    await App.Current.MainPage.DisplayAlert("Error", result.Data.ToString(), "OK");
+                }
             }
             catch
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
-                this.IsBusy=false;
+                this.IsBusy = false;
             }
         }
 
@@ -274,6 +292,68 @@ namespace Eventos.ViewModels
         private void ViewPassword()
         {
             this.IsVisiblePassword = !this.IsVisiblePassword;
+        }
+
+        [RelayCommand]
+        private async void SendFeedbackAsync()
+        {
+            this.IsBusy = true;
+            try
+            {
+                if (string.IsNullOrEmpty(this.Feedback))
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "Debe ingresar un mensaje", "OK");
+                    this.IsBusy = false;
+                    return;
+                }
+
+                var feedback = new Feedback
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Email = this.User.Email,
+                    Message = this.Feedback,
+                    Created = DateTime.Now
+                };
+
+
+                var result = await this.HttpService.PostAsync<ResponseData>(feedback, Constants.Feedback);
+
+                if (result.Success)
+                {
+                    await App.Current.MainPage.DisplayAlert("Enviado", "¡Gracias por tomarte el tiempo de compartir tu feedback!", "Cerrar");
+                    this.Feedback = string.Empty;
+
+                    this.IsFeedback = false;
+                    this.IsVisibleSettings = true;
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "Cerrar");
+                }
+                this.IsBusy = false;
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error. Vuleva a intentar", "OK");
+                this.IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        private void CloseFeedback()
+        {
+            this.IsFeedback = false;
+            this.IsEditUserData = false;
+            this.IsVisibleSettings = true;
+        }
+
+        [RelayCommand]
+        private void OpenFeedback()
+        {
+            this.IsEditUserData = false;
+            this.IsVisibleSettings = false;
+            this.IsFeedback = true;
+            this.Feedback = string.Empty;
         }
     }
 }
