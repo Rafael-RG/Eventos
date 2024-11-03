@@ -9,13 +9,13 @@
 
         public static IServiceProvider Current =>
 #if WINDOWS
-            MauiWinUIApplication.Current.Services;
+                IPlatformApplication.Current.Services;
 #elif ANDROID
-            MauiApplication.Current.Services;
+                IPlatformApplication.Current.Services;
 #elif IOS || MACCATALYST
-            MauiUIApplicationDelegate.Current.Services;
+            IPlatformApplication.Current.Services;
 #else
-            null;
+                null;
 #endif
     }
 }

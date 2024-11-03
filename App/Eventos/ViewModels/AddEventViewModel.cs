@@ -172,7 +172,7 @@ namespace Eventos.ViewModels
                     }
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 this.IsBusy = false;
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al crear al evento");

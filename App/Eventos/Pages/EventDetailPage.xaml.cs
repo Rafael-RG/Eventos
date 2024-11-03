@@ -49,7 +49,7 @@ public partial class EventDetailPage
         }
     }
 
-    protected override async void OnDisappearing()
+    protected override void OnDisappearing()
     {
         base.OnDisappearing();
 

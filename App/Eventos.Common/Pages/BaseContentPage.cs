@@ -25,7 +25,6 @@ namespace Eventos.Common.Pages
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="viewModel"></param>
         public BaseContentPage(T viewmodel, string pageTitle)
         {
             BindingContext = ViewModel = viewmodel;

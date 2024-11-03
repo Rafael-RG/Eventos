@@ -45,7 +45,7 @@ namespace Eventos.ViewModels
 
                 this.refreshAsyncCommand.Execute(null);
             }
-            catch (Exception ex) 
+            catch
             {
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al obtener los eventos");
             }
@@ -82,7 +82,7 @@ namespace Eventos.ViewModels
                 this.Events = new ObservableCollection<EventItem>(evetsActive);
 
             }
-            catch (Exception ex)
+            catch
             {
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al cargar los eventos");
             }

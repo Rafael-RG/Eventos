@@ -84,7 +84,7 @@ namespace Eventos.ViewModels
             {
                 this.UpdateView = false;
             }
-            catch (Exception ex)
+            catch
             {
                 await this.NotificationService.NotifyErrorAsync("Error", "Hubo un error al obtener el evento");
             }

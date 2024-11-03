@@ -18,8 +18,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FlexLabs.EntityFrameworkCore.Upsert" Version="6.0.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.72" />
+	  <PackageReference Include="FlexLabs.EntityFrameworkCore.Upsert" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

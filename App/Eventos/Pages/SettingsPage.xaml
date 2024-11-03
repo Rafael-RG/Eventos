@@ -545,7 +545,10 @@
                         Text="¡Estamos aquí para ayudarte!"
                         TextColor="#205048" />
 
-                    <Frame BorderColor="Transparent" CornerRadius="20" Padding="0">
+                    <Frame
+                        Padding="0"
+                        BorderColor="Transparent"
+                        CornerRadius="20">
                         <Editor
                             BackgroundColor="Transparent"
                             FontSize="12"

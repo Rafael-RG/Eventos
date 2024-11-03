@@ -209,19 +209,14 @@ namespace Eventos.Common.ViewModels
         }
 
 
-
-
-        /// <summary>
-        /// Show an error message and logs an exception message
-        /// </summary>
-        public async Task ShowErrorErrorMessageAsyc(Exception ex)
-        {
+        //public async Task ShowErrorErrorMessageAsyc(Exception ex)
+        //{
             //await InvokeOnMainThreadAsync(async () =>
             //{
             //    await LogExceptionAsync(ex);
             //    await this.NotificationService.NotifyErrorAsync("Attention", ex.Message);
             //});
-        }
+        //}
 
 
         /// <summary>
