@@ -173,7 +173,7 @@ namespace Eventos.ViewModels
         }
 
         [RelayCommand]
-        private async void DeleteAccountAsync()
+        private async void DeleteAccount()
         {
             try
             {
