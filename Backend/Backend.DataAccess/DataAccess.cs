@@ -346,5 +346,35 @@ namespace Backend.DataAccess
             }
 
         }
+
+        /// <summary>
+        /// Delete User
+        /// </summary>
+        public async Task<bool> DeleteUserAsync(string email)
+        {
+            try
+            {
+                var tableClient = this.tableServiceClient.GetTableClient("users");
+                await tableClient.CreateIfNotExistsAsync();
+                var query = tableClient.QueryAsync<UserEntry>(filter: $"PartitionKey eq '{email}'");
+                var user = new UserEntry();
+                await foreach (var item in query)
+                {
+                    user = item;
+                    break;
+                }
+
+                if (user != null)
+                {
+                    await tableClient.DeleteEntityAsync(user.PartitionKey, user.RowKey);
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -172,6 +172,35 @@ namespace Eventos.ViewModels
             this.IsBusy = false;
         }
 
+        [RelayCommand]
+        private async void DeleteAccountAsync()
+        {
+            try
+            {
+                var result = await App.Current.MainPage.DisplayAlert("Eliminar cuenta", "¿Estás seguro de que deseas eliminar tu cuenta?", "Si", "No");
+
+                if (result)
+                {
+                    var response = await this.HttpService.PostAsync<ResponseData>(new UserEmail { Email = this.User.Email }, Constants.DeleteAccount);
+
+                    if (response.Success)
+                    {
+                        await this.DataService.DeleteItemAsync(this.User);
+
+                        await Shell.Current.GoToAsync("///LoginPage", false);
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "No se ha podido eliminar la cuenta", "OK");
+                    }
+                }
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "No se ha podido eliminar la cuenta", "OK");
+            }
+        }
+
 
         /// <summary>
         /// Change user data active

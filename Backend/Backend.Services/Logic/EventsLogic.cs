@@ -856,5 +856,26 @@ namespace Backend.Service.BusinessLogic
                 return await Task.FromResult(new Result<bool> { Data = false, Success = false });
             }
         }
+
+        public async Task<Result<bool>> DeleteAccountAsync(UserEmail data)
+        {
+            try
+            {
+                var result = await this.dataAccess.DeleteUserAsync(data.Email);
+
+                if (result)
+                {
+                    return await Task.FromResult(new Result<bool> { Data = true, Success = true });
+                }
+                else
+                {
+                    return await Task.FromResult(new Result<bool> { Data = false, Success = false });
+                }
+            }
+            catch
+            {
+                return await Task.FromResult(new Result<bool> { Data = false, Success = false });
+            }
+        }
     }
 }

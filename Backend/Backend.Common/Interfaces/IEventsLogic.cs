@@ -71,6 +71,8 @@ namespace Backend.Common.Interfaces
 
         Task<Result<bool>> SendFeedbackAsync(Feedback feedback);
 
+        Task<Result<bool>> DeleteAccountAsync(UserEmail data);
+
     }
 
 

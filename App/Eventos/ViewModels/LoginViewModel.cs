@@ -686,6 +686,7 @@ namespace Eventos.ViewModels
         {
             var countriesOfAmerica = new[]
             {
+                "None",
                 "Argentina",
                 "Bolivia",
                 "Brasil",

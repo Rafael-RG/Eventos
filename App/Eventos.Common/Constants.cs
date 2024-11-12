@@ -58,5 +58,7 @@
         public static string ChangeUserData => WebApiHost + "changeuserdata?code=" + WebApiKey;
 
         public static string Feedback => WebApiHost + "feedback?code=" + WebApiKey;
+
+        public static string DeleteAccount => WebApiHost + "deleteaccount?code=" + WebApiKey;
     }
 }

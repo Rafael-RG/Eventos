@@ -73,5 +73,7 @@ namespace Backend.Common.Interfaces
 
         Task<bool> SaveFeedbackAsync(FeedbackEntry feedbackEntry);
 
+        Task<bool> DeleteUserAsync(string email);
+
     }
 }

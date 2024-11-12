@@ -327,6 +327,17 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                <Button
+                                    Margin="0,0,0,10"
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding DeleteAccountCommand}"
+                                    FontSize="16"
+                                    HorizontalOptions="Start"
+                                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                                    Text="Eliminar cuenta"
+                                    TextColor="red"
+                                    VerticalOptions="EndAndExpand" />
                             </StackLayout>
                         </Frame>
 
@@ -530,18 +541,18 @@
                         TextColor="#ABBA3C" />
                     <Label
                         Margin="0,0,0,10"
-                        FontSize="12"
+                        FontSize="16"
                         Text="En Recuérdame, nos esforzamos cada día para ofrecerte el mejor servicio posible. Tus comentarios nos ayudan a mejorar y a adaptarnos a tus necesidades."
                         TextColor="#205048" />
                     <Label
                         Margin="0,0,0,10"
-                        FontSize="12"
+                        FontSize="16"
                         Text="Por favor, comparte tus comentarios, sugerencias o problemas que hayas encontrado en la aplicación"
                         TextColor="#205048" />
 
                     <Label
                         Margin="0,0,0,10"
-                        FontSize="12"
+                        FontSize="16"
                         Text="¡Estamos aquí para ayudarte!"
                         TextColor="#205048" />
 
@@ -551,7 +562,7 @@
                         CornerRadius="20">
                         <Editor
                             BackgroundColor="Transparent"
-                            FontSize="12"
+                            FontSize="16"
                             HeightRequest="120"
                             Placeholder="Escribe aquí tu feedback"
                             Text="{Binding Feedback}"

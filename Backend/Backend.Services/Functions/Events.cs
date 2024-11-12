@@ -224,6 +224,19 @@ namespace Backend.Service.Functions
             }, logger);
         }
 
+        /// <summary>
+        /// Delete account
+        /// </summary>
+        [Function(nameof(DeleteAccountAsync))]
+        public async Task<HttpResponseData> DeleteAccountAsync(
+         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "deleteaccount")] HttpRequestData request)
+        {
+            return await request.CreateResponse(this.businessLogic.DeleteAccountAsync, request.DeserializeBody<UserEmail>(), responseLinks =>
+            {
+                responseLinks.Links = new Dictionary<string, string> { };
+            }, logger);
+        }
+
     }
 }
 
