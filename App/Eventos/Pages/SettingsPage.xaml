@@ -300,7 +300,7 @@
                             </Frame.Shadow>
                             <StackLayout>
                                 <Button
-                                    Margin="0,0,0,10"
+                                    Margin="0,0,0,5"
                                     Padding="0"
                                     BackgroundColor="Transparent"
                                     Command="{Binding OpenFeedbackCommand}"
@@ -311,7 +311,7 @@
                                     TextColor="#184159"
                                     VerticalOptions="EndAndExpand" />
                                 <Label
-                                    Margin="0,0,0,0"
+                                    Margin="0,0,0,5"
                                     HorizontalOptions="FillAndExpand"
                                     MaxLines="1">
                                     <Label.FormattedText>

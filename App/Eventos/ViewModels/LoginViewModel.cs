@@ -368,7 +368,7 @@ namespace Eventos.ViewModels
                 return;
             }
 
-            if (this.FullName.Length == 0 || this.Password.Length == 0 || this.UserEmail.Length == 0 || this.Country.Length == 0)
+            if (this.FullName.Length == 0 || this.Password.Length == 0 || this.UserEmail.Length == 0)
             {
                 this.IsBusy=false;
                 await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son requeridos", "OK");
@@ -382,14 +382,14 @@ namespace Eventos.ViewModels
                 return;
             }
 
-            var newUser = new NewUser
-            {
-                FullName = this.FullName,
-                Email = this.UserEmail.ToLower(),
-                Password = this.Password,
-                Country = this.Country,
-                RetryValidate = false
-            };
+                var newUser = new NewUser
+                {
+                    FullName = this.FullName,
+                    Email = this.UserEmail.ToLower(),
+                    Password = this.Password,
+                    Country = this.Country != null ? this.Country : "Ninguno",
+                    RetryValidate = false
+                };
 
             var result = await this.HttpService.PostAsync<ResponseData>(newUser, Constants.CreateUser);
 
@@ -686,7 +686,7 @@ namespace Eventos.ViewModels
         {
             var countriesOfAmerica = new[]
             {
-                "None",
+                "Ninguno",
                 "Argentina",
                 "Bolivia",
                 "Brasil",

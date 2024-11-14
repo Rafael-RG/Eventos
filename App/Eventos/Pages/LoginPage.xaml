@@ -255,7 +255,7 @@
                     </Frame.Shadow>
 
                     <Picker
-                        Title="Seleccione su país"
+                        Title="Seleccione su país (Opcional)"
                         Margin="0,0,0,0"
                         ItemsSource="{Binding Countries}"
                         SelectedItem="{Binding Country}"
