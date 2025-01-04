@@ -519,7 +519,9 @@ namespace Eventos.ViewModels
         private async void Suscribe()
         {
             //open link 
-            await Launcher.OpenAsync("https://www.recuerdame.app/");
+            //await Launcher.OpenAsync("https://www.recuerdame.app/");
+
+            await Shell.Current.GoToAsync("///SubscriptionPage", false);
         }
 
         /// <summary>

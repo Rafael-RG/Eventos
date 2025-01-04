@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BaseContentPage
+    x:Class="Eventos.Pages.SubscriptionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:extensions="clr-namespace:Eventos.Extensions"
+    xmlns:local="clr-namespace:Eventos.Converters"
+    xmlns:pages="clr-namespace:Eventos.Common.Pages;assembly=Eventos.Common"
+    xmlns:viewModels="clr-namespace:Eventos.ViewModels"
+    x:DataType="viewModels:SubscriptionViewModel"
+    x:TypeArguments="viewModels:SubscriptionViewModel"
+    BackgroundColor="#184159"
+    Shell.NavBarIsVisible="false"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout Padding="20">
+        <Label FontSize="18" Text="Opciones de suscripción disponibles:" />
+
+        <CollectionView ItemsSource="{Binding AvailableSubscriptions}" SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Label Text="{Binding .}" />
+                        <Button
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SubscriptionViewModel}}, Path=PurchaseSubscriptionCommand}"
+                            CommandParameter="{Binding .}"
+                            Text="Comprar" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label
+            Margin="0,20,0,0"
+            FontSize="18"
+            Text="Suscripciones activas:" />
+        <CollectionView ItemsSource="{Binding ActiveSubscriptions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding .}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Command="{Binding ValidateSubscriptionsCommand}" Text="Validar Suscripciones" />
+    </VerticalStackLayout>
+
+</pages:BaseContentPage>
