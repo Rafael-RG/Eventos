@@ -1,13 +1,14 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Eventos.Common.Interfaces;
 
 namespace Eventos.Services
 {
     /// <summary>
     /// Servicio para validar recibos con el servidor de Apple.
     /// </summary>
-    public class ReceiptValidationService
+    public class ReceiptValidationService : IReceiptValidationService
     {
         // Cambia esta URL a la de producción en el entorno real.
         private readonly string receiptValidationUrl = "https://sandbox.itunes.apple.com/verifyReceipt";
@@ -23,7 +24,7 @@ namespace Eventos.Services
             var payload = new
             {
                 receipt_data = receiptData, // Recibo codificado en base64.
-                password = "your-shared-secret" // Clave compartida de App Store Connect.
+                password = "b6fbf8ac69cb49fda2fa244a5808fe04" // Clave compartida de App Store Connect.
             };
 
             // Serializar el payload en JSON.

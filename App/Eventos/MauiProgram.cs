@@ -2,6 +2,7 @@
 using Eventos.Common.Extensions;
 using Eventos.Common.Interfaces;
 using Eventos.DataAccess;
+using Eventos.Services;
 using Microcharts.Maui;
 
 namespace Eventos;
@@ -32,6 +33,8 @@ public static class MauiProgram
         builder.Services.AddDbContext<DatabaseContext>();
         builder.Services.AddSingleton<IDataService, DataService>();
         builder.Services.AddLocalization();
+		builder.Services.AddSingleton<ISubscriptionService, SubscriptionService>();
+		builder.Services.AddSingleton<IReceiptValidationService, ReceiptValidationService>();
 
         builder.UseMauiApp<App>().UseMauiCommunityToolkit();
 		builder.ConfigureMauiHandlers(h =>

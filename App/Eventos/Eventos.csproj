@@ -110,9 +110,6 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Remove="Resources\Images\visibility_white.svg" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />

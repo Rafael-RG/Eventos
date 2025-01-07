@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Eventos.Services;
+using Eventos.Common.Interfaces;
+using Eventos.Common.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace Eventos.ViewModels
 {
-    public partial class SubscriptionViewModel : ObservableObject
+    public partial class SubscriptionViewModel : BaseViewModel
     {
-        private readonly SubscriptionService _subscriptionService;
-        private readonly ReceiptValidationService _receiptValidationService;
+        private readonly ISubscriptionService _subscriptionService;
+        private readonly IReceiptValidationService _receiptValidationService;
 
         public ObservableCollection<string> ActiveSubscriptions { get; } = new();
         public ObservableCollection<string> AvailableSubscriptions { get; } = new();
 
-        public SubscriptionViewModel(SubscriptionService subscriptionService, ReceiptValidationService receiptValidationService)
+        public SubscriptionViewModel(IServiceProvider provider,ISubscriptionService subscriptionService, IReceiptValidationService receiptValidationService): base(provider)
         {
             _subscriptionService = subscriptionService;
             _receiptValidationService = receiptValidationService;

@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Eventos.Common.Interfaces;
 namespace Eventos.Services
 {
-    public class SubscriptionService
+    public class SubscriptionService : ISubscriptionService
     {
         private readonly List<string> subscriptionIds = new()
     {
-        "com.yourapp.monthly",
-        "com.yourapp.annual",
-        "com.yourapp.weekly"
+        "852576",
+        "852577",
+        "852578"
     };
 
         public async Task<bool> PurchaseSubscriptionAsync(string subscriptionId)
