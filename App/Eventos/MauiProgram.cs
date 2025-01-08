@@ -4,6 +4,7 @@ using Eventos.Common.Interfaces;
 using Eventos.DataAccess;
 using Eventos.Services;
 using Microcharts.Maui;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 #if IOS
 using StoreKit;
@@ -40,11 +41,10 @@ public static class MauiProgram
                  AppLifecycle.AddiOS(ios =>
                      ios.FinishedLaunching((del, b) =>
                     {
-                        Plugin.InAppBilling.InAppBillingImplementation.OnShouldAddStorePayment = OnShouldAddStorePayment;
                         var current = Plugin.InAppBilling.CrossInAppBilling.Current;
                         return true;
                     }));
-
+#endif
              });
 
 #if IOS
