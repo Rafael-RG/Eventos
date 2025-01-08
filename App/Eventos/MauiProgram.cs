@@ -4,6 +4,10 @@ using Eventos.Common.Interfaces;
 using Eventos.DataAccess;
 using Eventos.Services;
 using Microcharts.Maui;
+using Microsoft.Maui.LifecycleEvents;
+#if IOS
+using StoreKit;
+#endif
 
 namespace Eventos;
 
@@ -29,7 +33,29 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+            })
+            .ConfigureLifecycleEvents(AppLifecycle =>
+             {
+#if IOS
+                 AppLifecycle.AddiOS(ios =>
+                     ios.FinishedLaunching((del, b) =>
+                    {
+                        Plugin.InAppBilling.InAppBillingImplementation.OnShouldAddStorePayment = OnShouldAddStorePayment;
+                        var current = Plugin.InAppBilling.CrossInAppBilling.Current;
+                        return true;
+                    }));
+
+             });
+
+#if IOS
+        bool OnShouldAddStorePayment(SKPaymentQueue queue, SKPayment payment, SKProduct product)
+        {
+            //Process and check purchases
+            return true;
+        }
+#endif
+
+
         builder.Services.AddDbContext<DatabaseContext>();
         builder.Services.AddSingleton<IDataService, DataService>();
         builder.Services.AddLocalization();

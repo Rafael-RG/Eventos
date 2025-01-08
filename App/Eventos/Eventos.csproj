@@ -31,6 +31,11 @@
     <UseInterpreter>true</UseInterpreter>
 	</PropertyGroup>
 
+<PropertyGroup>
+	<!-- Identificadores de tiempo de ejecución para simuladores y dispositivos reales -->
+	<RuntimeIdentifier>ios-arm64;iossimulator-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg">
