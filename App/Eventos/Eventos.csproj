@@ -23,26 +23,12 @@
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">34.0</SupportedOSPlatformVersion>
-		<PublishAot>True</PublishAot>
 	
 
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
     <UseInterpreter>true</UseInterpreter>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
-	  <MtouchUseLlvm>True</MtouchUseLlvm>
-	  <EnableSGenConc>True</EnableSGenConc>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
-	  <EnableSGenConc>True</EnableSGenConc>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(RunConfiguration)'=='Default'">
-	  <LaunchForBackgroundFetch>true</LaunchForBackgroundFetch>
 	</PropertyGroup>
 
 	<ItemGroup>
